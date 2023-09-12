@@ -9,11 +9,11 @@ import (
 )
 
 func TestJudge(t *testing.T) {
-	err := rpc.InitGRPCClients()
+	conn, err := rpc.InitJudgeGRPC()
 	if err != nil {
 		panic(err)
 	}
-	defer rpc.CloseGPRCClients()
+	defer conn.Close()
 
 	ctx := context.Background()
 

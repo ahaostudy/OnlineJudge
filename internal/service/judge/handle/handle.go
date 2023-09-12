@@ -48,6 +48,7 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (*rpcJ
 	fmt.Println("judge ... ")
 
 	code, langID, _ := req.GetCode(), req.GetLangID(), req.GetProblemID()
+	fmt.Println(code, langID)
 
 	// TODO: 将代码文件上传
 	path := filepath.Join(config.ConfJudge.File.TempPath, fmt.Sprintf("%s.py", uuid.NewString()))
@@ -75,8 +76,8 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (*rpcJ
 	resultChan[judgeID] = make(chan JudgeResponse)
 
 	return &rpcJudge.JudgeResponse{
-		StatusCode: common.CodeServerBusy.Code(),
-		StatusMsg:  common.CodeServerBusy.Msg(),
+		StatusCode: common.CodeSuccess.Code(),
+		StatusMsg:  common.CodeSuccess.Msg(),
 		JudgeID:    judgeID,
 	}, nil
 }
@@ -97,7 +98,7 @@ func (JudgeServer) GetResult(ctx context.Context, req *rpcJudge.GetResultRequest
 
 	return &rpcJudge.GetResultResponse{
 		StatusCode: code.Code(),
-		StatusMsg: code.Msg(),
+		StatusMsg:  code.Msg(),
 		Result: &rpcJudge.JudgeResult{
 			Time:    res.Result.Time,
 			Memory:  res.Result.Memory,
