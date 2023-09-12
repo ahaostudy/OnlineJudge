@@ -1,0 +1,9 @@
+.vscode
+.idea
+
+go.mod
+go.sum
+
+data/*
+!data/.gitkeep
+config/config.yaml

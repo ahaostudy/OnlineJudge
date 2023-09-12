@@ -1,0 +1,80 @@
+# 使用以下命令更新结构体
+# yaml2go-cli -i config/config.yaml -o config/gen.go -p config
+
+# 需要先安装 go install github.com/Icemap/yaml2go-cli@latest
+
+
+etcd:
+  addr: 192.168.1.67:2379
+  ttl: 10
+
+rabbitmq:
+  host: 127.0.0.1
+  port: 5672
+  username: admin
+  password: admin
+  vhost: ''
+
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  dbname: oj
+  username: root
+  password: dream
+  charset: utf8mb4
+
+
+redis:
+  addr: 127.0.0.1:6379
+  password: dream
+  lockKey: lock
+  ttl: 86400  # 24*60*60s
+
+
+# 后端服务
+server:
+  salt: 2023/08/31
+  node: 1  # 雪花节点编号
+
+  email:
+    addr: smtp.163.com:25
+    host: smtp.163.com
+    from: "OnlineJudge <ahao_study@163.com>"
+    email: ahao_study@163.com
+    auth: DGRZGRZLEVSDTGWK  # 邮箱授权码
+    expire: 300  # 5*60s
+
+  auth:
+    issuer: zty
+    key: ztyyyds666
+    expire: 720  # 30*24h
+
+
+# 判题服务
+judge:
+  name: judge
+  version: v1
+  host: 127.0.0.1
+  port: 9999
+
+  system:
+    sudoPwd: dream
+
+  exe:
+    python: /usr/local/bin/python3.8
+    gcc: /usr/bin/gcc
+    gpp: /usr/bin/g++
+    go: /usr/bin/go
+    java: /usr/bin/java
+    javac: /usr/bin/javac
+
+  sandbox:
+    exePath: /projects/OnlineJudge/services/judge/lib/judger.so
+    logPath: /projects/OnlineJudge/services/judge/lib/judger.log
+    defaultMaxTime: 1000           # 1000ms
+    defaultMaxMemory: 536870912    # 512MB
+    defaultMaxOutputSize: 1048576  # 1MB
+
+  file:
+    tempPath: /projects/OnlineJudge/data
+    demoPath: /projects/OnlineJudge/services/judge/demo
