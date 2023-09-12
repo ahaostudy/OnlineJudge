@@ -3,22 +3,22 @@ package test
 import (
 	"context"
 	"fmt"
-	"main/clients"
-	rpcJudge "main/rpc/judge"
+	"main/api/judge"
+	"main/rpc"
 	"testing"
 )
 
 func TestJudge(t *testing.T) {
-	conn, err := clients.InitJudgeGRPC()
+	err := rpc.InitGRPCClients()
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
+	defer rpc.CloseGPRCClients()
 
 	ctx := context.Background()
 
 	// 提交代码
-	res, err := clients.JudgeCli.Judge(ctx, &rpcJudge.JudgeRequest{
+	res, err := rpc.JudgeCli.Judge(ctx, &rpcJudge.JudgeRequest{
 		ProblemID: 1,
 		Code:      []byte("a, b = map(int, input().split())\nprint(a + b)"),
 		LangID:    3,
@@ -29,7 +29,7 @@ func TestJudge(t *testing.T) {
 	fmt.Printf("提交成功: %v\n", res.JudgeID)
 
 	// 获取结果
-	result, err := clients.JudgeCli.GetResult(ctx, &rpcJudge.GetResultRequest{
+	result, err := rpc.JudgeCli.GetResult(ctx, &rpcJudge.GetResultRequest{
 		JudgeID: res.JudgeID,
 	})
 	if err != nil {

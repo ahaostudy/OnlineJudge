@@ -12,7 +12,7 @@ rabbitmq:
   host: 127.0.0.1
   port: 5672
   username: admin
-  password: admin
+  password: ''
   vhost: ''
 
 mysql:
@@ -20,13 +20,13 @@ mysql:
   port: 3306
   dbname: oj
   username: root
-  password: dream
+  password: ''
   charset: utf8mb4
 
 
 redis:
   addr: 127.0.0.1:6379
-  password: dream
+  password: ''
   lockKey: lock
   ttl: 86400  # 24*60*60s
 
@@ -54,7 +54,7 @@ server:
 judge:
   name: judge
   version: v1
-  host: 127.0.0.1
+  host: 192.168.1.67
   port: 9999
 
   system:
@@ -69,12 +69,19 @@ judge:
     javac: /usr/bin/javac
 
   sandbox:
-    exePath: /projects/OnlineJudge/services/judge/lib/judger.so
-    logPath: /projects/OnlineJudge/services/judge/lib/judger.log
+    exePath: /usr/lib/judger/libjudger.so
+    logPath: /projects/OnlineJudge/file/judger.log
     defaultMaxTime: 1000           # 1000ms
     defaultMaxMemory: 536870912    # 512MB
     defaultMaxOutputSize: 1048576  # 1MB
 
   file:
-    tempPath: /projects/OnlineJudge/data
-    demoPath: /projects/OnlineJudge/services/judge/demo
+    tempPath: /projects/OnlineJudge/file
+    demoPath: /projects/OnlineJudge/internal/service/judge/demo
+
+
+problem:
+  name: problem
+  version: v1
+  host: 192.168.1.67
+  port: 9992

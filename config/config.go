@@ -10,8 +10,9 @@ var (
 	ConfRedis    Redis
 	ConfEtcd     Etcd
 
-	ConfServer Server
-	ConfJudge  Judge
+	ConfServer  Server
+	ConfJudge   Judge
+	ConfProblem Problem
 )
 
 // InitConfig 初始化配置
@@ -38,6 +39,7 @@ func InitConfig() error {
 
 		ConfServer = conf.Server
 		ConfJudge = conf.Judge
+		ConfProblem = conf.Problem
 	}
 
 	// consts
