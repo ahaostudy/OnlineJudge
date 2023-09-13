@@ -1,52 +1,44 @@
 package config
 
+// Rabbitmq
+type Rabbitmq struct {
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Vhost    string `yaml:"vhost"`
+	Host     string `yaml:"host"`
+}
+
+// Auth
+type Auth struct {
+	Key    string `yaml:"key"`
+	Expire int    `yaml:"expire"`
+	Issuer string `yaml:"issuer"`
+}
+
 // Judge
 type Judge struct {
-	System  System  `yaml:"system"`
-	Exe     Exe     `yaml:"exe"`
-	Sandbox Sandbox `yaml:"sandbox"`
 	File    File    `yaml:"file"`
 	Name    string  `yaml:"name"`
 	Version string  `yaml:"version"`
 	Host    string  `yaml:"host"`
 	Port    int     `yaml:"port"`
+	System  System  `yaml:"system"`
+	Exe     Exe     `yaml:"exe"`
+	Sandbox Sandbox `yaml:"sandbox"`
 }
 
-// System
-type System struct {
-	SudoPwd string `yaml:"sudoPwd"`
+// Problem
+type Problem struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
 }
 
-// File
-type File struct {
-	TempPath string `yaml:"tempPath"`
-	DemoPath string `yaml:"demoPath"`
-}
-
-// Default
-type Default struct {
-	Redis    Redis    `yaml:"redis"`
-	Server   Server   `yaml:"server"`
-	Judge    Judge    `yaml:"judge"`
-	Problem  Problem  `yaml:"problem"`
-	Etcd     Etcd     `yaml:"etcd"`
-	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
-	Mysql    Mysql    `yaml:"mysql"`
-}
-
-// Server
-type Server struct {
-	Salt  string `yaml:"salt"`
-	Node  int    `yaml:"node"`
-	Email Email  `yaml:"email"`
-	Auth  Auth   `yaml:"auth"`
-}
-
-// Auth
-type Auth struct {
-	Issuer string `yaml:"issuer"`
-	Key    string `yaml:"key"`
-	Expire int    `yaml:"expire"`
+// TestcaseFile
+type TestcaseFile struct {
+	Path string `yaml:"path"`
 }
 
 // Mysql
@@ -59,6 +51,14 @@ type Mysql struct {
 	Charset  string `yaml:"charset"`
 }
 
+// Server
+type Server struct {
+	Salt  string `yaml:"salt"`
+	Node  int    `yaml:"node"`
+	Email Email  `yaml:"email"`
+	Auth  Auth   `yaml:"auth"`
+}
+
 // Email
 type Email struct {
 	Auth   string `yaml:"auth"`
@@ -69,53 +69,68 @@ type Email struct {
 	Email  string `yaml:"email"`
 }
 
-// Sandbox
-type Sandbox struct {
-	DefaultMaxMemory     int    `yaml:"defaultMaxMemory"`
-	DefaultMaxOutputSize int    `yaml:"defaultMaxOutputSize"`
-	ExePath              string `yaml:"exePath"`
-	LogPath              string `yaml:"logPath"`
-	DefaultMaxTime       int    `yaml:"defaultMaxTime"`
-}
-
-// Rabbitmq
-type Rabbitmq struct {
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Vhost    string `yaml:"vhost"`
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-}
-
 // Exe
 type Exe struct {
+	Python string `yaml:"python"`
 	Gcc    string `yaml:"gcc"`
 	Gpp    string `yaml:"gpp"`
 	Go     string `yaml:"go"`
 	Java   string `yaml:"java"`
 	Javac  string `yaml:"javac"`
-	Python string `yaml:"python"`
 }
 
-// Redis
-type Redis struct {
-	Ttl      int    `yaml:"ttl"`
-	Addr     string `yaml:"addr"`
-	Password string `yaml:"password"`
-	LockKey  string `yaml:"lockKey"`
-}
-
-// Problem
-type Problem struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
+// Testcase
+type Testcase struct {
+	Version string       `yaml:"version"`
+	Host    string       `yaml:"host"`
+	Port    int          `yaml:"port"`
+	File    TestcaseFile `yaml:"file"`
+	Name    string       `yaml:"name"`
 }
 
 // Etcd
 type Etcd struct {
-	Addr string `yaml:"addr"`
 	Ttl  int    `yaml:"ttl"`
+	Addr string `yaml:"addr"`
+}
+
+// Redis
+type Redis struct {
+	Addr     string `yaml:"addr"`
+	Password string `yaml:"password"`
+	LockKey  string `yaml:"lockKey"`
+	Ttl      int    `yaml:"ttl"`
+}
+
+// System
+type System struct {
+	SudoPwd string `yaml:"sudoPwd"`
+}
+
+// Sandbox
+type Sandbox struct {
+	ExePath              string `yaml:"exePath"`
+	LogPath              string `yaml:"logPath"`
+	DefaultMaxTime       int    `yaml:"defaultMaxTime"`
+	DefaultMaxMemory     int    `yaml:"defaultMaxMemory"`
+	DefaultMaxOutputSize int    `yaml:"defaultMaxOutputSize"`
+}
+
+// Default
+type Default struct {
+	Etcd     Etcd     `yaml:"etcd"`
+	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
+	Mysql    Mysql    `yaml:"mysql"`
+	Redis    Redis    `yaml:"redis"`
+	Server   Server   `yaml:"server"`
+	Judge    Judge    `yaml:"judge"`
+	Problem  Problem  `yaml:"problem"`
+	Testcase Testcase `yaml:"testcase"`
+}
+
+// File
+type File struct {
+	TempPath string `yaml:"tempPath"`
+	DemoPath string `yaml:"demoPath"`
 }
 

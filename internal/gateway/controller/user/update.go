@@ -1,7 +1,8 @@
 package user
 
 import (
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/auth"
 	"main/internal/gateway/service/user"
 	"net/http"
@@ -12,12 +13,12 @@ import (
 
 type (
 	UpdateUserRequest struct {
-		common.Request
+		ctl.Request
 		ID int64
 	}
 
 	UpdateUserResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

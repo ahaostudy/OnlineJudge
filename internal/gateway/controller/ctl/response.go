@@ -1,13 +1,14 @@
-package common
+package ctl
 
+import "main/internal/common"
 
 // 基础响应体
 type Response struct {
-	StatusCode Code   `json:"status_code"`
+	StatusCode common.Code   `json:"status_code"`
 	StatusMsg  string `json:"status_msg,omitempty"`
 }
 
-func (r *Response) CodeOf(code Code) Response {
+func (r *Response) CodeOf(code common.Code) Response {
 	if r == nil {
 		r = new(Response)
 	}
@@ -17,5 +18,5 @@ func (r *Response) CodeOf(code Code) Response {
 }
 
 func (r *Response) Success() {
-	r.CodeOf(CodeSuccess)
+	r.CodeOf(common.CodeSuccess)
 }

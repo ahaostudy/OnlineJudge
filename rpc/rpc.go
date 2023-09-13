@@ -35,6 +35,7 @@ func InitGRPCClients() error {
 	r := new(run)
 	r.Run(InitJudgeGRPC)
 	r.Run(InitProblemGRPC)
+	r.Run(InitTestcaseGRPC)
 
 	return r.Error()
 }
@@ -46,6 +47,7 @@ func CloseGPRCClients() {
 	}
 }
 
+// 创建GRPC客户端
 func NewGRPCClient(addr, name string) (*grpc.ClientConn, error) {
 	// etcd
 	etcdCli, err := clientv3.NewFromURL(addr)

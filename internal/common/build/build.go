@@ -1,4 +1,4 @@
-package common
+package build
 
 import (
 	"errors"
@@ -112,5 +112,5 @@ func getPtr(val reflect.Value) reflect.Value {
 	if val.Kind() != reflect.Ptr || val.Elem().Kind() != reflect.Ptr {
 		return val
 	}
-	return getPtr(val)
+	return getPtr(val.Elem())
 }

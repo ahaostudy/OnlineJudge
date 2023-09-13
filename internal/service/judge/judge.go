@@ -14,6 +14,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+func init() {
+	if err := config.InitConfig(); err != nil {
+		panic(err)
+	}
+}
+
 func Run() error {
 	// 连接题目模块RPC服务
 	conn, err := rpc.InitProblemGRPC()
@@ -48,10 +54,4 @@ func Run() error {
 		return err
 	}
 	return nil
-}
-
-func init() {
-	if err := config.InitConfig(); err != nil {
-		panic(err)
-	}
 }

@@ -1,7 +1,8 @@
 package user
 
 import (
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/middleware/jwt"
 	"main/internal/gateway/service/user"
 	"net/http"
@@ -18,7 +19,7 @@ type (
 	}
 
 	RegisterResponse struct {
-		common.Response
+		ctl.Response
 		Token  string `json:"token"`
 		UserID int64  `json:"user_id"`
 	}

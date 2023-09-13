@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 	"main/internal/gateway/dao"
-	"main/internal/gateway/middleware/redis"
+	"main/internal/middleware/redis"
 	"main/internal/gateway/utils/sha256"
 )
 

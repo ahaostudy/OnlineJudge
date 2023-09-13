@@ -4,7 +4,7 @@ import (
 	"errors"
 	"main/internal/data/model"
 	"main/internal/gateway/dao"
-	"main/internal/gateway/middleware/redis"
+	"main/internal/middleware/redis"
 	"strconv"
 
 	"gorm.io/gorm"

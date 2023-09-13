@@ -1,7 +1,8 @@
 package problem
 
 import (
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/problem"
 	"net/http"
 	"strconv"
@@ -15,7 +16,7 @@ type (
 	}
 
 	DeleteProblemResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

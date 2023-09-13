@@ -1,8 +1,9 @@
 package problem
 
 import (
+	"main/internal/common"
 	"main/internal/data/model"
-	"main/internal/gateway/controller/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/problem"
 	"net/http"
 	"strconv"
@@ -18,7 +19,7 @@ const (
 
 type (
 	GetProblemListResponse struct {
-		common.Response
+		ctl.Response
 		ProblemList []*model.Problem `json:"problem_list"`
 	}
 )

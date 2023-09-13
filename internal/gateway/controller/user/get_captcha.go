@@ -1,7 +1,8 @@
 package user
 
 import (
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/user"
 	"net/http"
 
@@ -14,7 +15,7 @@ type (
 	}
 
 	GetCaptchaResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.23.4
-// source: problem.proto
+// source: api/problem.proto
 
 package rpcProblem
 
@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ProblemService_GetProblem_FullMethodName = "/ProblemService/GetProblem"
+	ProblemService_GetProblem_FullMethodName = "/problem.ProblemService/GetProblem"
 )
 
 // ProblemServiceClient is the client API for ProblemService service.
@@ -96,7 +96,7 @@ func _ProblemService_GetProblem_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProblemService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ProblemService",
+	ServiceName: "problem.ProblemService",
 	HandlerType: (*ProblemServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -105,5 +105,5 @@ var ProblemService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "problem.proto",
+	Metadata: "api/problem.proto",
 }

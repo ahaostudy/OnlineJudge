@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-option go_package = "./judge;rpcJudge";
+package judge;
+
+option go_package = "api/judge;rpcJudge";
 
 service JudgeService {
     rpc judge(JudgeRequest) returns (JudgeResponse) {}
@@ -15,8 +17,7 @@ message JudgeRequest {
 
 message JudgeResponse {
     int64 StatusCode = 1;
-    string StatusMsg = 2;
-    string judgeID = 3;
+    string judgeID = 2;
 }
 
 message GetResultRequest {
@@ -34,8 +35,7 @@ message JudgeResult {
 
 message GetResultResponse {
     int64 StatusCode = 1;
-    string StatusMsg = 2;
-    JudgeResult Result = 3;
+    JudgeResult Result = 2;
 }
 
 // protoc --go_out=. judge.proto

@@ -1,4 +1,4 @@
-package common
+package code
 
 // Code 响应状态码
 type Code int64
@@ -35,6 +35,10 @@ var msg = map[Code]string{
 	CodeNotLogin:     "用户未登录",
 
 	CodeServerBusy: "服务繁忙",
+}
+
+func (code Code) Code() int64 {
+	return int64(code)
 }
 
 // Msg 获取响应消息

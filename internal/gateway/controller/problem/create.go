@@ -1,8 +1,9 @@
 package problem
 
 import (
+	"main/internal/common"
 	"main/internal/data/model"
-	"main/internal/gateway/controller/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/problem"
 	"net/http"
 
@@ -15,7 +16,7 @@ type (
 	}
 
 	CreateProblemResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

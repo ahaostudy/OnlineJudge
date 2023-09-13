@@ -18,7 +18,7 @@ func TestProblem(t *testing.T) {
 
 	// 获取题目信息
 	res, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{
-		ProblemID: 2,
+		ProblemID: 3,
 	})
 	if err != nil {
 		panic(err)

@@ -1,4 +1,4 @@
-package common
+package ctl
 
 import (
 	"encoding/json"

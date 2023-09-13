@@ -1,19 +1,14 @@
 syntax = "proto3";
 
-option go_package = "./problem;rpcProblem";
+import "api/testcase.proto";
+
+package problem;
+
+option go_package = "api/problem;rpcProblem";
+
 
 service ProblemService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
-}
-
-message GetProblemRequest {
-    int64 problemID = 1;
-}
-
-message Testcase {
-    int64 ID = 1;
-    string InputPath = 2;
-    string OutputPath = 3;
 }
 
 message Problem {
@@ -30,13 +25,16 @@ message Problem {
     string Source = 11;
     int64 AuthorID = 12;
 
-    repeated Testcase Testcases = 13;
+    repeated testcase.Testcase Testcases = 13;
+}
+
+message GetProblemRequest {
+    int64 problemID = 1;
 }
 
 message GetProblemResponse {
     int64 StatusCode = 1;
-    string StatusMsg = 2;
-    Problem Problem = 3;
+    Problem Problem = 2;
 }
 
 // protoc --go_out=. problem.proto

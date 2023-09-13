@@ -2,7 +2,8 @@ package user
 
 import (
 	"main/internal/data/model"
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/user"
 	"net/http"
 
@@ -17,7 +18,7 @@ type (
 	}
 
 	CreateUserResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

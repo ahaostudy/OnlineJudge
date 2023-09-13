@@ -1,7 +1,8 @@
 package problem
 
 import (
-	"main/internal/gateway/controller/common"
+	"main/internal/common"
+	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/problem"
 	"net/http"
 	"strconv"
@@ -12,11 +13,11 @@ import (
 type (
 	UpdateProblemRequest struct {
 		ID int64
-		common.Request
+		ctl.Request
 	}
 
 	UpdateProblemResponse struct {
-		common.Response
+		ctl.Response
 	}
 )
 

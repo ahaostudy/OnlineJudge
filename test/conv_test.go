@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"main/internal/common"
+	"main/internal/common/build"
 	"testing"
 )
 
@@ -55,7 +55,7 @@ func TestBuild(t *testing.T) {
 	}}
 
 	out := new(Out)
-	builder := new(common.Builder)
+	builder := new(build.Builder)
 	builder.Build(in, out)
 	out.S = make([]B, len(in.S))
 	for i := range in.S {

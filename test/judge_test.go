@@ -10,11 +10,11 @@ import (
 )
 
 func TestJudge(t *testing.T) {
-	conn, err := rpc.InitJudgeGRPC()
+	err := rpc.InitGRPCClients()
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
+	defer rpc.CloseGPRCClients()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	defer cancel()
@@ -38,6 +38,5 @@ func TestJudge(t *testing.T) {
 		panic(err)
 	}
 	fmt.Printf("result.StatusCode: %v\n", result.StatusCode)
-	fmt.Printf("result.StatusMsg: %v\n", result.StatusMsg)
 	fmt.Printf("result.Result: %+v\n", result.Result)
 }

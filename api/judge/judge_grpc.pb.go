@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.23.4
-// source: judge.proto
+// source: api/judge.proto
 
 package rpcJudge
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	JudgeService_Judge_FullMethodName     = "/JudgeService/judge"
-	JudgeService_GetResult_FullMethodName = "/JudgeService/getResult"
+	JudgeService_Judge_FullMethodName     = "/judge.JudgeService/judge"
+	JudgeService_GetResult_FullMethodName = "/judge.JudgeService/getResult"
 )
 
 // JudgeServiceClient is the client API for JudgeService service.
@@ -129,7 +129,7 @@ func _JudgeService_GetResult_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var JudgeService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "JudgeService",
+	ServiceName: "judge.JudgeService",
 	HandlerType: (*JudgeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -142,5 +142,5 @@ var JudgeService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "judge.proto",
+	Metadata: "api/judge.proto",
 }
