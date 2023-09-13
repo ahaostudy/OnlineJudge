@@ -11,6 +11,12 @@ func GetProblem(id int64) (*model.Problem, error) {
 	return problem, err
 }
 
+func GetProblem_(id int64) (*model.Problem, error) {
+	problem := new(model.Problem)
+	err := data.DB.Preload("Testcases").Where("id = ?", id).First(problem).Error
+	return problem, err
+}
+
 func GetProblemListLimit(start, count int) ([]*model.Problem, error) {
 	var problems []*model.Problem
 	err := data.DB.Offset(start).Limit(count).Find(&problems).Error

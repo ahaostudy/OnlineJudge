@@ -10,6 +10,12 @@ message GetProblemRequest {
     int64 problemID = 1;
 }
 
+message Testcase {
+    int64 ID = 1;
+    string InputPath = 2;
+    string OutputPath = 3;
+}
+
 message Problem {
     int64 ID = 1;
     string Title = 2;
@@ -23,6 +29,8 @@ message Problem {
     int32 MaxMemory = 10;
     string Source = 11;
     int64 AuthorID = 12;
+
+    repeated Testcase Testcases = 13;
 }
 
 message GetProblemResponse {

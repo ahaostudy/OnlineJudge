@@ -63,5 +63,6 @@ func migration() error {
 	return DB.AutoMigrate(
 		new(model.User),
 		new(model.Problem),
+		new(model.Testcase),
 	)
 }

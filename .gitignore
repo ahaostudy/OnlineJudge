@@ -4,6 +4,6 @@
 go.mod
 go.sum
 
-data/*
-!data/.gitkeep
+file/*
+!file/.gitkeep
 config/config.yaml

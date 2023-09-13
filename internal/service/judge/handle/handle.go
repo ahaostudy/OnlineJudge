@@ -4,11 +4,12 @@ import (
 	"context"
 	"fmt"
 	"main/api/judge"
+	rpcProblem "main/api/problem"
 	"main/config"
 	"main/internal/common"
 	"main/internal/data/model"
-	"main/internal/service/judge/pkg/code"
-	"main/internal/service/judge/pkg/judge"
+	"main/internal/middleware/mq"
+	"main/rpc"
 	"os"
 	"path/filepath"
 
@@ -19,93 +20,71 @@ type JudgeServer struct {
 	rpcJudge.UnimplementedJudgeServiceServer
 }
 
-type JudgeRequest struct {
-	JudgeID  string
-	Problem  model.Problem
-	CodePath string
-	LangID   int
-}
-
-type JudgeResponse struct {
-	JudgeID string
-	Result  code.Result
-	Err     error
-}
-
-var reqMQ = make(chan JudgeRequest)
-var resultChan = make(map[string]chan JudgeResponse)
-
-// 判题器
-func Judger() {
-	for {
-		req := <-reqMQ
-		result, err := judge.Judge(&req.Problem, req.CodePath, req.LangID)
-		resultChan[req.JudgeID] <- JudgeResponse{JudgeID: req.JudgeID, Result: result, Err: err}
-	}
-}
-
-func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (*rpcJudge.JudgeResponse, error) {
-	fmt.Println("judge ... ")
-
+// 判题服务
+func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp *rpcJudge.JudgeResponse, _ error) {
+	resp = new(rpcJudge.JudgeResponse)
+	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusMsg = common.CodeServerBusy.Msg()
 	code, langID, _ := req.GetCode(), req.GetLangID(), req.GetProblemID()
-	fmt.Println(code, langID)
 
-	// TODO: 将代码文件上传
-	path := filepath.Join(config.ConfJudge.File.TempPath, fmt.Sprintf("%s.py", uuid.NewString()))
+	// 将代码文件上传
+	suffix := model.GetLangSuffix(int(langID))
+	path := filepath.Join(config.ConfJudge.File.TempPath, fmt.Sprintf("%s.%s", uuid.NewString(), suffix))
 	os.WriteFile(path, code, 0644)
 
-	// TODO: 根据题目ID获取题目信息
-	problem := &model.Problem{
-		MaxTime:   1000,
-		MaxMemory: 512 * 1024 * 1024,
-		Testcases: []*model.Testcase{
-			{ID: 1, InputPath: "1.in", OutputPath: "1.out"},
-			{ID: 2, InputPath: "2.in", OutputPath: "2.out"},
-			{ID: 3, InputPath: "3.in", OutputPath: "3.out"},
-		},
+	// 根据题目ID获取题目信息
+	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemID: req.GetProblemID()})
+	if err != nil {
+		return
+	}
+	reqProblem := prob.GetProblem()
+	// 将结果转换为模型对象
+	problem := new(model.Problem)
+	builder := new(common.Builder).Build(reqProblem, problem)
+	for i := range reqProblem.Testcases {
+		t := new(model.Testcase)
+		builder.Build(reqProblem.Testcases[i], t)
+		problem.Testcases = append(problem.Testcases, t)
+	}
+	if builder.Error() != nil {
+		return
 	}
 
-	// TODO: 将请求放入MQ
-	judgeID := uuid.NewString()
-	reqMQ <- JudgeRequest{
-		JudgeID:  judgeID,
-		Problem:  *problem,
-		CodePath: path,
-		LangID:   int(langID),
+	// 将请求放入MQ
+	resp.JudgeID = uuid.NewString()
+	msg, err := mq.GenerateJudgeMQMsg(resp.JudgeID, path, langID, problem)
+	if err != nil {
+		return
 	}
-	resultChan[judgeID] = make(chan JudgeResponse)
+	if mq.RMQJudge.Publish(msg) != nil {
+		return
+	}
 
-	return &rpcJudge.JudgeResponse{
-		StatusCode: common.CodeSuccess.Code(),
-		StatusMsg:  common.CodeSuccess.Msg(),
-		JudgeID:    judgeID,
-	}, nil
+	// 为当前判题开辟一个管道
+	mq.ResultChan[resp.JudgeID] = make(chan mq.JudgeResponse)
+
+	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusMsg = common.CodeSuccess.Msg()
+	return
 }
 
-func (JudgeServer) GetResult(ctx context.Context, req *rpcJudge.GetResultRequest) (*rpcJudge.GetResultResponse, error) {
-	fmt.Println("get result ... ")
-	res := <-resultChan[req.GetJudgeID()]
+func (JudgeServer) GetResult(ctx context.Context, req *rpcJudge.GetResultRequest) (resp *rpcJudge.GetResultResponse, _ error) {
+	resp = new(rpcJudge.GetResultResponse)
+	// 读取管道获取结果并关闭管道
+	res := <-mq.ResultChan[req.GetJudgeID()]
+	close(mq.ResultChan[req.JudgeID])
+	delete(mq.ResultChan, req.JudgeID)
 
-	close(resultChan[req.JudgeID])
-	resultChan[req.JudgeID] = nil
-
+	// 判断运行是否错误，并复制Result
 	var code common.Code
-	if res.Err != nil {
+	resp.Result = new(rpcJudge.JudgeResult)
+	if res.Error != nil || new(common.Builder).Build(res.Result, resp.Result).Error() != nil {
 		code = common.CodeServerBusy
 	} else {
 		code = common.CodeSuccess
 	}
 
-	return &rpcJudge.GetResultResponse{
-		StatusCode: code.Code(),
-		StatusMsg:  code.Msg(),
-		Result: &rpcJudge.JudgeResult{
-			Time:    res.Result.Time,
-			Memory:  res.Result.Memory,
-			Status:  int64(res.Result.Status),
-			Message: res.Result.Message,
-			Output:  res.Result.Output,
-			Error:   res.Result.Error,
-		},
-	}, nil
+	resp.StatusCode = code.Code()
+	resp.StatusMsg = code.Msg()
+	return
 }

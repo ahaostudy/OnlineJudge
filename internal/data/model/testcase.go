@@ -7,7 +7,8 @@ import (
 )
 
 type Testcase struct {
-	ID         uint
+	ID         int64
+	ProblemID  int64
 	InputPath  string
 	OutputPath string
 }

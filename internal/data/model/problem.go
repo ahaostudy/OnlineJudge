@@ -14,7 +14,7 @@ type Problem struct {
 	Source      string `gorm:"comment:题目来源" json:"source"`
 	AuthorID    int64  `gorm:"comment:作者ID" json:"author_id"`
 
-	Testcases []*Testcase `gorm:"-"`
+	Testcases []*Testcase `gorm:"-:migration;<-:false" json:"testcases"`
 }
 
 // 题目难度

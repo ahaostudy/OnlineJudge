@@ -17,7 +17,7 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 	// 编译代码
 	c := code.NewCodeLimit(codePath, langID, problem.MaxTime, problem.MaxMemory)
 	if res, ok := c.Build(); !ok {
-		return res, errs.ErrCompilationFailed
+		return res, nil
 	}
 	defer c.Destroy()
 

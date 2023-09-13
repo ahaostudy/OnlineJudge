@@ -6,13 +6,26 @@ import (
 	"main/api/judge"
 	"main/config"
 	"main/discovery"
+	"main/internal/middleware/mq"
 	"main/internal/service/judge/handle"
+	"main/rpc"
 	"net"
 
 	"google.golang.org/grpc"
 )
 
 func Run() error {
+	// 连接题目模块RPC服务
+	conn, err := rpc.InitProblemGRPC()
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+
+	// 启动MQ
+	mq.InitRabbitMQ()
+	defer mq.DestroyRabbitMQ()
+
 	// 读取grpc服务启动端口
 	var port int
 	flag.IntVar(&port, "p", config.ConfJudge.Port, "port")
