@@ -36,6 +36,7 @@ func InitGRPCClients() error {
 	r.Run(InitJudgeGRPC)
 	r.Run(InitProblemGRPC)
 	r.Run(InitTestcaseGRPC)
+	r.Run(InitPrivateGRPC)
 
 	return r.Error()
 }

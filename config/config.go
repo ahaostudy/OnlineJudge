@@ -11,6 +11,7 @@ var (
 	ConfEtcd     Etcd
 
 	ConfServer   Server
+	ConfPrivate  Private
 	ConfJudge    Judge
 	ConfProblem  Problem
 	ConfTestcase Testcase
@@ -39,6 +40,7 @@ func InitConfig() error {
 		ConfEtcd = conf.Etcd
 
 		ConfServer = conf.Server
+		ConfPrivate = conf.Private
 		ConfJudge = conf.Judge
 		ConfProblem = conf.Problem
 		ConfTestcase = conf.Testcase
