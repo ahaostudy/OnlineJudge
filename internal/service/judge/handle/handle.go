@@ -70,6 +70,7 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp 
 
 func (JudgeServer) GetResult(ctx context.Context, req *rpcJudge.GetResultRequest) (resp *rpcJudge.GetResultResponse, _ error) {
 	resp = new(rpcJudge.GetResultResponse)
+
 	// 读取管道获取结果并关闭管道
 	res := <-mq.ResultChan[req.GetJudgeID()]
 	close(mq.ResultChan[req.JudgeID])

@@ -6,6 +6,7 @@ import (
 	"main/api/judge"
 	"main/rpc"
 	"testing"
+	"time"
 )
 
 func TestJudge(t *testing.T) {
@@ -15,7 +16,8 @@ func TestJudge(t *testing.T) {
 	}
 	defer conn.Close()
 
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
+	defer cancel()
 
 	// 提交代码
 	res, err := rpc.JudgeCli.Judge(ctx, &rpcJudge.JudgeRequest{
@@ -35,5 +37,7 @@ func TestJudge(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("result.StatusCode: %v\n", result.StatusCode)
+	fmt.Printf("result.StatusMsg: %v\n", result.StatusMsg)
 	fmt.Printf("result.Result: %+v\n", result.Result)
 }

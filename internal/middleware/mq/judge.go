@@ -44,7 +44,9 @@ func Judge(msg *amqp.Delivery) error {
 	// 定义结果，使用defer确保有结果返回
 	res := JudgeResponse{JudgeID: req.JudgeID}
 	defer func() {
-		ResultChan[req.JudgeID] <- res
+		if ch, ok := ResultChan[req.JudgeID]; ok && ch != nil {
+			ch <- res
+		}
 	}()
 
 	// 执行判题
