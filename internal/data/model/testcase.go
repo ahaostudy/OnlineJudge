@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"main/config"
 	"os"
 	"path/filepath"
@@ -38,14 +37,26 @@ func (t *Testcase) GetOutput() (string, bool) {
 
 func (t *Testcase) UploadInput(input []byte) bool {
 	inputPath := filepath.Join(config.ConfTestcase.File.Path, t.InputPath)
-	fmt.Printf("inputPath: %v\n", inputPath)
-	err := os.WriteFile(inputPath, input, 0644)
-	fmt.Printf("err: %v\n", err)
-	return err == nil
-	// return os.WriteFile(inputPath, input, 0644) == nil
+	return save(inputPath, input)
 }
 
 func (t *Testcase) UploadOutput(output []byte) bool {
 	outputPath := filepath.Join(config.ConfTestcase.File.Path, t.OutputPath)
-	return os.WriteFile(outputPath, output, 0644) == nil
+	return save(outputPath, output)
+}
+
+func save(path string, body []byte) bool {
+	dirPath := filepath.Dir(path)
+	if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+		return false
+	}
+
+	file, err := os.Create(path)
+	if err != nil {
+		return false
+	}
+	defer file.Close()
+
+	_, err = file.Write(body)
+	return err == nil
 }

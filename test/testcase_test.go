@@ -13,9 +13,9 @@ func TestCreateTestcase(t *testing.T) {
 	defer rpc.CloseGPRCClients()
 
 	res, err := rpc.TestcaseCli.CreateTestcase(context.Background(), &rpcTestcase.CreateTestcaseRequest{
-		ProblemID: 3,
+		ProblemID: 4,
 		Input:     []byte("23 25"),
-		Output:    []byte("48"),
+		Output:    []byte("48   "),
 	})
 	if err != nil {
 		panic(err)
