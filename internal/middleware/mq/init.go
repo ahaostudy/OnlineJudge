@@ -1,7 +1,8 @@
 package mq
 
 var (
-	RMQJudge *RabbitMQ
+	RMQJudge   *RabbitMQ
+	RMQPrivate *RabbitMQ
 )
 
 // InitRabbitMQ 初始化RabbitMQ
@@ -11,9 +12,13 @@ func InitRabbitMQ() {
 
 	RMQJudge = NewWorkRabbitMQ("judge")
 	go RMQJudge.Consume(Judge)
+
+	RMQPrivate = NewWorkRabbitMQ("private")
+	go RMQPrivate.Consume(Judge)
 }
 
 // DestroyRabbitMQ 销毁RabbitMQ
 func DestroyRabbitMQ() {
 	RMQJudge.Destroy()
+	RMQPrivate.Destroy()
 }

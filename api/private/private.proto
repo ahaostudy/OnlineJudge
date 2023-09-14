@@ -7,6 +7,8 @@ option go_package = ".;rpcPrivate";
 
 service PrivateService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
+    rpc judge(JudgeRequest) returns (JudgeResponse) {}
+    rpc getResult(GetResultRequest) returns (GetResultResponse) {}
 }
 
 message Problem {
@@ -31,6 +33,35 @@ message GetProblemRequest {
 message GetProblemResponse {
     int64 StatusCode = 1;
     Problem Problem = 2;
+}
+
+message JudgeRequest {
+    int64 problemID = 1;
+    bytes code = 2;
+    int64 langID = 3;
+}
+
+message JudgeResponse {
+    int64 StatusCode = 1;
+    string judgeID = 2;
+}
+
+message GetResultRequest {
+    string judgeID = 1;
+}
+
+message JudgeResult {
+    int64 Time = 1;
+	int64 Memory = 2;
+	int64 Status = 3;
+	string Message = 4;
+	string Output = 5;
+	string Error = 6;
+}
+
+message GetResultResponse {
+    int64 StatusCode = 1;
+    JudgeResult Result = 2;
 }
 
 // protoc --go_out=. problem.proto
