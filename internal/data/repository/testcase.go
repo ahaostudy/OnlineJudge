@@ -16,5 +16,5 @@ func InsertTestcase(testcase *model.Testcase) error {
 }
 
 func DeleteTestcase(id int64) error {
-	return data.DB.Delete("id = ?", id).Error
+	return data.DB.Model(new(model.Testcase)).Delete("id = ?", id).Error
 }

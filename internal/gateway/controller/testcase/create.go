@@ -29,10 +29,18 @@ type (
 func CreateTestcase(c *gin.Context) {
 	req := new(CreateTestcaseRequest)
 	res := new(CreateTestcaseResponse)
+
+	// 解析参数
+	if err := c.BindJSON(req); err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	if req.ActionType == 1 {
+	switch req.ActionType {
+	case 1:
 		// 创建题目
 		result, err := rpc.TestcaseCli.CreateTestcase(ctx, &rpcTestcase.CreateTestcaseRequest{
 			ProblemID: req.ProblemID,
@@ -46,6 +54,7 @@ func CreateTestcase(c *gin.Context) {
 
 		// 响应结果
 		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
-		return
+	default:
+		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
 	}
 }

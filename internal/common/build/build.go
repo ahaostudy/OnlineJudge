@@ -17,6 +17,15 @@ type Builder struct {
 // 不支持切片、数组等复杂类型的字段转换，会跳过
 // Build完会返回Builder对象，支持链式调用
 func (b *Builder) Build(in, out interface{}) *Builder {
+	if in == nil {
+		b.err = errors.New("in object is nil")
+		return b
+	}
+	if out == nil {
+		b.err = errors.New("out object is nil")
+		return b
+	}
+
 	if b.err != nil {
 		return b
 	}
