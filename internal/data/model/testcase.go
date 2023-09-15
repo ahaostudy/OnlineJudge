@@ -13,8 +13,6 @@ type Testcase struct {
 	OutputPath string `json:"output_path"`
 }
 
-// TODO: 完成下面的函数
-
 // GetLocalInput 获取本地的输入文件，实现从从网络获取到本地再返回
 func (t *Testcase) GetLocalInput() (string, bool) {
 	return filepath.Join(config.ConfTestcase.File.Path, t.InputPath), true
@@ -35,11 +33,13 @@ func (t *Testcase) GetOutput() (string, bool) {
 	return string(bytes), true
 }
 
+// 将输入内容上传到本地
 func (t *Testcase) UploadInput(input []byte) bool {
 	inputPath := filepath.Join(config.ConfTestcase.File.Path, t.InputPath)
 	return save(inputPath, input)
 }
 
+// 将输出内容上传到本地
 func (t *Testcase) UploadOutput(output []byte) bool {
 	outputPath := filepath.Join(config.ConfTestcase.File.Path, t.OutputPath)
 	return save(outputPath, output)

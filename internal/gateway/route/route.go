@@ -17,6 +17,7 @@ func InitRoute() *gin.Engine {
 	RegisterUserRouter(api.Group("/user"))
 	RegisterProblemRouter(api.Group("/problem"))
 	RegisterTestcaseRouter(api.Group("/testcase"))
+	RegisterSubmitRouter(api.Group("/submit"))
 
 	api.Use(jwt.Auth())
 	api.GET("/hello", controller.Hello)

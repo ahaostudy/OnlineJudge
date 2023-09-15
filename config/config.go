@@ -15,6 +15,7 @@ var (
 	ConfJudge    Judge
 	ConfProblem  Problem
 	ConfTestcase Testcase
+	ConfSubmit   Submit
 )
 
 // InitConfig 初始化配置
@@ -44,6 +45,7 @@ func InitConfig() error {
 		ConfJudge = conf.Judge
 		ConfProblem = conf.Problem
 		ConfTestcase = conf.Testcase
+		ConfSubmit = conf.Submit
 	}
 
 	// consts

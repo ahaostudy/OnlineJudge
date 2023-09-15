@@ -9,3 +9,7 @@ func GenerateCaptchaKey(email string) string {
 func GenerateAuthKey(id int64) string {
 	return fmt.Sprintf("auth:%d", id)
 }
+
+func GenerateSubmitKey(id int64) string {
+	return fmt.Sprintf("submit:%s", id)
+}

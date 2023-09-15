@@ -7,3 +7,4 @@ go.sum
 file/*
 !file/.gitkeep
 config/config.yaml
+test/_

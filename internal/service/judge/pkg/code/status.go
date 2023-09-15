@@ -4,6 +4,8 @@ package code
 
 const (
 	StatusAccepted int = 10
+	StatusFinished int = 11
+	StatusRunning  int = 12
 
 	StatusCompileError        int = 20
 	StatusRuntimeError        int = 21
@@ -17,6 +19,8 @@ const (
 
 var msg = map[int]string{
 	StatusAccepted: "Accepted",
+	StatusFinished: "Finished",
+	StatusRunning:  "Running",
 
 	StatusCompileError:        "Compile Error",
 	StatusRuntimeError:        "Runtime Error",
@@ -25,7 +29,7 @@ var msg = map[int]string{
 	StatusMemoryLimitExceeded: "Memory Limit Exceeded",
 	StatusOutputLimitExceeded: "Output Limit Exceeded",
 
-	StatusServerFailed: "server failed",
+	StatusServerFailed: "Server Failed",
 }
 
 func StatusMsg(status int) string {

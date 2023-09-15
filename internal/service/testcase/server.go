@@ -5,7 +5,6 @@ import (
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
-	"main/internal/service/testcase/handle"
 
 	"google.golang.org/grpc"
 )
@@ -16,10 +15,14 @@ func init() {
 	}
 }
 
+type TestcaseServer struct {
+	rpcTestcase.UnimplementedTestcaseServiceServer
+}
+
 func Run() error {
 	conf := config.ConfTestcase
 
 	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
-		rpcTestcase.RegisterTestcaseServiceServer(grpcServ, new(handle.TestcaseServer))
+		rpcTestcase.RegisterTestcaseServiceServer(grpcServ, new(TestcaseServer))
 	})
 }

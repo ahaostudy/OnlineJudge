@@ -64,5 +64,6 @@ func migration() error {
 		new(model.User),
 		new(model.Problem),
 		new(model.Testcase),
+		new(model.Submit),
 	)
 }

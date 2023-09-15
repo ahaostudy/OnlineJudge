@@ -18,6 +18,7 @@ message JudgeRequest {
 message JudgeResponse {
     int64 StatusCode = 1;
     string judgeID = 2;
+    string CodePath = 3;
 }
 
 message GetResultRequest {

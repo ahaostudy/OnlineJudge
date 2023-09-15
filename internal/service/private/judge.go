@@ -1,4 +1,4 @@
-package handle
+package private
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 
 	// 将代码文件上传
 	suffix := model.GetLangSuffix(int(langID))
-	path := filepath.Join(config.ConfJudge.File.TempPath, fmt.Sprintf("%s.%s", uuid.NewString(), suffix))
+	path := filepath.Join(config.ConfJudge.File.CodePath, fmt.Sprintf("private/%s.%s", uuid.NewString(), suffix))
 	os.WriteFile(path, code, 0644)
 
 	// 根据题目ID获取题目信息

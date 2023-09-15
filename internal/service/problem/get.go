@@ -1,4 +1,4 @@
-package handle
+package problem
 
 import (
 	"context"
@@ -12,9 +12,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type ProblemServer struct {
-	rpcProblem.UnimplementedProblemServiceServer
-}
 
 func (ProblemServer) GetProblem(ctx context.Context, req *rpcProblem.GetProblemRequest) (resp *rpcProblem.GetProblemResponse, _ error) {
 	resp = new(rpcProblem.GetProblemResponse)

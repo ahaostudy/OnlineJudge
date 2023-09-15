@@ -6,7 +6,6 @@ import (
 	"main/internal/common/run"
 	"main/internal/data"
 	"main/internal/middleware/mq"
-	"main/internal/service/private/handle"
 	"main/rpc"
 
 	"google.golang.org/grpc"
@@ -16,6 +15,10 @@ func init() {
 	if err := data.InitMySQL(); err != nil {
 		panic(err)
 	}
+}
+
+type PrivateServer struct {
+	rpcPrivate.UnimplementedPrivateServiceServer
 }
 
 func Run() error {
@@ -34,6 +37,6 @@ func Run() error {
 
 	// 运行当前服务
 	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
-		rpcPrivate.RegisterPrivateServiceServer(grpcServ, new(handle.PrivateServer))
+		rpcPrivate.RegisterPrivateServiceServer(grpcServ, new(PrivateServer))
 	})
 }

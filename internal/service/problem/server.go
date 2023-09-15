@@ -7,7 +7,6 @@ import (
 	"main/config"
 	"main/discovery"
 	"main/internal/data"
-	"main/internal/service/problem/handle"
 	"net"
 
 	"google.golang.org/grpc"
@@ -21,6 +20,10 @@ func init() {
 	if err := data.InitMySQL(); err != nil {
 		panic(err)
 	}
+}
+
+type ProblemServer struct {
+	rpcProblem.UnimplementedProblemServiceServer
 }
 
 func Run() error {
@@ -41,7 +44,7 @@ func Run() error {
 		return err
 	}
 	grpcServ := grpc.NewServer()
-	rpcProblem.RegisterProblemServiceServer(grpcServ, new(handle.ProblemServer))
+	rpcProblem.RegisterProblemServiceServer(grpcServ, new(ProblemServer))
 	if err := grpcServ.Serve(listen); err != nil {
 		return err
 	}

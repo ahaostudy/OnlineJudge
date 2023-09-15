@@ -28,7 +28,7 @@ func TestJudge(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("提交成功: %v\n", res.JudgeID)
+	fmt.Printf("提交成功: %v\n ", res.JudgeID)
 
 	// 获取结果
 	result, err := rpc.JudgeCli.GetResult(ctx, &rpcJudge.GetResultRequest{

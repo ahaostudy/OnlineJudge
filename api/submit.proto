@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package submit;
+
+option go_package = "api/submit;rpcSubmit";
+
+service SubmitService {
+    rpc Debug(DebugReqeust) returns (DebugResponse) {}
+    rpc Submit(SubmitRequest) returns (SubmitResponse) {}
+    rpc GetSubmitResult(GetSubmitResultRequest) returns (GetSubmitResultResponse) {}
+    rpc GetSubmit(GetSubmitRequest) returns (GetSubmitResponse) {}
+    rpc DeleteSubmit(DeleteSubmitRequest) returns (DeleteSubmitResponse) {}
+}
+
+message Submit {
+    int64 ID = 1;
+    int64 UserID = 2;
+    int64 ProblemID = 3;
+    string Code = 4;
+    int64 LangID = 5;
+    int64 Status = 6;
+    int64 Time = 7;
+    int64 Memory = 8;
+    int64 CreatedAt = 9;
+}
+
+message DebugReqeust {}
+message DebugResponse {}
+
+message SubmitRequest {
+    int64 ProblemID = 1;
+    int64 UserID = 2;
+    bytes Code = 3;
+    int64 LangID = 4;
+}
+
+message SubmitResponse {
+    int64 StatusCode = 1;
+    int64 SubmitID = 2;
+}
+
+message GetSubmitResultRequest {
+    int64 SubmitID = 1;
+}
+
+message GetSubmitResultResponse {
+    int64 StatusCode = 1;
+    Submit Result = 2;
+}
+
+message GetSubmitRequest {}
+message GetSubmitResponse {}
+message DeleteSubmitRequest {}
+message DeleteSubmitResponse {}
