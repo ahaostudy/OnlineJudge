@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"bytes"
+	"fmt"
 	"main/config"
 	"main/internal/service/judge/pkg/errs"
 	"os"
@@ -53,4 +54,10 @@ func (c *GCC) Destroy(removeCode bool) error {
 	}
 	err := os.Remove(c.bin)
 	return err
+}
+
+func (c *GCC) SaveCode(code []byte) (string, error) {
+	codeName := fmt.Sprintf("%s.c", uuid.NewString())
+	codePath := filepath.Join(config.ConfJudge.File.CodePath, codeName)
+	return codeName, os.WriteFile(codePath, code, 0644)
 }

@@ -11,5 +11,5 @@ func GenerateAuthKey(id int64) string {
 }
 
 func GenerateSubmitKey(id int64) string {
-	return fmt.Sprintf("submit:%s", id)
+	return fmt.Sprintf("submit:%d", id)
 }

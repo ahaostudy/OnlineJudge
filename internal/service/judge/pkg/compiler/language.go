@@ -8,7 +8,7 @@ const (
 	LangJava
 )
 
-func GetCompilerByLang(langID int) Compiler {
+func GetCompiler(langID int) Compiler {
 	switch langID {
 	case LangC:
 		return new(GCC)
@@ -23,4 +23,8 @@ func GetCompilerByLang(langID int) Compiler {
 	default:
 		return nil
 	}
+}
+
+func SaveCode(code []byte, langID int) (string, error) {
+	return GetCompiler(langID).SaveCode(code)
 }

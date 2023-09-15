@@ -25,8 +25,7 @@ func Run() error {
 	conf := config.ConfPrivate
 
 	// 初始化RabbitMQ连接
-	mq.InitRabbitMQ()
-	defer mq.DestroyRabbitMQ()
+	defer mq.RunPrivateMQ().Destroy()
 
 	// 初始化Problem服务连接
 	conn, err := rpc.InitProblemGRPC()

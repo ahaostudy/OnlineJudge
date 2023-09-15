@@ -29,8 +29,7 @@ func Run() error {
 	defer conn.Close()
 
 	// 启动MQ
-	mq.InitRabbitMQ()
-	defer mq.DestroyRabbitMQ()
+	defer mq.RunJudgeMQ().Destroy()
 
 	conf := config.ConfJudge
 	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {

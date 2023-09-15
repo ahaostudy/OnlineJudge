@@ -109,12 +109,12 @@ func (c *Command) Command() (string, error) {
 		"max_output_size": c.MaxOutputSize,
 	})
 	// 其它参数
-	for k, v := range c.exe.Kwargs() {
-		if v == nil {
-			continue
+	c.exe.Kwargs().Range(func(k, v any) bool {
+		if v != nil {
+			args = append(args, fmt.Sprintf(`--%s=%v`, k, v))
 		}
-		args = append(args, fmt.Sprintf(`--%s=%v`, k, v))
-	}
+		return true
+	})
 
 	// 返回沙箱执行命令
 	return exec.Command(config.ConfJudge.Sandbox.ExePath, args...).String(), nil

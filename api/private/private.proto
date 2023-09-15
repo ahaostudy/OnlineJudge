@@ -9,6 +9,7 @@ service PrivateService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
     rpc judge(JudgeRequest) returns (JudgeResponse) {}
     rpc getResult(GetResultRequest) returns (GetResultResponse) {}
+    rpc debug(DebugRequest) returns (DebugResponse) {}
 }
 
 message Problem {
@@ -64,5 +65,13 @@ message GetResultResponse {
     JudgeResult Result = 2;
 }
 
-// protoc --go_out=. problem.proto
-// protoc --go-grpc_out=. problem.proto
+message DebugRequest {
+    bytes Code = 1;
+    bytes Input = 2;
+    int64 LangID = 3;
+}
+
+message DebugResponse {
+    int64 StatusCode = 1;
+    JudgeResult Result = 2;
+}

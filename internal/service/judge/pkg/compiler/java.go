@@ -3,13 +3,15 @@ package compiler
 import (
 	"bytes"
 	"fmt"
-	"github.com/google/uuid"
 	"main/config"
 	"main/internal/service/judge/pkg/errs"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
+
+	"github.com/google/uuid"
 )
 
 type Java struct {
@@ -43,10 +45,14 @@ func (c *Java) Build(codePath string) (msg string, err error) {
 }
 
 func (c *Java) Executable() (*Executable, error) {
+	kwargs := new(sync.Map)
+	kwargs.Store("max_memory", nil)
+	kwargs.Store("memory_limit_check_only", 1)
+
 	exe := &Executable{
 		path:   config.ConfJudge.Exe.Java,
 		args:   []string{"-cp", c.binPath, "-XX:MaxRAM={MaxMemory}", "-Djava.security.manager", "-Dfile.encoding=UTF-8", "-Djava.awt.headless=true", c.binName}, // args中支持使用{参数}，在调用时会自动获取
-		kwargs: map[string]interface{}{"max_memory": nil, "memory_limit_check_only": 1},
+		kwargs: kwargs,
 	}
 	if !c.compiled {
 		return exe, errs.ErrCodeNotCompiled
@@ -63,4 +69,13 @@ func (c *Java) Destroy(removeCode bool) error {
 	}
 	err := os.RemoveAll(c.binPath)
 	return err
+}
+
+func (c *Java) SaveCode(code []byte) (string, error) {
+	codeName := fmt.Sprintf("%s/Main.java", uuid.NewString())
+	codePath := filepath.Join(config.ConfJudge.File.CodePath, codeName)
+	if err := os.MkdirAll(filepath.Dir(codePath), os.ModePerm); err != nil {
+		return codeName, err
+	}
+	return codeName, os.WriteFile(codePath, code, 0644)
 }

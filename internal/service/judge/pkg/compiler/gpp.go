@@ -2,12 +2,14 @@ package compiler
 
 import (
 	"bytes"
-	"github.com/google/uuid"
+	"fmt"
 	"main/config"
 	"main/internal/service/judge/pkg/errs"
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/google/uuid"
 )
 
 type GPP struct {
@@ -52,4 +54,10 @@ func (c *GPP) Destroy(removeCode bool) error {
 	}
 	err := os.Remove(c.bin)
 	return err
+}
+
+func (c *GPP) SaveCode(code []byte) (string, error) {
+	codeName := fmt.Sprintf("%s.cpp", uuid.NewString())
+	codePath := filepath.Join(config.ConfJudge.File.CodePath, codeName)
+	return codeName, os.WriteFile(codePath, code, 0644)
 }

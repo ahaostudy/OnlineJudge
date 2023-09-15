@@ -13,7 +13,7 @@ type TestcaseRunOutput struct {
 	result code.Result
 }
 
-func Judge(problem *model.Problem, codePath string, langID int) (code.Result, error) {
+func Judge_(problem *model.Problem, codePath string, langID int) (code.Result, error) {
 	// 编译代码
 	c := code.NewCodeLimit(codePath, langID, problem.MaxTime, problem.MaxMemory)
 	if res, ok := c.Build(); !ok {
@@ -79,6 +79,57 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 	// 服务器错误
 	if result.Status == code.StatusServerFailed {
 		return result, errs.ErrJudgeFailed
+	}
+
+	return result, nil
+}
+
+func Judge(problem *model.Problem, codePath string, langID int) (code.Result, error) {
+	// 编译代码
+	c := code.NewCodeLimit(codePath, langID, problem.MaxTime, problem.MaxMemory)
+	if res, ok := c.Build(); !ok {
+		return res, nil
+	}
+	defer c.Destroy()
+
+	// 并发执行每个样例
+	result := code.Result{}
+	result.SetStatus(code.StatusAccepted)
+	for i, testcase := range problem.Testcases {
+		// 获取样例输入
+		input, ok := testcase.GetLocalInput()
+		if !ok {
+			return result, nil
+		}
+
+		// 运行代码
+		res, err := c.Run(input)
+		if err != nil {
+			result.SetStatus(code.StatusServerFailed)
+			return result, nil
+		}
+
+		if res.Status != code.StatusAccepted {
+			result.SetStatus(res.Status)
+			return result, nil
+		}
+
+		fmt.Printf("out_%d: %#v\n", i+1, res)
+
+		result.Time += res.Time
+		result.Memory += res.Memory
+
+		// 如果没有其它错误，判断是否wa
+		output, ok := problem.Testcases[i].GetOutput()
+		if !ok {
+			result.SetStatus(code.StatusServerFailed)
+			return result, nil
+		}
+		// TODO: 添加SPJ（特殊判题）
+		if !CmpOutput(output, res.Output) {
+			result.SetStatus(code.StatusWrongAnswer)
+			return result, nil
+		}
 	}
 
 	return result, nil

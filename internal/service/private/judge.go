@@ -2,17 +2,14 @@ package private
 
 import (
 	"context"
-	"fmt"
 	"main/api/private"
 	"main/api/problem"
-	"main/config"
 	"main/internal/common"
 	"main/internal/common/build"
-	"main/internal/data/model"
 	"main/internal/middleware/mq"
+	"main/internal/service/judge/pkg/compiler"
 	"main/rpc"
-	"os"
-	"path/filepath"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -24,9 +21,10 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 	code, langID, problemID := req.GetCode(), req.GetLangID(), req.GetProblemID()
 
 	// 将代码文件上传
-	suffix := model.GetLangSuffix(int(langID))
-	path := filepath.Join(config.ConfJudge.File.CodePath, fmt.Sprintf("private/%s.%s", uuid.NewString(), suffix))
-	os.WriteFile(path, code, 0644)
+	path, err := compiler.SaveCode(code, int(langID))
+	if err != nil {
+		return
+	}
 
 	// 根据题目ID获取题目信息
 	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemID: problemID})
@@ -40,8 +38,36 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 		return
 	}
 
-	// 将请求放入MQ
 	resp.JudgeID = uuid.NewString()
+
+	// 为当前判题开辟一个管道
+	mq.ResultChan.Store(resp.JudgeID, make(chan mq.JudgeResponse))
+	mq.DoneChan.Store(resp.JudgeID, make(chan struct{}))
+	// 如果30s后管道内容仍未被接收将自动清除
+	go func() {
+		done, ok := mq.GetDoneChan(resp.GetJudgeID())
+		if !ok || done == nil {
+			return
+		}
+
+		timer := time.NewTimer(30 * time.Second)
+		select {
+		case <-done:
+			break
+		case <-timer.C:
+			break
+		}
+
+		timer.Stop()
+		if ch, ok := mq.GetResultChan(resp.GetJudgeID()); ok {
+			close(ch)
+		}
+		close(done)
+		mq.DoneChan.Delete(resp.GetJudgeID())
+		mq.ResultChan.Delete(resp.GetJudgeID())
+	}()
+
+	// 将请求放入MQ
 	msg, err := mq.GenerateJudgeMQMsg(resp.JudgeID, path, langID, problem)
 	if err != nil {
 		return
@@ -49,9 +75,6 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 	if mq.RMQPrivate.Publish(msg) != nil {
 		return
 	}
-
-	// 为当前判题开辟一个管道
-	mq.ResultChan[resp.JudgeID] = make(chan mq.JudgeResponse)
 
 	resp.StatusCode = common.CodeSuccess.Code()
 	return
@@ -63,9 +86,15 @@ func (PrivateServer) GetResult(ctx context.Context, req *rpcPrivate.GetResultReq
 	resp.StatusCode = common.CodeServerBusy.Code()
 
 	// 读取管道获取结果并关闭管道
-	res := <-mq.ResultChan[req.GetJudgeID()]
-	close(mq.ResultChan[req.JudgeID])
-	delete(mq.ResultChan, req.JudgeID)
+	ch, ok := mq.GetResultChan(req.GetJudgeID())
+	if !ok || ch == nil {
+		resp.StatusCode = common.CodeSubmitNotFound.Code()
+		return
+	}
+	res := <-ch
+	if done, ok := mq.GetDoneChan(req.GetJudgeID()); ok && done != nil {
+		done <- struct{}{}
+	}
 
 	// 判断运行是否错误，并复制Result
 	resp.Result = new(rpcPrivate.JudgeResult)
