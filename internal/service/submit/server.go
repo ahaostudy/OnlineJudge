@@ -1,7 +1,6 @@
 package submit
 
 import (
-	"context"
 	rpcSubmit "main/api/submit"
 	"main/config"
 	"main/internal/common/run"
@@ -40,16 +39,4 @@ func Run() error {
 	})
 
 	return nil
-}
-
-func (SubmitServer) Debug(_ context.Context, req *rpcSubmit.DebugReqeust) (resp *rpcSubmit.DebugResponse, _ error) {
-	return
-}
-
-func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
-	return
-}
-
-func (SubmitServer) DeleteSubmit(_ context.Context, req *rpcSubmit.DeleteSubmitRequest) (resp *rpcSubmit.DeleteSubmitResponse, _ error) {
-	return
 }

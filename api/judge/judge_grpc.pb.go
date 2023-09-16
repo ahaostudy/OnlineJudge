@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	JudgeService_Judge_FullMethodName     = "/judge.JudgeService/judge"
 	JudgeService_GetResult_FullMethodName = "/judge.JudgeService/getResult"
+	JudgeService_Debug_FullMethodName     = "/judge.JudgeService/debug"
 )
 
 // JudgeServiceClient is the client API for JudgeService service.
@@ -29,6 +30,7 @@ const (
 type JudgeServiceClient interface {
 	Judge(ctx context.Context, in *JudgeRequest, opts ...grpc.CallOption) (*JudgeResponse, error)
 	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
+	Debug(ctx context.Context, in *DebugRequest, opts ...grpc.CallOption) (*DebugResponse, error)
 }
 
 type judgeServiceClient struct {
@@ -57,12 +59,22 @@ func (c *judgeServiceClient) GetResult(ctx context.Context, in *GetResultRequest
 	return out, nil
 }
 
+func (c *judgeServiceClient) Debug(ctx context.Context, in *DebugRequest, opts ...grpc.CallOption) (*DebugResponse, error) {
+	out := new(DebugResponse)
+	err := c.cc.Invoke(ctx, JudgeService_Debug_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // JudgeServiceServer is the server API for JudgeService service.
 // All implementations must embed UnimplementedJudgeServiceServer
 // for forward compatibility
 type JudgeServiceServer interface {
 	Judge(context.Context, *JudgeRequest) (*JudgeResponse, error)
 	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
+	Debug(context.Context, *DebugRequest) (*DebugResponse, error)
 	mustEmbedUnimplementedJudgeServiceServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedJudgeServiceServer) Judge(context.Context, *JudgeRequest) (*J
 }
 func (UnimplementedJudgeServiceServer) GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
+}
+func (UnimplementedJudgeServiceServer) Debug(context.Context, *DebugRequest) (*DebugResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Debug not implemented")
 }
 func (UnimplementedJudgeServiceServer) mustEmbedUnimplementedJudgeServiceServer() {}
 
@@ -125,6 +140,24 @@ func _JudgeService_GetResult_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JudgeService_Debug_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DebugRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgeServiceServer).Debug(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgeService_Debug_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgeServiceServer).Debug(ctx, req.(*DebugRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // JudgeService_ServiceDesc is the grpc.ServiceDesc for JudgeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var JudgeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getResult",
 			Handler:    _JudgeService_GetResult_Handler,
+		},
+		{
+			MethodName: "debug",
+			Handler:    _JudgeService_Debug_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

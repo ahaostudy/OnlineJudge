@@ -18,3 +18,8 @@ func InsertSubmit(submit *model.Submit) error {
 func UpdateSubmit(id int64, submit *model.Submit) error {
 	return data.DB.Where("id = ?", id).Updates(submit).Scan(submit).Error
 }
+
+// DeleteSubmit 删除一条提交记录
+func DeleteSubmit(id int64) error {
+	return data.DB.Where("id = ?", id).Delete(new(model.Submit)).Error
+}

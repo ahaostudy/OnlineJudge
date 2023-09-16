@@ -1,9 +1,9 @@
-package private
+package judge
 
 import (
 	"context"
 	"fmt"
-	"main/api/private"
+	"main/api/judge"
 	"main/config"
 	"main/internal/common"
 	"main/internal/common/build"
@@ -15,8 +15,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func (PrivateServer) Debug(ctx context.Context, req *rpcPrivate.DebugRequest) (resp *rpcPrivate.DebugResponse, _ error) {
-	resp = new(rpcPrivate.DebugResponse)
+// Debug 是一个处理 JudgeServer 中代码调试的函数
+func (JudgeServer) Debug(ctx context.Context, req *rpcJudge.DebugRequest) (resp *rpcJudge.DebugResponse, _ error) {
+	resp = new(rpcJudge.DebugResponse)
 	resp.StatusCode = common.CodeServerBusy.Code()
 
 	codeName, err := compiler.SaveCode(req.GetCode(), int(req.GetLangID()))
@@ -24,6 +25,7 @@ func (PrivateServer) Debug(ctx context.Context, req *rpcPrivate.DebugRequest) (r
 		return
 	}
 	codePath := filepath.Join(config.ConfJudge.File.CodePath, codeName)
+	defer os.Remove(codePath)
 
 	inputPath := filepath.Join(config.ConfJudge.File.TempPath, fmt.Sprintf("%s.in", uuid.New().String()))
 	err = os.WriteFile(inputPath, req.GetInput(), 0644)
@@ -33,13 +35,14 @@ func (PrivateServer) Debug(ctx context.Context, req *rpcPrivate.DebugRequest) (r
 	defer os.Remove(inputPath)
 
 	c := code.NewCode(codePath, int(req.GetLangID()))
+
 	result, err := c.Run(inputPath)
 	defer c.Destroy()
 	if err != nil {
 		return
 	}
 
-	resp.Result = new(rpcPrivate.JudgeResult)
+	resp.Result = new(rpcJudge.JudgeResult)
 	if new(build.Builder).Build(&result, resp.Result).Error() != nil {
 		return
 	}

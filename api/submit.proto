@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "api/judge.proto";
+
 package submit;
 
 option go_package = "api/submit;rpcSubmit";
@@ -24,8 +26,16 @@ message Submit {
     int64 CreatedAt = 9;
 }
 
-message DebugReqeust {}
-message DebugResponse {}
+message DebugReqeust {
+    bytes Code = 1;
+    bytes Input = 2;
+    int64 LangID = 3;
+}
+
+message DebugResponse {
+    int64 StatusCode = 1;
+    judge.JudgeResult Result = 2;
+}
 
 message SubmitRequest {
     int64 ProblemID = 1;
@@ -48,7 +58,19 @@ message GetSubmitResultResponse {
     Submit Result = 2;
 }
 
-message GetSubmitRequest {}
-message GetSubmitResponse {}
-message DeleteSubmitRequest {}
-message DeleteSubmitResponse {}
+message GetSubmitRequest {
+    int64 ID = 1;
+}
+
+message GetSubmitResponse {
+    int64 StatusCode = 1;
+    Submit Submit = 2;
+}
+
+message DeleteSubmitRequest {
+    int64 ID = 1;
+}
+
+message DeleteSubmitResponse {
+    int64 StatusCode = 1;
+}
