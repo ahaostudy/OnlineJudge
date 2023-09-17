@@ -14,9 +14,8 @@ import (
 
 type (
 	DebugRequest struct {
-		ID     int64  `json:"id"`
-		Code   []byte `json:"code"`
-		Input  []byte `json:"input"`
+		Code   string `json:"code"`
+		Input  string `json:"input"`
 		LangID int64  `json:"lang_id"`
 	}
 
@@ -39,10 +38,10 @@ func Debug(c *gin.Context) {
 	ctx, cancel := ctxt.WithTimeoutContext(2)
 	defer cancel()
 
-	// 使用给定的代码、输入和语言ID调用 JudgeCli 的 Debug 方法
+	// 使用给定的代码、输入和语言ID调用 SubmitCli 的 Debug 方法
 	result, err := rpc.SubmitCli.Debug(ctx, &rpcSubmit.DebugReqeust{
-		Code:   req.Code,
-		Input:  req.Input,
+		Code:   []byte(req.Code),
+		Input:  []byte(req.Input),
 		LangID: req.LangID,
 	})
 	if err != nil {
@@ -50,7 +49,7 @@ func Debug(c *gin.Context) {
 		return
 	}
 
-	// 将响应结果和状态码设置为来自 JudgeCli 响应的值
+	// 将响应结果和状态码设置为来自 SubmitCli 响应的值
 	res.CodeOf(common.Code(result.StatusCode))
 	res.Result = result.Result
 	c.JSON(http.StatusOK, res)

@@ -6,6 +6,15 @@ import (
 	"time"
 )
 
+func BuildSubmit(s *model.Submit) (*rpcSubmit.Submit, error) {
+	submit := new(rpcSubmit.Submit)
+	if err := new(Builder).Build(s, submit).Error(); err != nil {
+		return nil, err
+	}
+	submit.CreatedAt = s.CreatedAt.UnixMilli()
+	return submit, nil
+}
+
 func UnBuildSubmit(s *rpcSubmit.Submit) (*model.Submit, error) {
 	submit := new(model.Submit)
 	if err := new(Builder).Build(s, submit).Error(); err != nil {
@@ -15,11 +24,26 @@ func UnBuildSubmit(s *rpcSubmit.Submit) (*model.Submit, error) {
 	return submit, nil
 }
 
-func BuildSubmit(s *model.Submit) (*rpcSubmit.Submit, error) {
-	submit := new(rpcSubmit.Submit)
-	if err := new(Builder).Build(s, submit).Error(); err != nil {
-		return nil, err
+func BuildSubmitList(submits []*model.Submit) ([]*rpcSubmit.Submit, error) {
+	var submitList []*rpcSubmit.Submit
+	for _, s := range submits {
+		submit, err := BuildSubmit(s)
+		if err != nil {
+			return nil, err
+		}
+		submitList = append(submitList, submit)
 	}
-	submit.CreatedAt = s.CreatedAt.UnixMilli()
-	return submit, nil
+	return submitList, nil
+}
+
+func UnBuildSubmitList(submits []*rpcSubmit.Submit) ([]*model.Submit, error) {
+	var submitList []*model.Submit
+	for _, s := range submits {
+		submit, err := UnBuildSubmit(s)
+		if err != nil {
+			return nil, err
+		}
+		submitList = append(submitList, submit)
+	}
+	return submitList, nil
 }

@@ -9,15 +9,12 @@ import (
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 type (
-	GetSubmitRequest struct {
-		ID int64 `json:"id"`
-	}
-
 	GetSubmitResponse struct {
 		ctl.Response
 		StatusCode int           `json:"status_code"`
@@ -27,11 +24,11 @@ type (
 )
 
 func GetSubmit(c *gin.Context) {
-	req := new(GetSubmitRequest)
 	res := new(GetSubmitResponse)
 
 	// 解析参数
-	if err := c.ShouldBindJSON(req); err != nil {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
 		return
 	}
@@ -41,7 +38,7 @@ func GetSubmit(c *gin.Context) {
 
 	// 获取提交
 	result, err := rpc.SubmitCli.GetSubmit(ctx, &rpcSubmit.GetSubmitRequest{
-		ID: req.ID,
+		ID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
