@@ -1,7 +1,7 @@
 package route
 
 import (
-	"main/internal/gateway/controller"
+	"main/internal/gateway/controller/chatgpt"
 	"main/internal/gateway/middleware/cors"
 	"main/internal/gateway/middleware/jwt"
 
@@ -20,7 +20,7 @@ func InitRoute() *gin.Engine {
 	RegisterSubmitRouter(api.Group("/submit"))
 
 	api.Use(jwt.Auth())
-	api.GET("/hello", controller.Hello)
+	api.POST("/chat", chatgpt.Chat)
 
 	return r
 }

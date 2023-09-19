@@ -1,31 +1,37 @@
 package config
 
-// TestcaseFile
-type TestcaseFile struct {
-	Path string `yaml:"path"`
+// Email
+type Email struct {
+	From   string `yaml:"from"`
+	Email  string `yaml:"email"`
+	Auth   string `yaml:"auth"`
+	Expire int    `yaml:"expire"`
+	Addr   string `yaml:"addr"`
+	Host   string `yaml:"host"`
 }
 
-// File
-type File struct {
-	CodePath string `yaml:"codePath"`
-	DemoPath string `yaml:"demoPath"`
-	TempPath string `yaml:"tempPath"`
+// Auth
+type Auth struct {
+	Issuer string `yaml:"issuer"`
+	Key    string `yaml:"key"`
+	Expire int    `yaml:"expire"`
 }
 
-// Private
-type Private struct {
-	Port    int    `yaml:"port"`
+// Submit
+type Submit struct {
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
 }
 
-// Server
-type Server struct {
-	Node  int    `yaml:"node"`
-	Email Email  `yaml:"email"`
-	Auth  Auth   `yaml:"auth"`
-	Salt  string `yaml:"salt"`
+// Chatgpt
+type Chatgpt struct {
+	Port    int    `yaml:"port"`
+	Openai  Openai `yaml:"openai"`
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
 }
 
 // Rabbitmq
@@ -37,6 +43,31 @@ type Rabbitmq struct {
 	Username string `yaml:"username"`
 }
 
+// Mysql
+type Mysql struct {
+	Password string `yaml:"password"`
+	Charset  string `yaml:"charset"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Dbname   string `yaml:"dbname"`
+	Username string `yaml:"username"`
+}
+
+// Default
+type Default struct {
+	Redis    Redis    `yaml:"redis"`
+	Server   Server   `yaml:"server"`
+	Judge    Judge    `yaml:"judge"`
+	Problem  Problem  `yaml:"problem"`
+	Submit   Submit   `yaml:"submit"`
+	Chatgpt  Chatgpt  `yaml:"chatgpt"`
+	Etcd     Etcd     `yaml:"etcd"`
+	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
+	Mysql    Mysql    `yaml:"mysql"`
+	Testcase Testcase `yaml:"testcase"`
+	Private  Private  `yaml:"private"`
+}
+
 // Redis
 type Redis struct {
 	Addr     string `yaml:"addr"`
@@ -44,21 +75,6 @@ type Redis struct {
 	LockKey  string `yaml:"lockKey"`
 	Ttl      int    `yaml:"ttl"`
 	ShortTtl int    `yaml:"shortTtl"`
-}
-
-// System
-type System struct {
-	SudoPwd string `yaml:"sudoPwd"`
-}
-
-// Exe
-type Exe struct {
-	Gcc    string `yaml:"gcc"`
-	Gpp    string `yaml:"gpp"`
-	Go     string `yaml:"go"`
-	Java   string `yaml:"java"`
-	Javac  string `yaml:"javac"`
-	Python string `yaml:"python"`
 }
 
 // Sandbox
@@ -70,42 +86,55 @@ type Sandbox struct {
 	DefaultMaxOutputSize int    `yaml:"defaultMaxOutputSize"`
 }
 
+// Problem
+type Problem struct {
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+}
+
+// Openai
+type Openai struct {
+	BaseUrl string `yaml:"baseUrl"`
+	ApiKey  string `yaml:"apiKey"`
+	Model   string `yaml:"model"`
+}
+
 // Testcase
 type Testcase struct {
-	Host    string       `yaml:"host"`
 	Port    int          `yaml:"port"`
 	File    TestcaseFile `yaml:"file"`
 	Name    string       `yaml:"name"`
 	Version string       `yaml:"version"`
+	Host    string       `yaml:"host"`
 }
 
-// Mysql
-type Mysql struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	Dbname   string `yaml:"dbname"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Charset  string `yaml:"charset"`
+// Private
+type Private struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
 }
 
-// Default
-type Default struct {
-	Redis    Redis    `yaml:"redis"`
-	Judge    Judge    `yaml:"judge"`
-	Testcase Testcase `yaml:"testcase"`
-	Submit   Submit   `yaml:"submit"`
-	Private  Private  `yaml:"private"`
-	Etcd     Etcd     `yaml:"etcd"`
-	Mysql    Mysql    `yaml:"mysql"`
-	Server   Server   `yaml:"server"`
-	Problem  Problem  `yaml:"problem"`
-	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
+// File
+type File struct {
+	TempPath string `yaml:"tempPath"`
+	CodePath string `yaml:"codePath"`
+	DemoPath string `yaml:"demoPath"`
+}
+
+// Server
+type Server struct {
+	Salt  string `yaml:"salt"`
+	Node  int    `yaml:"node"`
+	Email Email  `yaml:"email"`
+	Auth  Auth   `yaml:"auth"`
 }
 
 // Judge
 type Judge struct {
-	Host    string  `yaml:"host"`
 	Port    int     `yaml:"port"`
 	System  System  `yaml:"system"`
 	Exe     Exe     `yaml:"exe"`
@@ -113,44 +142,32 @@ type Judge struct {
 	File    File    `yaml:"file"`
 	Name    string  `yaml:"name"`
 	Version string  `yaml:"version"`
+	Host    string  `yaml:"host"`
 }
 
-// Email
-type Email struct {
-	Email  string `yaml:"email"`
-	Auth   string `yaml:"auth"`
-	Expire int    `yaml:"expire"`
-	Addr   string `yaml:"addr"`
-	Host   string `yaml:"host"`
-	From   string `yaml:"from"`
+// System
+type System struct {
+	SudoPwd string `yaml:"sudoPwd"`
 }
 
-// Auth
-type Auth struct {
-	Issuer string `yaml:"issuer"`
-	Key    string `yaml:"key"`
-	Expire int    `yaml:"expire"`
-}
-
-// Problem
-type Problem struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
-}
-
-// Submit
-type Submit struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
+// Exe
+type Exe struct {
+	Python string `yaml:"python"`
+	Gcc    string `yaml:"gcc"`
+	Gpp    string `yaml:"gpp"`
+	Go     string `yaml:"go"`
+	Java   string `yaml:"java"`
+	Javac  string `yaml:"javac"`
 }
 
 // Etcd
 type Etcd struct {
 	Addr string `yaml:"addr"`
 	Ttl  int    `yaml:"ttl"`
+}
+
+// TestcaseFile
+type TestcaseFile struct {
+	Path string `yaml:"path"`
 }
 
