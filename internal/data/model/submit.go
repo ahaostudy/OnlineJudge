@@ -14,6 +14,7 @@ type Submit struct {
 	Status    int64     `gorm:"comment:代码执行的状态" json:"status"`
 	Time      int64     `gorm:"comment:代码运行时间(ms)" json:"time"`
 	Memory    int64     `gorm:"comment:代码运行空间(byte)" json:"memory"`
+	ContestID int64     `gorm:"default:0;comment:比赛ID" json:"contest_id"`
 	CreatedAt time.Time `json:"created_at"`
 }
 

@@ -1,8 +1,8 @@
-package testcase
+package problem
 
 import (
 	"context"
-	rpcTestcase "main/api/testcase"
+	rpcProblem "main/api/problem"
 	"main/internal/common"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
@@ -42,8 +42,8 @@ func CreateTestcase(c *gin.Context) {
 	switch req.ActionType {
 	case 1:
 		// 创建题目
-		result, err := rpc.TestcaseCli.CreateTestcase(ctx, &rpcTestcase.CreateTestcaseRequest{
-			ProblemID: req.ProblemID,
+		result, err := rpc.ProblemCli.CreateTestcase(ctx, &rpcProblem.CreateTestcaseRequest{
+			ProblemId: req.ProblemID,
 			Input:     []byte(req.Input),
 			Output:    []byte(req.Output),
 		})

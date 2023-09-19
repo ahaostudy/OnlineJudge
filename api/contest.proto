@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package contest;
+
+option go_package = "api/contest;rpcContest";
+
+service ContestService {
+    rpc GetContest(GetContestRequest) returns (GetContestResponse) {}
+    rpc CreateContest(CreateContestRequest) returns (CreateContestResponse) {}
+    rpc DeleteContest(DeleteContestRequest) returns (DeleteContestResponse) {}
+    rpc UpdateContest(UpdateContestRequest) returns (UpdateContestResponse) {}
+    rpc IsRegister(IsRegisterRequest) returns (IsRegisterResponse) {}
+    rpc IsAccessible(IsAccessibleRequest) returns (IsAccessibleResponse) {}
+}
+
+message Contest {
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+    int64 start_time = 4;
+    int64 end_time = 5;
+}
+
+message GetContestRequest {
+    int64 id = 1;
+}
+
+message GetContestResponse {
+    int64 status_code = 1;
+    Contest contest = 2;
+}
+
+message CreateContestRequest {
+    string title = 1;
+    string description = 2;
+    int64 start_time = 3;
+    int64 end_time = 4;
+}
+
+message CreateContestResponse {
+    int64 status_code = 1;
+}
+
+message DeleteContestRequest {
+    int64 id = 1;
+}
+
+message DeleteContestResponse {
+    int64 status_code = 1;
+}
+
+message UpdateContestRequest {
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+    int64 start_time = 4;
+    int64 end_time = 5;
+}
+
+message UpdateContestResponse {
+    int64 status_code = 1;
+}
+
+message IsRegisterRequest {
+    int64 user_id = 1;
+    int64 contest_id = 2;
+}
+
+message IsRegisterResponse {
+    int64 status_code = 1;
+    bool is_register = 2;
+}
+
+message IsAccessibleRequest {
+    int64 user_id = 1;
+    int64 contest_id = 2;
+}
+
+message IsAccessibleResponse {
+    int64 status_code = 1;
+    bool is_accessible = 2;
+}

@@ -27,7 +27,7 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 	}
 
 	// 根据题目ID获取题目信息
-	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemID: problemID})
+	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemId: problemID})
 	if err != nil {
 		return
 	}

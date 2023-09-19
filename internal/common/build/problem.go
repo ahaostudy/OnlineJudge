@@ -2,7 +2,6 @@ package build
 
 import (
 	rpcProblem "main/api/problem"
-	rpcTestcase "main/api/testcase"
 	"main/internal/data/model"
 )
 
@@ -20,7 +19,7 @@ func BuildProblem(p *model.Problem) (*rpcProblem.Problem, error) {
 		return problem, nil
 	}
 	for i := range p.Testcases {
-		t := new(rpcTestcase.Testcase)
+		t := new(rpcProblem.Testcase)
 		builder.Build(p.Testcases[i], t)
 		problem.Testcases = append(problem.Testcases, t)
 	}
@@ -48,4 +47,30 @@ func UnBuildProblem(p *rpcProblem.Problem) (*model.Problem, error) {
 	}
 
 	return problem, builder.Error()
+}
+
+func BuildProblems(ps []*model.Problem) ([]*rpcProblem.Problem, error) {
+	var problems []*rpcProblem.Problem
+	builder := new(Builder)
+	for _, p := range ps {
+		var problem *rpcProblem.Problem
+		if builder.Build(p, &problem).Error() != nil {
+			return nil, builder.Error()
+		}
+		problems = append(problems, problem)
+	}
+	return problems, nil
+}
+
+func UnBuildProblems(ps []*rpcProblem.Problem) ([]*model.Problem, error) {
+	var problems []*model.Problem
+	builder := new(Builder)
+	for _, p := range ps {
+		var problem *model.Problem
+		if builder.Build(p, &problem).Error() != nil {
+			return nil, builder.Error()
+		}
+		problems = append(problems, problem)
+	}
+	return problems, builder.Error()
 }

@@ -17,6 +17,7 @@ var (
 	ConfTestcase Testcase
 	ConfSubmit   Submit
 	ConfChatGPT  Chatgpt
+	ConfContest  Contest
 )
 
 // InitConfig 初始化配置
@@ -48,6 +49,7 @@ func InitConfig() error {
 		ConfTestcase = conf.Testcase
 		ConfSubmit = conf.Submit
 		ConfChatGPT = conf.Chatgpt
+		ConfContest = conf.Contest
 	}
 
 	// consts

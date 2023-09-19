@@ -1,7 +1,7 @@
-package testcase
+package problem
 
 import (
-	rpcTestcase "main/api/testcase"
+	rpcProblem "main/api/problem"
 	"main/internal/common"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
@@ -35,8 +35,8 @@ func GetTestcase(c *gin.Context) {
 	defer cancel()
 
 	// 获取样例数据
-	result, err := rpc.TestcaseCli.GetTestcase(ctx, &rpcTestcase.GetTestcaseRequest{
-		ID: id,
+	result, err := rpc.ProblemCli.GetTestcase(ctx, &rpcProblem.GetTestcaseRequest{
+		Id: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))

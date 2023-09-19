@@ -1,46 +1,8 @@
 package config
 
-// Email
-type Email struct {
-	From   string `yaml:"from"`
-	Email  string `yaml:"email"`
-	Auth   string `yaml:"auth"`
-	Expire int    `yaml:"expire"`
-	Addr   string `yaml:"addr"`
-	Host   string `yaml:"host"`
-}
-
-// Auth
-type Auth struct {
-	Issuer string `yaml:"issuer"`
-	Key    string `yaml:"key"`
-	Expire int    `yaml:"expire"`
-}
-
-// Submit
-type Submit struct {
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
-}
-
-// Chatgpt
-type Chatgpt struct {
-	Port    int    `yaml:"port"`
-	Openai  Openai `yaml:"openai"`
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-}
-
-// Rabbitmq
-type Rabbitmq struct {
-	Password string `yaml:"password"`
-	Vhost    string `yaml:"vhost"`
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	Username string `yaml:"username"`
+// System
+type System struct {
+	SudoPwd string `yaml:"sudoPwd"`
 }
 
 // Mysql
@@ -53,28 +15,67 @@ type Mysql struct {
 	Username string `yaml:"username"`
 }
 
-// Default
-type Default struct {
-	Redis    Redis    `yaml:"redis"`
-	Server   Server   `yaml:"server"`
-	Judge    Judge    `yaml:"judge"`
-	Problem  Problem  `yaml:"problem"`
-	Submit   Submit   `yaml:"submit"`
-	Chatgpt  Chatgpt  `yaml:"chatgpt"`
-	Etcd     Etcd     `yaml:"etcd"`
-	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
-	Mysql    Mysql    `yaml:"mysql"`
-	Testcase Testcase `yaml:"testcase"`
-	Private  Private  `yaml:"private"`
-}
-
 // Redis
 type Redis struct {
-	Addr     string `yaml:"addr"`
 	Password string `yaml:"password"`
 	LockKey  string `yaml:"lockKey"`
 	Ttl      int    `yaml:"ttl"`
 	ShortTtl int    `yaml:"shortTtl"`
+	Addr     string `yaml:"addr"`
+}
+
+// Auth
+type Auth struct {
+	Issuer string `yaml:"issuer"`
+	Key    string `yaml:"key"`
+	Expire int    `yaml:"expire"`
+}
+
+// Private
+type Private struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+}
+
+// Submit
+type Submit struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+}
+
+// Chatgpt
+type Chatgpt struct {
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+	Openai  Openai `yaml:"openai"`
+}
+
+// Default
+type Default struct {
+	Etcd     Etcd     `yaml:"etcd"`
+	Judge    Judge    `yaml:"judge"`
+	Problem  Problem  `yaml:"problem"`
+	Testcase Testcase `yaml:"testcase"`
+	Contest  Contest  `yaml:"contest"`
+	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
+	Mysql    Mysql    `yaml:"mysql"`
+	Redis    Redis    `yaml:"redis"`
+	Server   Server   `yaml:"server"`
+	Submit   Submit   `yaml:"submit"`
+	Chatgpt  Chatgpt  `yaml:"chatgpt"`
+	Private  Private  `yaml:"private"`
+}
+
+// Etcd
+type Etcd struct {
+	Addr string `yaml:"addr"`
+	Ttl  int    `yaml:"ttl"`
 }
 
 // Sandbox
@@ -86,43 +87,52 @@ type Sandbox struct {
 	DefaultMaxOutputSize int    `yaml:"defaultMaxOutputSize"`
 }
 
-// Problem
-type Problem struct {
-	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-}
-
-// Openai
-type Openai struct {
-	BaseUrl string `yaml:"baseUrl"`
-	ApiKey  string `yaml:"apiKey"`
-	Model   string `yaml:"model"`
+// File
+type File struct {
+	CodePath string `yaml:"codePath"`
+	DemoPath string `yaml:"demoPath"`
+	TempPath string `yaml:"tempPath"`
 }
 
 // Testcase
 type Testcase struct {
-	Port    int          `yaml:"port"`
-	File    TestcaseFile `yaml:"file"`
 	Name    string       `yaml:"name"`
 	Version string       `yaml:"version"`
 	Host    string       `yaml:"host"`
+	Port    int          `yaml:"port"`
+	File    TestcaseFile `yaml:"file"`
 }
 
-// Private
-type Private struct {
+// Rabbitmq
+type Rabbitmq struct {
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Vhost    string `yaml:"vhost"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+}
+
+// Exe
+type Exe struct {
+	Javac  string `yaml:"javac"`
+	Python string `yaml:"python"`
+	Gcc    string `yaml:"gcc"`
+	Gpp    string `yaml:"gpp"`
+	Go     string `yaml:"go"`
+	Java   string `yaml:"java"`
+}
+
+// TestcaseFile
+type TestcaseFile struct {
+	Path string `yaml:"path"`
+}
+
+// Contest
+type Contest struct {
+	Port    int    `yaml:"port"`
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`
-	Port    int    `yaml:"port"`
-}
-
-// File
-type File struct {
-	TempPath string `yaml:"tempPath"`
-	CodePath string `yaml:"codePath"`
-	DemoPath string `yaml:"demoPath"`
 }
 
 // Server
@@ -133,8 +143,26 @@ type Server struct {
 	Auth  Auth   `yaml:"auth"`
 }
 
+// Email
+type Email struct {
+	Addr   string `yaml:"addr"`
+	Host   string `yaml:"host"`
+	From   string `yaml:"from"`
+	Email  string `yaml:"email"`
+	Auth   string `yaml:"auth"`
+	Expire int    `yaml:"expire"`
+}
+
+// Openai
+type Openai struct {
+	BaseUrl string `yaml:"baseUrl"`
+	ApiKey  string `yaml:"apiKey"`
+	Model   string `yaml:"model"`
+}
+
 // Judge
 type Judge struct {
+	Host    string  `yaml:"host"`
 	Port    int     `yaml:"port"`
 	System  System  `yaml:"system"`
 	Exe     Exe     `yaml:"exe"`
@@ -142,32 +170,13 @@ type Judge struct {
 	File    File    `yaml:"file"`
 	Name    string  `yaml:"name"`
 	Version string  `yaml:"version"`
-	Host    string  `yaml:"host"`
 }
 
-// System
-type System struct {
-	SudoPwd string `yaml:"sudoPwd"`
-}
-
-// Exe
-type Exe struct {
-	Python string `yaml:"python"`
-	Gcc    string `yaml:"gcc"`
-	Gpp    string `yaml:"gpp"`
-	Go     string `yaml:"go"`
-	Java   string `yaml:"java"`
-	Javac  string `yaml:"javac"`
-}
-
-// Etcd
-type Etcd struct {
-	Addr string `yaml:"addr"`
-	Ttl  int    `yaml:"ttl"`
-}
-
-// TestcaseFile
-type TestcaseFile struct {
-	Path string `yaml:"path"`
+// Problem
+type Problem struct {
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+	Name    string `yaml:"name"`
+	Version string `yaml:"version"`
 }
 

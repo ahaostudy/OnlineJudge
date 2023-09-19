@@ -3,7 +3,7 @@ package test
 import (
 	"context"
 	"fmt"
-	rpcTestcase "main/api/testcase"
+	rpcProblem "main/api/problem"
 	"main/rpc"
 	"testing"
 )
@@ -12,10 +12,10 @@ func TestCreateTestcase(t *testing.T) {
 	_ = rpc.InitGRPCClients()
 	defer rpc.CloseGPRCClients()
 
-	res, err := rpc.TestcaseCli.CreateTestcase(context.Background(), &rpcTestcase.CreateTestcaseRequest{
-		ProblemID: 4,
+	res, err := rpc.ProblemCli.CreateTestcase(context.Background(), &rpcProblem.CreateTestcaseRequest{
+		ProblemId: 4,
 		Input:     []byte("23 25"),
-		Output:    []byte("48   "),
+		Output:    []byte("48"),
 	})
 	if err != nil {
 		panic(err)

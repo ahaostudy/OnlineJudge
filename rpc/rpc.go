@@ -35,10 +35,10 @@ func InitGRPCClients() error {
 	r := new(run)
 	r.Run(InitJudgeGRPC)
 	r.Run(InitProblemGRPC)
-	r.Run(InitTestcaseGRPC)
 	r.Run(InitSubmitGRPC)
 	r.Run(InitPrivateGRPC)
 	r.Run(InitChatGPTGRPC)
+	r.Run(InitContestGRPC)
 
 	return r.Error()
 }

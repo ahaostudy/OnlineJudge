@@ -13,6 +13,7 @@ const (
 	CodeNotMatchPassword Code = 2005
 	CodeInvalidCaptcha   Code = 2006
 	CodeRecordNotFound   Code = 2007
+	CodeNoRegistration   Code = 2008
 
 	CodeInvalidToken Code = 3001
 	CodeNotLogin     Code = 3002
@@ -30,6 +31,7 @@ var msg = map[Code]string{
 	CodeNotMatchPassword: "两次密码不一致",
 	CodeInvalidCaptcha:   "验证码错误",
 	CodeRecordNotFound:   "记录不存在",
+	CodeNoRegistration:   "未报名比赛",
 
 	CodeInvalidToken: "无效的Token",
 	CodeNotLogin:     "用户未登录",

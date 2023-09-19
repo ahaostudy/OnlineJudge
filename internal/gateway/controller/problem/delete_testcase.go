@@ -1,7 +1,7 @@
-package testcase
+package problem
 
 import (
-	rpcTestcase "main/api/testcase"
+	rpcProblem "main/api/problem"
 	"main/internal/common"
 	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
@@ -32,8 +32,8 @@ func DeleteTestcase(c *gin.Context) {
 	defer cancel()
 
 	// 删除样例
-	result, err := rpc.TestcaseCli.DeleteTestcase(ctx, &rpcTestcase.DeleteTestcaseRequest{
-		ID: id,
+	result, err := rpc.ProblemCli.DeleteTestcase(ctx, &rpcProblem.DeleteTestcaseRequest{
+		Id: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))

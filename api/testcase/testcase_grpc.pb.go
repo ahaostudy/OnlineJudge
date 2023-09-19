@@ -4,7 +4,7 @@
 // - protoc             v4.23.4
 // source: api/testcase.proto
 
-package rpcTestcase
+package rpcTestcas
 
 import (
 	context "context"

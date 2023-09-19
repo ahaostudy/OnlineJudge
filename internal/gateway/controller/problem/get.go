@@ -41,7 +41,7 @@ func GetProblem(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	result, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{ProblemID: req.ID})
+	result, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{ProblemId: req.ID})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
 		return
