@@ -2,7 +2,7 @@ package submit
 
 import (
 	"main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
 	"main/internal/data/model"
@@ -29,7 +29,7 @@ func GetSubmit(c *gin.Context) {
 	// 解析参数
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -41,11 +41,11 @@ func GetSubmit(c *gin.Context) {
 		ID: id,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
-	if result.StatusCode != common.CodeSuccess.Code() {
-		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
+	if result.StatusCode != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 		return
 	}
 

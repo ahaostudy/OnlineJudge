@@ -2,7 +2,7 @@ package submit
 
 import (
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
@@ -30,7 +30,7 @@ func Submit(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -45,11 +45,11 @@ func Submit(c *gin.Context) {
 		LangID:    req.LangID,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
 	res.SubmitID = result.GetSubmitID()
-	res.Response = res.CodeOf(common.Code(result.StatusCode))
+	res.Response = res.CodeOf(code.Code(result.StatusCode))
 	c.JSON(http.StatusOK, res)
 }

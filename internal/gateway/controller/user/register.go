@@ -1,7 +1,7 @@
 package user
 
 import (
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/middleware/jwt"
 	"main/internal/gateway/service/user"
@@ -31,14 +31,14 @@ func Register(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
 	// 校验验证码
 	valid, ok := user.CheckCaptcha(req.Email, req.Captcha)
 	if !ok || !valid {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidCaptcha))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidCaptcha))
 		return
 	}
 
@@ -46,18 +46,18 @@ func Register(c *gin.Context) {
 	// 判断用户是否存在 (Error 1062: Duplicate entry)
 	u, err := user.Register(req.Email, req.Password)
 	if e, ok := err.(*mysql.MySQLError); ok && e.Number == 1062 {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeUserExist))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeUserExist))
 		return
 	}
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
 	// 生成token
 	token, err := jwt.GenerateToken(u.ID)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/service/auth"
 	"main/internal/gateway/service/user"
@@ -30,14 +30,14 @@ func UpdateUser(c *gin.Context) {
 	// 解析参数 id为必须参数
 	req.ID, _ = strconv.ParseInt(c.Param("id"), 10, 64)
 	if err := req.ReadRawData(c); req.ID == 0 || err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
 	// 获取用户权限，判断用户是否越权
 	isAdmin, ok := auth.IsAdmin(userID)
 	if !ok {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 	if !isAdmin && (!req.Exists("role") || userID != req.ID) {
@@ -47,9 +47,9 @@ func UpdateUser(c *gin.Context) {
 
 	// 更新用户信息
 	if err := user.UpdateUser(req.ID, req.Map()); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
-	c.JSON(http.StatusOK, res.CodeOf(common.CodeSuccess))
+	c.JSON(http.StatusOK, res.CodeOf(code.CodeSuccess))
 }

@@ -11,6 +11,12 @@ func GetContest(id int64) (*model.Contest, error) {
 	return contest, err
 }
 
+func GetContestList(start, count int) ([]*model.Contest, error) {
+	contestList := make([]*model.Contest, 0)
+	err := data.DB.Offset(start).Limit(count).Find(&contestList).Error
+	return contestList, err
+}
+
 func InsertContest(contest *model.Contest) error {
 	return data.DB.Create(contest).Error
 }
@@ -19,6 +25,6 @@ func DeleteContest(id int64) error {
 	return data.DB.Where("id = ?", id).Delete(new(model.Contest)).Error
 }
 
-func UpdateContest(id int64, contest *model.Contest) error {
+func UpdateContest(id int64, contest map[string]any) error {
 	return data.DB.Where("id = ?", id).Updates(contest).Error
 }

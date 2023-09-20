@@ -19,4 +19,6 @@ func RegisterProblemRouter(r *gin.RouterGroup) {
 	r.DELETE("/:id", problem.DeleteProblem)
 	r.POST("/testcase/", problem.CreateTestcase)
 	r.DELETE("/testcase/:id", problem.DeleteTestcase)
+	r.GET("/contest/:id", problem.GetContestProblem)
+	r.GET("/contest/", problem.GetContestProblemList)
 }

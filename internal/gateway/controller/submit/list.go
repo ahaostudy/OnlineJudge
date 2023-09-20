@@ -2,7 +2,7 @@ package submit
 
 import (
 	"main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
 	"main/internal/data/model"
@@ -31,7 +31,7 @@ func GetSubmitList(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -44,18 +44,18 @@ func GetSubmitList(c *gin.Context) {
 		ProblemID: req.ProblemID,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
-	if result.GetStatusCode() != common.CodeSuccess.Code() {
-		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.GetStatusCode())))
+	if result.GetStatusCode() != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.GetStatusCode())))
 		return
 	}
 
 	// 将结果反编译为模型对象
 	submitList, err := build.UnBuildSubmitList(result.GetSubmitList())
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 

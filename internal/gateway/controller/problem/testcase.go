@@ -3,7 +3,7 @@ package problem
 import (
 	"context"
 	rpcProblem "main/api/problem"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
 	"main/internal/data/model"
@@ -44,7 +44,7 @@ func GetTestcase(c *gin.Context) {
 	// 解析参数
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -56,18 +56,18 @@ func GetTestcase(c *gin.Context) {
 		Id: id,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
-	if result.StatusCode != common.CodeSuccess.Code() {
-		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
+	if result.StatusCode != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 		return
 	}
 
 	// 将结果反编译为模型对象
 	res.Testcase, err = build.UnBuildTestcase(result.GetTestcase())
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
@@ -81,7 +81,7 @@ func CreateTestcase(c *gin.Context) {
 
 	// 解析参数
 	if err := c.BindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -97,14 +97,14 @@ func CreateTestcase(c *gin.Context) {
 			Output:    []byte(req.Output),
 		})
 		if err != nil {
-			c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+			c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 			return
 		}
 
 		// 响应结果
-		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 	default:
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 	}
 }
 
@@ -114,7 +114,7 @@ func DeleteTestcase(c *gin.Context) {
 	// 解析参数
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -126,9 +126,9 @@ func DeleteTestcase(c *gin.Context) {
 		Id: id,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
-	c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
+	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 }

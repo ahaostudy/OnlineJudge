@@ -1,14 +1,16 @@
 package ctl
 
-import "main/internal/common"
+import (
+	"main/internal/common/code"
+)
 
 // 基础响应体
 type Response struct {
-	StatusCode common.Code   `json:"status_code"`
-	StatusMsg  string `json:"status_msg,omitempty"`
+	StatusCode code.Code `json:"status_code"`
+	StatusMsg  string    `json:"status_msg,omitempty"`
 }
 
-func (r *Response) CodeOf(code common.Code) Response {
+func (r *Response) CodeOf(code code.Code) Response {
 	if r == nil {
 		r = new(Response)
 	}
@@ -18,5 +20,5 @@ func (r *Response) CodeOf(code common.Code) Response {
 }
 
 func (r *Response) Success() {
-	r.CodeOf(common.CodeSuccess)
+	r.CodeOf(code.CodeSuccess)
 }

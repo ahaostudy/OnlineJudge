@@ -2,7 +2,7 @@ package submit
 
 import (
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
 	"main/internal/data/model"
@@ -30,7 +30,7 @@ func GetResult(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -40,11 +40,11 @@ func GetResult(c *gin.Context) {
 	// 获取提交结果
 	result, err := rpc.SubmitCli.GetSubmitResult(ctx, &rpcSubmit.GetSubmitResultRequest{SubmitID: req.SubmitID})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
-	if result.GetStatusCode() != common.CodeSuccess.Code() {
-		c.JSON(http.StatusOK, res.CodeOf(common.Code(result.GetStatusCode())))
+	if result.GetStatusCode() != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.GetStatusCode())))
 		return
 	}
 

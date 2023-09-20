@@ -2,7 +2,7 @@ package submit
 
 import (
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
@@ -24,7 +24,7 @@ func DeleteSubmit(c *gin.Context) {
 	// 解析参数
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 	userID := c.GetInt64("user_id")
@@ -38,9 +38,9 @@ func DeleteSubmit(c *gin.Context) {
 		UserID: userID,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
-	c.JSON(http.StatusOK, res.CodeOf(common.Code(result.StatusCode)))
+	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 }

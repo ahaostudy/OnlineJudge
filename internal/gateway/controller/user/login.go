@@ -2,7 +2,7 @@ package user
 
 import (
 	"errors"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/gateway/controller/ctl"
 	"main/internal/gateway/middleware/jwt"
@@ -34,16 +34,16 @@ func Login(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 	// 校验参数是否合理
 	if len(req.Username) == 0 && len(req.Email) == 0 {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 	if len(req.Password) == 0 && len(req.Captcha) == 0 {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -53,11 +53,11 @@ func Login(c *gin.Context) {
 		var err error
 		u, err = user.LoginByPassword(req.Username, req.Email, req.Password)
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			c.JSON(http.StatusOK, res.CodeOf(common.CodeUserNotExist))
+			c.JSON(http.StatusOK, res.CodeOf(code.CodeUserNotExist))
 			return
 		}
 		if err != nil {
-			c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidPassword))
+			c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidPassword))
 			return
 		}
 	} else {
@@ -65,7 +65,7 @@ func Login(c *gin.Context) {
 		var ok bool
 		u, ok = user.LoginByCaptcha(req.Email, req.Captcha)
 		if !ok {
-			c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidCaptcha))
+			c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidCaptcha))
 			return
 		}
 	}
@@ -73,7 +73,7 @@ func Login(c *gin.Context) {
 	// 生成token
 	token, err := jwt.GenerateToken(u.ID)
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 

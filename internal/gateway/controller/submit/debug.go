@@ -3,7 +3,7 @@ package submit
 import (
 	"main/api/judge"
 	"main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
@@ -31,7 +31,7 @@ func Debug(c *gin.Context) {
 
 	// 解析参数
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeInvalidParams))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
 
@@ -45,12 +45,12 @@ func Debug(c *gin.Context) {
 		LangID: req.LangID,
 	})
 	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(common.CodeServerBusy))
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
 	// 将响应结果和状态码设置为来自 SubmitCli 响应的值
-	res.CodeOf(common.Code(result.StatusCode))
+	res.CodeOf(code.Code(result.StatusCode))
 	res.Result = result.Result
 	c.JSON(http.StatusOK, res)
 }

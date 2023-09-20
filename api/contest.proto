@@ -8,6 +8,7 @@ option go_package = "api/contest;rpcContest";
 
 service ContestService {
     rpc GetContest(GetContestRequest) returns (GetContestResponse) {}
+    rpc GetContestList(GetContestListRequest) returns (GetContestListResponse) {}
     rpc CreateContest(CreateContestRequest) returns (CreateContestResponse) {}
     rpc DeleteContest(DeleteContestRequest) returns (DeleteContestResponse) {}
     rpc UpdateContest(UpdateContestRequest) returns (UpdateContestResponse) {}
@@ -34,6 +35,16 @@ message GetContestResponse {
     Contest contest = 2;
 }
 
+message GetContestListRequest {
+    int64 page = 1;
+    int64 count = 2;
+}
+
+message GetContestListResponse {
+    int64 status_code = 1;
+    repeated Contest contest_list = 2;
+}
+
 message CreateContestRequest {
     string title = 1;
     string description = 2;
@@ -55,10 +66,7 @@ message DeleteContestResponse {
 
 message UpdateContestRequest {
     int64 id = 1;
-    string title = 2;
-    string description = 3;
-    int64 start_time = 4;
-    int64 end_time = 5;
+    bytes contest = 2;
 }
 
 message UpdateContestResponse {

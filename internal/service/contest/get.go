@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func (cs ContestServer) GetContest(ctx context.Context, req *rpcContest.GetContestRequest) (resp *rpcContest.GetContestResponse, _ error) {
+func (ContestServer) GetContest(ctx context.Context, req *rpcContest.GetContestRequest) (resp *rpcContest.GetContestResponse, _ error) {
 	resp = new(rpcContest.GetContestResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
@@ -48,6 +48,27 @@ func (cs ContestServer) GetContest(ctx context.Context, req *rpcContest.GetConte
 	}
 
 	resp.Contest.ProblemList = res.GetProblemList()
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (ContestServer) GetContestList(ctx context.Context, req *rpcContest.GetContestListRequest) (resp *rpcContest.GetContestListResponse, _ error) {
+	resp = new(rpcContest.GetContestListResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 获取比赛列表
+	page, count := int(req.GetPage()), int(req.GetCount())
+	contestList, err := repository.GetContestList((page-1)*count, count)
+	if err != nil {
+		return
+	}
+
+	// 将比赛信息转换为rpc响应结构
+	resp.ContestList, err = build.BuildContestList(contestList)
+	if err != nil {
+		return
+	}
+
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

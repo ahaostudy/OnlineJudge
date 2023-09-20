@@ -12,7 +12,7 @@
 // 	url := "https://openai.ahao.ink/v1/chat/completions"
 // 	headers := map[string]string{
 // 		"Content-Type":  "application/json",
-// 		"Authorization": "Bearer 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",
+// 		"Authorization": "Bearer sk-",
 // 	}
 // 	data := map[string]interface{}{
 // 		"model": "gpt-3.5-turbo",
