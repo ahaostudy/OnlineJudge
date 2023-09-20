@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "api/user;rpcUser";
+
+message User {
+    int64 ID = 1;
+    string Nickname = 2;
+    string Username = 3;
+    string Password = 4;
+    string Email = 5;
+    string Avatar = 6;
+    string Signature = 7;
+    int64 Role = 8;
+}

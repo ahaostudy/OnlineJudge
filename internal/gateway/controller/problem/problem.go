@@ -78,7 +78,7 @@ func DeleteProblem(c *gin.Context) {
 
 	// 删除题目
 	result, err := rpc.ProblemCli.DeleteProblem(ctx, &rpcProblem.DeleteProblemRequest{
-		ProblemId: id,
+		ProblemID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -108,7 +108,7 @@ func UpdateProblem(c *gin.Context) {
 
 	// 更新题目信息
 	result, err := rpc.ProblemCli.UpdateProblem(ctx, &rpcProblem.UpdateProblemRequest{
-		ProblemId: id,
+		ProblemID: id,
 		Problem:   rawData,
 	})
 	if err != nil {

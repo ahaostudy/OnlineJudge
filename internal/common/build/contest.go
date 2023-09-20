@@ -3,42 +3,58 @@ package build
 import (
 	rpcContest "main/api/contest"
 	"main/internal/data/model"
+	"time"
 )
 
 func BuildContest(c *model.Contest) (*rpcContest.Contest, error) {
 	contest := new(rpcContest.Contest)
-	return contest, new(Builder).Build(c, contest).Error()
+	builder := new(Builder)
+	if builder.Build(c, contest).Error() != nil {
+		return nil, builder.Error()
+	}
+	contest.StartTime = c.StartTime.UnixMilli()
+	contest.EndTime = c.EndTime.UnixMilli()
+	return contest, nil
 }
 
 func UnBuildContest(c *rpcContest.Contest) (*model.Contest, error) {
 	contest := new(model.Contest)
-	return contest, new(Builder).Build(c, contest).Error()
+	builder := new(Builder)
+	if builder.Build(c, contest).Error() != nil {
+		return nil, builder.Error()
+	}
+
+	problemList, err := UnBuildProblems(c.ProblemList)
+	if err != nil {
+		return nil, err
+	}
+	contest.ProblemList = problemList
+
+	contest.StartTime = time.UnixMilli(c.StartTime)
+	contest.EndTime = time.UnixMilli(c.EndTime)
+	return contest, nil
 }
 
 func BuildContestList(contests []*model.Contest) ([]*rpcContest.Contest, error) {
-	contestList := make([]*rpcContest.Contest, 0)
-	builder := new(Builder)
+	var contestList []*rpcContest.Contest
 	for _, c := range contests {
-		var contest *rpcContest.Contest
-		builder.Build(c, contest)
-		if builder.Error() != nil {
-			return nil, builder.Error()
+		contest, err := BuildContest(c)
+		if err != nil {
+			return nil, err
 		}
 		contestList = append(contestList, contest)
 	}
-	return contestList, builder.Error()
+	return contestList, nil
 }
 
 func UnBuildContestList(contests []*rpcContest.Contest) ([]*model.Contest, error) {
-	contestList := make([]*model.Contest, 0)
-	builder := new(Builder)
+	var contestList []*model.Contest
 	for _, c := range contests {
-		var contest *model.Contest
-		builder.Build(c, contest)
-		if builder.Error() != nil {
-			return nil, builder.Error()
+		contest, err := UnBuildContest(c)
+		if err != nil {
+			return nil, err
 		}
 		contestList = append(contestList, contest)
 	}
-	return contestList, builder.Error()
+	return contestList, nil
 }

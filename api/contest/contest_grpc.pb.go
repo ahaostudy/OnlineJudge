@@ -24,21 +24,29 @@ const (
 	ContestService_CreateContest_FullMethodName  = "/contest.ContestService/CreateContest"
 	ContestService_DeleteContest_FullMethodName  = "/contest.ContestService/DeleteContest"
 	ContestService_UpdateContest_FullMethodName  = "/contest.ContestService/UpdateContest"
+	ContestService_Register_FullMethodName       = "/contest.ContestService/Register"
+	ContestService_UnRegister_FullMethodName     = "/contest.ContestService/UnRegister"
 	ContestService_IsRegister_FullMethodName     = "/contest.ContestService/IsRegister"
 	ContestService_IsAccessible_FullMethodName   = "/contest.ContestService/IsAccessible"
+	ContestService_ContestRank_FullMethodName    = "/contest.ContestService/ContestRank"
 )
 
 // ContestServiceClient is the client API for ContestService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ContestServiceClient interface {
+	// 赛事管理
 	GetContest(ctx context.Context, in *GetContestRequest, opts ...grpc.CallOption) (*GetContestResponse, error)
 	GetContestList(ctx context.Context, in *GetContestListRequest, opts ...grpc.CallOption) (*GetContestListResponse, error)
 	CreateContest(ctx context.Context, in *CreateContestRequest, opts ...grpc.CallOption) (*CreateContestResponse, error)
 	DeleteContest(ctx context.Context, in *DeleteContestRequest, opts ...grpc.CallOption) (*DeleteContestResponse, error)
 	UpdateContest(ctx context.Context, in *UpdateContestRequest, opts ...grpc.CallOption) (*UpdateContestResponse, error)
+	// 报名管理
+	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	UnRegister(ctx context.Context, in *UnRegisterRequest, opts ...grpc.CallOption) (*UnRegisterResponse, error)
 	IsRegister(ctx context.Context, in *IsRegisterRequest, opts ...grpc.CallOption) (*IsRegisterResponse, error)
 	IsAccessible(ctx context.Context, in *IsAccessibleRequest, opts ...grpc.CallOption) (*IsAccessibleResponse, error)
+	ContestRank(ctx context.Context, in *ContestRankRequest, opts ...grpc.CallOption) (*ContestRankResponse, error)
 }
 
 type contestServiceClient struct {
@@ -94,6 +102,24 @@ func (c *contestServiceClient) UpdateContest(ctx context.Context, in *UpdateCont
 	return out, nil
 }
 
+func (c *contestServiceClient) Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error) {
+	out := new(RegisterResponse)
+	err := c.cc.Invoke(ctx, ContestService_Register_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contestServiceClient) UnRegister(ctx context.Context, in *UnRegisterRequest, opts ...grpc.CallOption) (*UnRegisterResponse, error) {
+	out := new(UnRegisterResponse)
+	err := c.cc.Invoke(ctx, ContestService_UnRegister_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *contestServiceClient) IsRegister(ctx context.Context, in *IsRegisterRequest, opts ...grpc.CallOption) (*IsRegisterResponse, error) {
 	out := new(IsRegisterResponse)
 	err := c.cc.Invoke(ctx, ContestService_IsRegister_FullMethodName, in, out, opts...)
@@ -112,17 +138,31 @@ func (c *contestServiceClient) IsAccessible(ctx context.Context, in *IsAccessibl
 	return out, nil
 }
 
+func (c *contestServiceClient) ContestRank(ctx context.Context, in *ContestRankRequest, opts ...grpc.CallOption) (*ContestRankResponse, error) {
+	out := new(ContestRankResponse)
+	err := c.cc.Invoke(ctx, ContestService_ContestRank_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContestServiceServer is the server API for ContestService service.
 // All implementations must embed UnimplementedContestServiceServer
 // for forward compatibility
 type ContestServiceServer interface {
+	// 赛事管理
 	GetContest(context.Context, *GetContestRequest) (*GetContestResponse, error)
 	GetContestList(context.Context, *GetContestListRequest) (*GetContestListResponse, error)
 	CreateContest(context.Context, *CreateContestRequest) (*CreateContestResponse, error)
 	DeleteContest(context.Context, *DeleteContestRequest) (*DeleteContestResponse, error)
 	UpdateContest(context.Context, *UpdateContestRequest) (*UpdateContestResponse, error)
+	// 报名管理
+	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	UnRegister(context.Context, *UnRegisterRequest) (*UnRegisterResponse, error)
 	IsRegister(context.Context, *IsRegisterRequest) (*IsRegisterResponse, error)
 	IsAccessible(context.Context, *IsAccessibleRequest) (*IsAccessibleResponse, error)
+	ContestRank(context.Context, *ContestRankRequest) (*ContestRankResponse, error)
 	mustEmbedUnimplementedContestServiceServer()
 }
 
@@ -145,11 +185,20 @@ func (UnimplementedContestServiceServer) DeleteContest(context.Context, *DeleteC
 func (UnimplementedContestServiceServer) UpdateContest(context.Context, *UpdateContestRequest) (*UpdateContestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateContest not implemented")
 }
+func (UnimplementedContestServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedContestServiceServer) UnRegister(context.Context, *UnRegisterRequest) (*UnRegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnRegister not implemented")
+}
 func (UnimplementedContestServiceServer) IsRegister(context.Context, *IsRegisterRequest) (*IsRegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsRegister not implemented")
 }
 func (UnimplementedContestServiceServer) IsAccessible(context.Context, *IsAccessibleRequest) (*IsAccessibleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsAccessible not implemented")
+}
+func (UnimplementedContestServiceServer) ContestRank(context.Context, *ContestRankRequest) (*ContestRankResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ContestRank not implemented")
 }
 func (UnimplementedContestServiceServer) mustEmbedUnimplementedContestServiceServer() {}
 
@@ -254,6 +303,42 @@ func _ContestService_UpdateContest_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ContestService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContestServiceServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContestService_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContestServiceServer).Register(ctx, req.(*RegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContestService_UnRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnRegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContestServiceServer).UnRegister(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContestService_UnRegister_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContestServiceServer).UnRegister(ctx, req.(*UnRegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ContestService_IsRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IsRegisterRequest)
 	if err := dec(in); err != nil {
@@ -290,6 +375,24 @@ func _ContestService_IsAccessible_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ContestService_ContestRank_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ContestRankRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContestServiceServer).ContestRank(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContestService_ContestRank_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContestServiceServer).ContestRank(ctx, req.(*ContestRankRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ContestService_ServiceDesc is the grpc.ServiceDesc for ContestService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -318,12 +421,24 @@ var ContestService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ContestService_UpdateContest_Handler,
 		},
 		{
+			MethodName: "Register",
+			Handler:    _ContestService_Register_Handler,
+		},
+		{
+			MethodName: "UnRegister",
+			Handler:    _ContestService_UnRegister_Handler,
+		},
+		{
 			MethodName: "IsRegister",
 			Handler:    _ContestService_IsRegister_Handler,
 		},
 		{
 			MethodName: "IsAccessible",
 			Handler:    _ContestService_IsAccessible_Handler,
+		},
+		{
+			MethodName: "ContestRank",
+			Handler:    _ContestService_ContestRank_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,7 +3,7 @@ package chatgpt
 import (
 	"io"
 	rpcChatGPT "main/api/chatgpt"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/common/ctxt"
 	"main/rpc"
@@ -32,7 +32,7 @@ func Chat(c *gin.Context) {
 	// 解析参数
 	req := new(ChatRequest)
 	if err := c.ShouldBindJSON(req); err != nil {
-		c.SSEvent("error", common.CodeInvalidParams.Msg())
+		c.SSEvent("error", code.CodeInvalidParams.Msg())
 		return
 	}
 
@@ -45,7 +45,7 @@ func Chat(c *gin.Context) {
 		messages = append(messages, message)
 	}
 	if builder.Error() != nil {
-		c.SSEvent("error", common.CodeServerBusy.Msg())
+		c.SSEvent("error", code.CodeServerBusy.Msg())
 		return
 	}
 
@@ -63,8 +63,8 @@ func Chat(c *gin.Context) {
 		if err == io.EOF {
 			break
 		}
-		if err != nil || resp.GetStatusCode() != common.CodeSuccess.Code() {
-			c.SSEvent("error", common.CodeServerBusy.Msg())
+		if err != nil || resp.GetStatusCode() != code.CodeSuccess.Code() {
+			c.SSEvent("error", code.CodeServerBusy.Msg())
 			break
 		}
 		c.SSEvent("msg", resp.GetContent())

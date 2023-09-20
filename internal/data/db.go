@@ -66,5 +66,6 @@ func migration() error {
 		new(model.Testcase),
 		new(model.Submit),
 		new(model.Contest),
+		new(model.Register),
 	)
 }

@@ -5,18 +5,18 @@ import (
 	rpcJudge "main/api/judge"
 	"main/api/submit"
 	"main/config"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/data/repository"
 	"main/internal/middleware/redis"
-	"main/internal/service/judge/pkg/code"
+	status "main/internal/service/judge/pkg/code"
 	"main/rpc"
 	"time"
 )
 
 func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (resp *rpcSubmit.SubmitResponse, _ error) {
 	resp = new(rpcSubmit.SubmitResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 提交判题
 	res, err := rpc.JudgeCli.Judge(ctx, &rpcJudge.JudgeRequest{
@@ -27,7 +27,7 @@ func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (r
 	if err != nil {
 		return
 	}
-	if res.GetStatusCode() != common.CodeSuccess.Code() {
+	if res.GetStatusCode() != code.CodeSuccess.Code() {
 		resp.StatusCode = res.GetStatusCode()
 		return
 	}
@@ -38,7 +38,7 @@ func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (r
 		ProblemID: req.GetProblemID(),
 		LangID:    req.GetLangID(),
 		Code:      res.GetCodePath(),
-		Status:    int64(code.StatusRunning),
+		Status:    int64(status.StatusRunning),
 	}
 	if err := repository.InsertSubmit(submit); err != nil {
 		return
@@ -51,6 +51,6 @@ func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (r
 	}
 
 	resp.SubmitID = submit.ID
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

@@ -1,13 +1,11 @@
 package problem
 
 import (
-	"flag"
-	"fmt"
 	rpcProblem "main/api/problem"
 	"main/config"
-	"main/discovery"
+	"main/internal/common/run"
 	"main/internal/data"
-	"net"
+	"main/rpc"
 
 	"google.golang.org/grpc"
 )
@@ -27,26 +25,17 @@ type ProblemServer struct {
 }
 
 func Run() error {
-	// 读取grpc服务启动端口
-	var port int
-	flag.IntVar(&port, "p", config.ConfProblem.Port, "port")
-	flag.Parse()
-	addr := fmt.Sprintf("%s:%d", config.ConfProblem.Host, port)
+	conf := config.ConfProblem
 
-	fmt.Println("address: ", addr)
-
-	// 注册etcd节点
-	discovery.RegisterEtcdEndpoint(config.ConfProblem.Name, addr, config.ConfProblem.Version)
-
-	// 创建并启动GRPC服务
-	listen, err := net.Listen("tcp", addr)
+	// 连接contest服务
+	conn, err := rpc.InitContestGRPC()
 	if err != nil {
 		return err
 	}
-	grpcServ := grpc.NewServer()
-	rpcProblem.RegisterProblemServiceServer(grpcServ, new(ProblemServer))
-	if err := grpcServ.Serve(listen); err != nil {
-		return err
-	}
-	return nil
+	defer conn.Close()
+
+	// 启动服务
+	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
+		rpcProblem.RegisterProblemServiceServer(grpcServ, new(ProblemServer))
+	})
 }

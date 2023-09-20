@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"main/api/private"
 	"main/config"
-	"main/internal/common"
+	status "main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/service/judge/pkg/code"
 	"main/internal/service/judge/pkg/compiler"
@@ -17,7 +17,7 @@ import (
 
 func (PrivateServer) Debug(ctx context.Context, req *rpcPrivate.DebugRequest) (resp *rpcPrivate.DebugResponse, _ error) {
 	resp = new(rpcPrivate.DebugResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = status.CodeServerBusy.Code()
 
 	codeName, err := compiler.SaveCode(req.GetCode(), int(req.GetLangID()))
 	if err != nil {
@@ -44,6 +44,6 @@ func (PrivateServer) Debug(ctx context.Context, req *rpcPrivate.DebugRequest) (r
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = status.CodeSuccess.Code()
 	return
 }

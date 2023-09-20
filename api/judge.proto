@@ -11,28 +11,28 @@ service JudgeService {
 }
 
 message JudgeRequest {
-    int64 problemID = 1;
-    bytes code = 2;
-    int64 langID = 3;
+    int64 ProblemID = 1;
+    bytes Code = 2;
+    int64 LangID = 3;
 }
 
 message JudgeResponse {
     int64 StatusCode = 1;
-    string judgeID = 2;
+    string JudgeID = 2;
     string CodePath = 3;
 }
 
 message GetResultRequest {
-    string judgeID = 1;
+    string JudgeID = 1;
 }
 
 message JudgeResult {
     int64 Time = 1;
-	int64 Memory = 2;
-	int64 Status = 3;
-	string Message = 4;
-	string Output = 5;
-	string Error = 6;
+    int64 Memory = 2;
+    int64 Status = 3;
+    string Message = 4;
+    string Output = 5;
+    string Error = 6;
 }
 
 message GetResultResponse {

@@ -15,6 +15,8 @@ import (
 type (
 	CreateContestRequest struct {
 		model.Contest
+		StartTime int64 `json:"start_time"`
+		EndTime   int64 `json:"end_time"`
 	}
 
 	CreateContestResonse struct {
@@ -44,8 +46,8 @@ func CreateContest(c *gin.Context) {
 	result, err := rpc.ContestCli.CreateContest(c.Request.Context(), &rpcContest.CreateContestRequest{
 		Title:       req.Title,
 		Description: req.Description,
-		StartTime:   req.StartTime.UnixMilli(),
-		EndTime:     req.EndTime.UnixMilli(),
+		StartTime:   req.StartTime,
+		EndTime:     req.EndTime,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -67,7 +69,7 @@ func DeleteContest(c *gin.Context) {
 
 	// 删除比赛
 	result, err := rpc.ContestCli.DeleteContest(c.Request.Context(), &rpcContest.DeleteContestRequest{
-		Id: id,
+		ID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -94,7 +96,7 @@ func UpdateContest(c *gin.Context) {
 
 	// 更新比赛
 	result, err := rpc.ContestCli.UpdateContest(c.Request.Context(), &rpcContest.UpdateContestRequest{
-		Id:    int64(id),
+		ID:      int64(id),
 		Contest: rawData,
 	})
 	if err != nil {

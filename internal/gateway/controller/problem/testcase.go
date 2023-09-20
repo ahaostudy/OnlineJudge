@@ -53,7 +53,7 @@ func GetTestcase(c *gin.Context) {
 
 	// 获取样例数据
 	result, err := rpc.ProblemCli.GetTestcase(ctx, &rpcProblem.GetTestcaseRequest{
-		Id: id,
+		ID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -92,7 +92,7 @@ func CreateTestcase(c *gin.Context) {
 	case 1:
 		// 创建题目
 		result, err := rpc.ProblemCli.CreateTestcase(ctx, &rpcProblem.CreateTestcaseRequest{
-			ProblemId: req.ProblemID,
+			ProblemID: req.ProblemID,
 			Input:     []byte(req.Input),
 			Output:    []byte(req.Output),
 		})
@@ -123,7 +123,7 @@ func DeleteTestcase(c *gin.Context) {
 
 	// 删除样例
 	result, err := rpc.ProblemCli.DeleteTestcase(ctx, &rpcProblem.DeleteTestcaseRequest{
-		Id: id,
+		ID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))

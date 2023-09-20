@@ -62,7 +62,7 @@ func GetProblem(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	result, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{ProblemId: req.ID})
+	result, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{ProblemID: req.ID})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
@@ -135,8 +135,8 @@ func GetContestProblem(c *gin.Context) {
 
 	// 获取比赛题目
 	result, err := rpc.ProblemCli.GetContestProblem(c.Request.Context(), &rpcProblem.GetContestProblemRequest{
-		UserId: userID,
-		ProblemId: id,
+		UserID: userID,
+		ProblemID: id,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -171,8 +171,8 @@ func GetContestProblemList(c *gin.Context) {
 
 	// 获取比赛题目列表
 	result, err := rpc.ProblemCli.GetContestProblemList(c.Request.Context(), &rpcProblem.GetContestProblemListRequest{
-		ContestId: contestID,
-		UserId: userID,
+		ContestID: contestID,
+		UserID: userID,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))

@@ -13,7 +13,7 @@ func TestCreateTestcase(t *testing.T) {
 	defer rpc.CloseGPRCClients()
 
 	res, err := rpc.ProblemCli.CreateTestcase(context.Background(), &rpcProblem.CreateTestcaseRequest{
-		ProblemId: 4,
+		ProblemID: 4,
 		Input:     []byte("23 25"),
 		Output:    []byte("48"),
 	})

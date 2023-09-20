@@ -4,7 +4,7 @@ import (
 	"context"
 	rpcJudge "main/api/judge"
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/data/model"
 	"main/internal/data/repository"
@@ -14,12 +14,12 @@ import (
 
 func (SubmitServer) GetSubmitResult(ctx context.Context, req *rpcSubmit.GetSubmitResultRequest) (resp *rpcSubmit.GetSubmitResultResponse, _ error) {
 	resp = new(rpcSubmit.GetSubmitResultResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取判题id，并将提交缓存删除
 	judgeID, err := redis.Rdb.Get(ctx, redis.GenerateSubmitKey(req.GetSubmitID())).Result()
 	if err != nil {
-		resp.StatusCode = common.CodeSubmitNotFound.Code()
+		resp.StatusCode = code.CodeSubmitNotFound.Code()
 		return
 	}
 	go redis.Del(redis.GenerateSubmitKey(req.GetSubmitID()))
@@ -31,7 +31,7 @@ func (SubmitServer) GetSubmitResult(ctx context.Context, req *rpcSubmit.GetSubmi
 	if err != nil {
 		return
 	}
-	if res.StatusCode != common.CodeSuccess.Code() {
+	if res.StatusCode != code.CodeSuccess.Code() {
 		resp.StatusCode = res.GetStatusCode()
 		return
 	}
@@ -51,6 +51,6 @@ func (SubmitServer) GetSubmitResult(ctx context.Context, req *rpcSubmit.GetSubmi
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

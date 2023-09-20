@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"main/api/judge"
 	"main/config"
-	"main/internal/common"
+	status "main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/service/judge/pkg/code"
 	"main/internal/service/judge/pkg/compiler"
@@ -18,7 +18,7 @@ import (
 // Debug 是一个处理 JudgeServer 中代码调试的函数
 func (JudgeServer) Debug(ctx context.Context, req *rpcJudge.DebugRequest) (resp *rpcJudge.DebugResponse, _ error) {
 	resp = new(rpcJudge.DebugResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = status.CodeServerBusy.Code()
 
 	codeName, err := compiler.SaveCode(req.GetCode(), int(req.GetLangID()))
 	if err != nil {
@@ -47,6 +47,6 @@ func (JudgeServer) Debug(ctx context.Context, req *rpcJudge.DebugRequest) (resp 
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = status.CodeSuccess.Code()
 	return
 }

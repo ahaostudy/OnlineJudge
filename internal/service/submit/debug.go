@@ -4,7 +4,7 @@ import (
 	"context"
 	"main/api/judge"
 	"main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/rpc"
 )
 
@@ -15,7 +15,7 @@ func (SubmitServer) Debug(_ context.Context, req *rpcSubmit.DebugReqeust) (resp 
 	resp = new(rpcSubmit.DebugResponse)
 
 	// 将默认状态码设置为 CodeServerBusy
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 使用给定的代码、输入和语言ID调用 JudgeCli 的 Debug 方法
 	res, err := rpc.JudgeCli.Debug(context.Background(), &rpcJudge.DebugRequest{

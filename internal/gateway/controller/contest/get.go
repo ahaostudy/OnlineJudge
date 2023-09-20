@@ -13,6 +13,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	defaultPage  = 1
+	defaultCount = 20
+)
+
 type (
 	GetContestResponse struct {
 		ctl.Response
@@ -38,8 +43,8 @@ func GetContest(c *gin.Context) {
 
 	// 获取比赛信息
 	result, err := rpc.ContestCli.GetContest(c.Request.Context(), &rpcContest.GetContestRequest{
-		Id:     int64(id),
-		UserId: userID,
+		ID:     int64(id),
+		UserID: userID,
 	})
 	if err != nil {
 		return
@@ -49,25 +54,23 @@ func GetContest(c *gin.Context) {
 		return
 	}
 
+	// 转换为模型对象
 	res.Contest, err = build.UnBuildContest(result.GetContest())
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
 	res.Success()
-	return
+	c.JSON(http.StatusOK, res)
 }
 
 func GetContestList(c *gin.Context) {
 	res := new(GetContestListResponse)
 
 	// 解析参数
-	page, err := strconv.ParseInt(c.Query("page"), 10, 64)
-	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
-		return
-	}
-	count, err := strconv.ParseInt(c.Query("count"), 10, 64)
-	if err != nil {
-		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
-		return
-	}
+	page, _ := strconv.Atoi(c.DefaultQuery("page", strconv.Itoa(defaultPage)))
+	count, _ := strconv.Atoi(c.DefaultQuery("count", strconv.Itoa(defaultCount)))
 
 	// 获取比赛列表
 	result, err := rpc.ContestCli.GetContestList(c.Request.Context(), &rpcContest.GetContestListRequest{

@@ -4,15 +4,23 @@ import (
 	"encoding/json"
 )
 
-var zero any
-
 type Request map[string]any
 
 func (r *Request) ReadRawData(bytes []byte) error {
 	return json.Unmarshal(bytes, &r)
 }
 
+func (r *Request) Set(key string, value any) {
+	if r == nil {
+		r = new(Request)
+	}
+	(*r)[key] = value
+}
+
 func (r *Request) Get(key string) (any, bool) {
+	if r == nil {
+		return nil, false
+	}
 	v, ok := (*r)[key]
 	return v, ok
 }
@@ -20,7 +28,7 @@ func (r *Request) Get(key string) (any, bool) {
 func (r *Request) GetString(key string) string {
 	v, ok := (*r)[key]
 	if !ok {
-		return zero.(string)
+		return ""
 	}
 	res, _ := v.(string)
 	return res
@@ -29,7 +37,7 @@ func (r *Request) GetString(key string) string {
 func (r *Request) GetFloat64(key string) float64 {
 	v, ok := (*r)[key]
 	if !ok {
-		return zero.(float64)
+		return 0
 	}
 	res, _ := v.(float64)
 	return res

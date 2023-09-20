@@ -1,94 +1,129 @@
 syntax = "proto3";
 
 import "api/problem.proto";
+import "api/user.proto";
 
 package contest;
 
 option go_package = "api/contest;rpcContest";
 
 service ContestService {
+    // 赛事管理
     rpc GetContest(GetContestRequest) returns (GetContestResponse) {}
     rpc GetContestList(GetContestListRequest) returns (GetContestListResponse) {}
     rpc CreateContest(CreateContestRequest) returns (CreateContestResponse) {}
     rpc DeleteContest(DeleteContestRequest) returns (DeleteContestResponse) {}
     rpc UpdateContest(UpdateContestRequest) returns (UpdateContestResponse) {}
+
+    // 报名管理
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc UnRegister(UnRegisterRequest) returns (UnRegisterResponse) {}
+
     rpc IsRegister(IsRegisterRequest) returns (IsRegisterResponse) {}
     rpc IsAccessible(IsAccessibleRequest) returns (IsAccessibleResponse) {}
+    rpc ContestRank(ContestRankRequest) returns (ContestRankResponse) {}
 }
 
 message Contest {
-    int64 id = 1;
-    string title = 2;
-    string description = 3;
-    int64 start_time = 4;
-    int64 end_time = 5;
-    repeated problem.Problem problem_list = 6;
+    int64 ID = 1;
+    string Title = 2;
+    string Description = 3;
+    int64 StartTime = 4;
+    int64 EndTime = 5;
+    repeated problem.Problem ProblemList = 6;
 }
 
 message GetContestRequest {
-    int64 id = 1;
-    int64 user_id = 2;
+    int64 ID = 1;
+    int64 UserID = 2;
 }
 
 message GetContestResponse {
-    int64 status_code = 1;
-    Contest contest = 2;
+    int64 StatusCode = 1;
+    Contest Contest = 2;
 }
 
 message GetContestListRequest {
-    int64 page = 1;
-    int64 count = 2;
+    int64 Page = 1;
+    int64 Count = 2;
 }
 
 message GetContestListResponse {
-    int64 status_code = 1;
-    repeated Contest contest_list = 2;
+    int64 StatusCode = 1;
+    repeated Contest ContestList = 2;
 }
 
 message CreateContestRequest {
-    string title = 1;
-    string description = 2;
-    int64 start_time = 3;
-    int64 end_time = 4;
+    string Title = 1;
+    string Description = 2;
+    int64 StartTime = 3;
+    int64 EndTime = 4;
 }
 
 message CreateContestResponse {
-    int64 status_code = 1;
+    int64 StatusCode = 1;
 }
 
 message DeleteContestRequest {
-    int64 id = 1;
+    int64 ID = 1;
 }
 
 message DeleteContestResponse {
-    int64 status_code = 1;
+    int64 StatusCode = 1;
 }
 
 message UpdateContestRequest {
-    int64 id = 1;
-    bytes contest = 2;
+    int64 ID = 1;
+    bytes Contest = 2;
 }
 
 message UpdateContestResponse {
-    int64 status_code = 1;
+    int64 StatusCode = 1;
+}
+
+message RegisterRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message RegisterResponse {
+    int64 StatusCode = 1;
+}
+
+message UnRegisterRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message UnRegisterResponse {
+    int64 StatusCode = 1;
 }
 
 message IsRegisterRequest {
-    int64 user_id = 1;
-    int64 contest_id = 2;
+    int64 UserID = 1;
+    int64 ContestID = 2;
 }
 
 message IsRegisterResponse {
-    int64 status_code = 1;
-    bool is_register = 2;
+    int64 StatusCode = 1;
+    bool IsRegister = 2;
 }
 
 message IsAccessibleRequest {
-    int64 user_id = 1;
-    int64 contest_id = 2;
+    int64 UserID = 1;
+    int64 ContestID = 2;
 }
 
 message IsAccessibleResponse {
-    int64 status_code = 1;
-    bool is_accessible = 2;
+    int64 StatusCode = 1;
+    bool IsAccessible = 2;
+}
+
+message ContestRankRequest {
+    int64 ContestID = 1;
+}
+
+message ContestRankResponse {
+    int64 StatusCode = 1;
+    repeated user.User Rank = 2;
 }

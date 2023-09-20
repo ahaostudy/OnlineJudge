@@ -3,7 +3,7 @@ package submit
 import (
 	"context"
 	"main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/data/model"
 	"main/internal/data/repository"
@@ -11,7 +11,7 @@ import (
 
 func (SubmitServer) GetSubmitList(ctx context.Context, req *rpcSubmit.GetSubmitListRequest) (resp *rpcSubmit.GetSubmitListResponse, _ error) {
 	resp = new(rpcSubmit.GetSubmitListResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取提交数据
 	var submitList []*model.Submit
@@ -35,6 +35,6 @@ func (SubmitServer) GetSubmitList(ctx context.Context, req *rpcSubmit.GetSubmitL
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

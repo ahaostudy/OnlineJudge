@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"main/api/judge"
 	rpcProblem "main/api/problem"
-	"main/internal/common"
 	"main/internal/common/build"
+	status "main/internal/common/code"
 	"main/internal/middleware/mq"
 	"main/internal/service/judge/pkg/compiler"
 	"main/rpc"
@@ -18,7 +18,7 @@ import (
 // 判题服务
 func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp *rpcJudge.JudgeResponse, _ error) {
 	resp = new(rpcJudge.JudgeResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = status.CodeServerBusy.Code()
 	code, langID, problemID := req.GetCode(), req.GetLangID(), req.GetProblemID()
 
 	// 将代码文件上传
@@ -30,7 +30,7 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp 
 	resp.CodePath = path
 
 	// 根据题目ID获取题目信息
-	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemId: problemID})
+	prob, err := rpc.ProblemCli.GetProblem(context.Background(), &rpcProblem.GetProblemRequest{ProblemID: problemID})
 	if err != nil {
 		return
 	}
@@ -79,6 +79,6 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp 
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = status.CodeSuccess.Code()
 	return
 }

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"main/api/problem"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/data/model"
 	"main/internal/data/repository"
@@ -17,12 +17,12 @@ import (
 
 func (ProblemServer) GetTestcase(ctx context.Context, req *rpcProblem.GetTestcaseRequest) (resp *rpcProblem.GetTestcaseResponse, _ error) {
 	resp = new(rpcProblem.GetTestcaseResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取题目信息
-	testcase, err := repository.GetTestcase(req.GetId())
+	testcase, err := repository.GetTestcase(req.GetID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		resp.StatusCode = common.CodeRecordNotFound.Code()
+		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
 	}
 	if err != nil {
@@ -32,7 +32,7 @@ func (ProblemServer) GetTestcase(ctx context.Context, req *rpcProblem.GetTestcas
 	// 将对象转换为rpc响应
 	resp.Testcase, err = build.BuildTestcase(testcase)
 	if err == nil {
-		resp.StatusCode = common.CodeSuccess.Code()
+		resp.StatusCode = code.CodeSuccess.Code()
 	}
 
 	return
@@ -40,15 +40,15 @@ func (ProblemServer) GetTestcase(ctx context.Context, req *rpcProblem.GetTestcas
 
 func (ProblemServer) CreateTestcase(ctx context.Context, req *rpcProblem.CreateTestcaseRequest) (resp *rpcProblem.CreateTestcaseResponse, _ error) {
 	resp = new(rpcProblem.CreateTestcaseResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 将输入输出保存到本地文件
-	inputPath := fmt.Sprintf("%d/%s.in", req.GetProblemId(), uuid.New().String())
-	outputPath := fmt.Sprintf("%d/%s.out", req.GetProblemId(), uuid.New().String())
+	inputPath := fmt.Sprintf("%d/%s.in", req.GetProblemID(), uuid.New().String())
+	outputPath := fmt.Sprintf("%d/%s.out", req.GetProblemID(), uuid.New().String())
 
 	// 创建样例对象
 	testcase := &model.Testcase{
-		ProblemID:  req.GetProblemId(),
+		ProblemID:  req.GetProblemID(),
 		InputPath:  inputPath,
 		OutputPath: outputPath,
 	}
@@ -58,7 +58,7 @@ func (ProblemServer) CreateTestcase(ctx context.Context, req *rpcProblem.CreateT
 	}
 	// 将对象插入数据库
 	if repository.InsertTestcase(testcase) == nil {
-		resp.StatusCode = common.CodeSuccess.Code()
+		resp.StatusCode = code.CodeSuccess.Code()
 	}
 
 	return
@@ -66,12 +66,12 @@ func (ProblemServer) CreateTestcase(ctx context.Context, req *rpcProblem.CreateT
 
 func (ProblemServer) DeleteTestcase(ctx context.Context, req *rpcProblem.DeleteTestcaseRequest) (resp *rpcProblem.DeleteTestcaseResponse, _ error) {
 	resp = new(rpcProblem.DeleteTestcaseResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 判断题目是否存在
-	testcase, err := repository.GetTestcase(req.GetId())
+	testcase, err := repository.GetTestcase(req.GetID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		resp.StatusCode = common.CodeRecordNotFound.Code()
+		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
 	}
 	if err != nil {
@@ -89,8 +89,8 @@ func (ProblemServer) DeleteTestcase(ctx context.Context, req *rpcProblem.DeleteT
 	}()
 
 	// 删除改样例数据
-	if err = repository.DeleteTestcase(req.GetId()); err == nil {
-		resp.StatusCode = common.CodeSuccess.Code()
+	if err = repository.DeleteTestcase(req.GetID()); err == nil {
+		resp.StatusCode = code.CodeSuccess.Code()
 	}
 
 	return

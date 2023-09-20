@@ -53,7 +53,7 @@ func BuildProblems(ps []*model.Problem) ([]*rpcProblem.Problem, error) {
 	var problems []*rpcProblem.Problem
 	builder := new(Builder)
 	for _, p := range ps {
-		var problem *rpcProblem.Problem
+		problem := new(rpcProblem.Problem)
 		if builder.Build(p, &problem).Error() != nil {
 			return nil, builder.Error()
 		}
@@ -66,7 +66,7 @@ func UnBuildProblems(ps []*rpcProblem.Problem) ([]*model.Problem, error) {
 	var problems []*model.Problem
 	builder := new(Builder)
 	for _, p := range ps {
-		var problem *model.Problem
+		problem := new(model.Problem)
 		if builder.Build(p, &problem).Error() != nil {
 			return nil, builder.Error()
 		}

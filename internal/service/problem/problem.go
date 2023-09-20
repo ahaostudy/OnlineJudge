@@ -43,7 +43,7 @@ func (ProblemServer) UpdateProblem(ctx context.Context, req *rpcProblem.UpdatePr
 	delete(r.Map(), "author_id")
 
 	// 更新题目
-	if err := repository.UpdateProblem(req.GetProblemId(), r.Map()); err != nil {
+	if err := repository.UpdateProblem(req.GetProblemID(), r.Map()); err != nil {
 		return
 	}
 
@@ -56,7 +56,7 @@ func (ProblemServer) DeleteProblem(ctx context.Context, req *rpcProblem.DeletePr
 	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 删除题目
-	if err := repository.DeleteProblem(req.GetProblemId()); err != nil {
+	if err := repository.DeleteProblem(req.GetProblemID()); err != nil {
 		return
 	}
 

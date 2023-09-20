@@ -8,4 +8,6 @@ type Contest struct {
 	Description string    `gorm:"type:text" json:"description"`
 	StartTime   time.Time `json:"start_time"`
 	EndTime     time.Time `json:"end_time"`
+
+	ProblemList []*Problem `gorm:"-:migration;<-:false" json:"problem_list"`
 }

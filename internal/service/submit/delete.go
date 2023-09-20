@@ -3,7 +3,7 @@ package submit
 import (
 	"context"
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/data/repository"
 
 	"gorm.io/gorm"
@@ -11,12 +11,12 @@ import (
 
 func (SubmitServer) DeleteSubmit(_ context.Context, req *rpcSubmit.DeleteSubmitRequest) (resp *rpcSubmit.DeleteSubmitResponse, _ error) {
 	resp = new(rpcSubmit.DeleteSubmitResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取提交数据
 	submit, err := repository.GetSubmit(req.GetID())
 	if err == gorm.ErrRecordNotFound || (err == nil && submit.UserID != req.GetUserID()) {
-		resp.StatusCode = common.CodeRecordNotFound.Code()
+		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
 	}
 	if err != nil {
@@ -29,6 +29,6 @@ func (SubmitServer) DeleteSubmit(_ context.Context, req *rpcSubmit.DeleteSubmitR
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

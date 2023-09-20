@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	rpcSubmit "main/api/submit"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/build"
 	"main/internal/data/repository"
 
@@ -13,12 +13,12 @@ import (
 
 func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
 	resp = new(rpcSubmit.GetSubmitResponse)
-	resp.StatusCode = common.CodeServerBusy.Code()
+	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取提交数据
 	submit, err := repository.GetSubmit(req.GetID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		resp.StatusCode = common.CodeRecordNotFound.Code()
+		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
 	}
 	if err != nil {
@@ -31,6 +31,6 @@ func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest
 		return
 	}
 
-	resp.StatusCode = common.CodeSuccess.Code()
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

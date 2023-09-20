@@ -4,6 +4,7 @@ import (
 	"main/api/contest"
 	"main/config"
 	"main/internal/common/run"
+	"main/internal/data"
 	"main/rpc"
 
 	"google.golang.org/grpc"
@@ -11,6 +12,10 @@ import (
 
 func init() {
 	if err := config.InitConfig(); err != nil {
+		panic(err)
+	}
+
+	if err := data.InitMySQL(); err != nil {
 		panic(err)
 	}
 }

@@ -24,9 +24,9 @@ func GetContestProblem(id, contestId int64) (*model.Problem, error) {
 }
 
 func GetContestProblemList(contestId int64) ([]*model.Problem, error) {
-	var problems []*model.Problem
-	err := data.DB.Where("contest_id = ?", contestId).Find(&problems).Error
-	return problems, err
+	var problemList []*model.Problem
+	err := data.DB.Where("contest_id = ?", contestId).Find(&problemList).Error
+	return problemList, err
 }
 
 func GetProblemListLimit(start, count int) ([]*model.Problem, error) {

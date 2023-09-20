@@ -17,6 +17,7 @@ func InitRoute() *gin.Engine {
 	RegisterUserRouter(api.Group("/user"))
 	RegisterProblemRouter(api.Group("/problem"))
 	RegisterSubmitRouter(api.Group("/submit"))
+	RegisterContestRouter(api.Group("/contest"))
 
 	api.Use(jwt.Auth())
 	api.POST("/chat", chatgpt.Chat)

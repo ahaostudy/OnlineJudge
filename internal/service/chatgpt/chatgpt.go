@@ -6,7 +6,7 @@ import (
 	"log"
 	"main/api/chatgpt"
 	"main/config"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/service/chatgpt/pkg/request"
 	"main/internal/service/chatgpt/pkg/result"
 	"strings"
@@ -41,7 +41,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 	resp, err := r.POST()
 	if err != nil {
 		stream.Send(&rpcChatGPT.ChatResponse{
-			StatusCode: common.CodeServerBusy.Code(),
+			StatusCode: code.CodeServerBusy.Code(),
 		})
 		return nil
 	}
@@ -56,7 +56,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 		}
 		if err != nil {
 			stream.Send(&rpcChatGPT.ChatResponse{
-				StatusCode: common.CodeServerBusy.Code(),
+				StatusCode: code.CodeServerBusy.Code(),
 			})
 			break
 		}
@@ -76,14 +76,14 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 			s := new(result.ChatStream)
 			if err := json.Unmarshal([]byte(strings.Trim(line, "\n")), s); err != nil || len(s.Choices) == 0 {
 				stream.Send(&rpcChatGPT.ChatResponse{
-					StatusCode: common.CodeServerBusy.Code(),
+					StatusCode: code.CodeServerBusy.Code(),
 				})
 				break
 			}
 
 			// 响应
 			stream.Send(&rpcChatGPT.ChatResponse{
-				StatusCode: common.CodeSuccess.Code(),
+				StatusCode: code.CodeSuccess.Code(),
 				Content:    s.Choices[0].Delta.Content,
 			})
 		}

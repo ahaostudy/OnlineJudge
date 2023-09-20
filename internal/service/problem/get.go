@@ -20,7 +20,7 @@ func (ProblemServer) GetProblem(ctx context.Context, req *rpcProblem.GetProblemR
 	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 访问数据库获取题目信息
-	problem, err := repository.GetProblem_(req.GetProblemId())
+	problem, err := repository.GetProblem_(req.GetProblemID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
@@ -64,15 +64,15 @@ func (ProblemServer) GetContestProblem(ctx context.Context, req *rpcProblem.GetC
 	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取题目信息
-	problem, err := repository.GetContestProblem(req.GetUserId(), req.GetProblemId())
+	problem, err := repository.GetContestProblem(req.GetUserID(), req.GetProblemID())
 	if err != nil {
 		return nil, err
 	}
 
 	// 判断用户是否有访问权限
 	res, err := rpc.ContestCli.IsAccessible(ctx, &rpcContest.IsAccessibleRequest{
-		UserId:    req.GetUserId(),
-		ContestId: problem.ContestID,
+		UserID:    req.GetUserID(),
+		ContestID: problem.ContestID,
 	})
 	if err != nil {
 		return
@@ -104,8 +104,8 @@ func (ProblemServer) GetContestProblemList(ctx context.Context, req *rpcProblem.
 
 	// 判断用户是否有访问权限
 	res, err := rpc.ContestCli.IsAccessible(ctx, &rpcContest.IsAccessibleRequest{
-		UserId:    req.GetUserId(),
-		ContestId: req.GetContestId(),
+		UserID:    req.GetUserID(),
+		ContestID: req.GetContestID(),
 	})
 	if err != nil {
 		return
@@ -122,7 +122,7 @@ func (ProblemServer) GetContestProblemList(ctx context.Context, req *rpcProblem.
 	}
 
 	// 获取题目列表
-	problems, err := repository.GetContestProblemList(req.GetContestId())
+	problems, err := repository.GetContestProblemList(req.GetContestID())
 	if err != nil {
 		return
 	}

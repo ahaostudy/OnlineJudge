@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 	"main/api/chatgpt"
-	"main/internal/common"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
 	"main/rpc"
 	"testing"
@@ -40,7 +40,7 @@ func TestChatGPT(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		if resp.GetStatusCode() != common.CodeSuccess.Code() {
+		if resp.GetStatusCode() != code.CodeSuccess.Code() {
 			panic("error")
 		}
 		fmt.Print(resp.GetContent())
