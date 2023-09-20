@@ -121,6 +121,8 @@ message IsAccessibleResponse {
 
 message ContestRankRequest {
     int64 ContestID = 1;
+    int64 Page = 2;
+    int64 Count = 3;
 }
 
 message ContestRankResponse {

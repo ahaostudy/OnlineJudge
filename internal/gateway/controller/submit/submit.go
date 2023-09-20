@@ -16,6 +16,7 @@ type (
 		ProblemID int64  `json:"problem_id"`
 		Code      string `json:"code"`
 		LangID    int64  `json:"lang_id"`
+		ContestID int64  `json:"contest_id"`
 	}
 
 	SubmitResponse struct {

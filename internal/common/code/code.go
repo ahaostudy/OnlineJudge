@@ -16,8 +16,11 @@ const (
 	CodeInvalidCaptcha    Code = 2008
 	CodeRecordNotFound    Code = 2009
 	CodeSubmitNotFound    Code = 2010
-	CodeNoRegistration    Code = 2011
-	CodeContestNotStarted Code = 2012
+	CodeNotRegistred      Code = 2011
+	CodeAlreadyRegistered Code = 2012
+	CodeContestNotStarted Code = 2013
+	CodeContestHasStarted Code = 2014
+	CodeContestNotExist   Code = 2015
 
 	CodeServerBusy Code = 4001
 )
@@ -35,8 +38,11 @@ var msg = map[Code]string{
 	CodeInvalidCaptcha:    "验证码错误",
 	CodeRecordNotFound:    "记录不存在",
 	CodeSubmitNotFound:    "提交不存在",
-	CodeNoRegistration:    "未报名比赛",
+	CodeNotRegistred:      "未报名比赛",
+	CodeAlreadyRegistered: "用户已报名",
 	CodeContestNotStarted: "比赛未开始",
+	CodeContestHasStarted: "比赛已经开始",
+	CodeContestNotExist:   "比赛不存在",
 
 	CodeServerBusy: "服务繁忙",
 }

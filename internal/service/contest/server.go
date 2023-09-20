@@ -5,6 +5,8 @@ import (
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
+	"main/internal/middleware/mongodb"
+	"main/internal/middleware/redis"
 	"main/rpc"
 
 	"google.golang.org/grpc"
@@ -18,6 +20,10 @@ func init() {
 	if err := data.InitMySQL(); err != nil {
 		panic(err)
 	}
+
+	if err := redis.InitRedis(); err != nil {
+		panic(err)
+	}
 }
 
 type ContestServer struct {
@@ -26,6 +32,12 @@ type ContestServer struct {
 
 func Run() error {
 	conf := config.ConfContest
+
+	// 连接MongoDB
+	if err := mongodb.InitMongoDB(); err != nil {
+		return err
+	}
+	defer mongodb.Disconnect()
 
 	// 连接problem服务
 	conn, err := rpc.InitProblemGRPC()

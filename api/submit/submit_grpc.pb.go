@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	SubmitService_Debug_FullMethodName           = "/submit.SubmitService/Debug"
 	SubmitService_Submit_FullMethodName          = "/submit.SubmitService/Submit"
+	SubmitService_SubmitContest_FullMethodName   = "/submit.SubmitService/SubmitContest"
 	SubmitService_GetSubmitResult_FullMethodName = "/submit.SubmitService/GetSubmitResult"
 	SubmitService_GetSubmitList_FullMethodName   = "/submit.SubmitService/GetSubmitList"
 	SubmitService_GetSubmit_FullMethodName       = "/submit.SubmitService/GetSubmit"
@@ -33,6 +34,7 @@ const (
 type SubmitServiceClient interface {
 	Debug(ctx context.Context, in *DebugReqeust, opts ...grpc.CallOption) (*DebugResponse, error)
 	Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*SubmitResponse, error)
+	SubmitContest(ctx context.Context, in *SubmitContestRequest, opts ...grpc.CallOption) (*SubmitContestResponse, error)
 	GetSubmitResult(ctx context.Context, in *GetSubmitResultRequest, opts ...grpc.CallOption) (*GetSubmitResultResponse, error)
 	GetSubmitList(ctx context.Context, in *GetSubmitListRequest, opts ...grpc.CallOption) (*GetSubmitListResponse, error)
 	GetSubmit(ctx context.Context, in *GetSubmitRequest, opts ...grpc.CallOption) (*GetSubmitResponse, error)
@@ -59,6 +61,15 @@ func (c *submitServiceClient) Debug(ctx context.Context, in *DebugReqeust, opts 
 func (c *submitServiceClient) Submit(ctx context.Context, in *SubmitRequest, opts ...grpc.CallOption) (*SubmitResponse, error) {
 	out := new(SubmitResponse)
 	err := c.cc.Invoke(ctx, SubmitService_Submit_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *submitServiceClient) SubmitContest(ctx context.Context, in *SubmitContestRequest, opts ...grpc.CallOption) (*SubmitContestResponse, error) {
+	out := new(SubmitContestResponse)
+	err := c.cc.Invoke(ctx, SubmitService_SubmitContest_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -107,6 +118,7 @@ func (c *submitServiceClient) DeleteSubmit(ctx context.Context, in *DeleteSubmit
 type SubmitServiceServer interface {
 	Debug(context.Context, *DebugReqeust) (*DebugResponse, error)
 	Submit(context.Context, *SubmitRequest) (*SubmitResponse, error)
+	SubmitContest(context.Context, *SubmitContestRequest) (*SubmitContestResponse, error)
 	GetSubmitResult(context.Context, *GetSubmitResultRequest) (*GetSubmitResultResponse, error)
 	GetSubmitList(context.Context, *GetSubmitListRequest) (*GetSubmitListResponse, error)
 	GetSubmit(context.Context, *GetSubmitRequest) (*GetSubmitResponse, error)
@@ -123,6 +135,9 @@ func (UnimplementedSubmitServiceServer) Debug(context.Context, *DebugReqeust) (*
 }
 func (UnimplementedSubmitServiceServer) Submit(context.Context, *SubmitRequest) (*SubmitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Submit not implemented")
+}
+func (UnimplementedSubmitServiceServer) SubmitContest(context.Context, *SubmitContestRequest) (*SubmitContestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubmitContest not implemented")
 }
 func (UnimplementedSubmitServiceServer) GetSubmitResult(context.Context, *GetSubmitResultRequest) (*GetSubmitResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubmitResult not implemented")
@@ -181,6 +196,24 @@ func _SubmitService_Submit_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SubmitServiceServer).Submit(ctx, req.(*SubmitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubmitService_SubmitContest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubmitContestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmitServiceServer).SubmitContest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmitService_SubmitContest_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmitServiceServer).SubmitContest(ctx, req.(*SubmitContestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -271,6 +304,10 @@ var SubmitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Submit",
 			Handler:    _SubmitService_Submit_Handler,
+		},
+		{
+			MethodName: "SubmitContest",
+			Handler:    _SubmitService_SubmitContest_Handler,
 		},
 		{
 			MethodName: "GetSubmitResult",

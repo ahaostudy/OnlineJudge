@@ -9,6 +9,7 @@ option go_package = "api/submit;rpcSubmit";
 service SubmitService {
     rpc Debug(DebugReqeust) returns (DebugResponse) {}
     rpc Submit(SubmitRequest) returns (SubmitResponse) {}
+    rpc SubmitContest(SubmitContestRequest) returns (SubmitContestResponse) {}
     rpc GetSubmitResult(GetSubmitResultRequest) returns (GetSubmitResultResponse) {}
     rpc GetSubmitList(GetSubmitListRequest) returns (GetSubmitListResponse) {}
     rpc GetSubmit(GetSubmitRequest) returns (GetSubmitResponse) {}
@@ -40,12 +41,25 @@ message DebugResponse {
 
 message SubmitRequest {
     int64 ProblemID = 1;
-    int64 UserID = 2;
-    bytes Code = 3;
-    int64 LangID = 4;
+    bytes Code = 2;
+    int64 LangID = 3;
+    int64 UserID = 4;
 }
 
 message SubmitResponse {
+    int64 StatusCode = 1;
+    int64 SubmitID = 2;
+}
+
+message SubmitContestRequest {
+    int64 ProblemID = 1;
+    bytes Code = 2;
+    int64 LangID = 3;
+    int64 UserID = 4;
+    int64 ContestID = 5;
+}
+
+message SubmitContestResponse {
     int64 StatusCode = 1;
     int64 SubmitID = 2;
 }

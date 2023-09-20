@@ -84,7 +84,7 @@ func (ProblemServer) GetContestProblem(ctx context.Context, req *rpcProblem.GetC
 
 	// 无访问权限
 	if !res.GetIsAccessible() {
-		resp.StatusCode = code.CodeNoRegistration.Code()
+		resp.StatusCode = code.CodeNotRegistred.Code()
 		return
 	}
 
@@ -117,7 +117,7 @@ func (ProblemServer) GetContestProblemList(ctx context.Context, req *rpcProblem.
 
 	// 无访问权限
 	if !res.GetIsAccessible() {
-		resp.StatusCode = code.CodeNoRegistration.Code()
+		resp.StatusCode = code.CodeNotRegistred.Code()
 		return
 	}
 

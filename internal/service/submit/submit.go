@@ -54,3 +54,17 @@ func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (r
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }
+
+func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitContestRequest) (resp *rpcSubmit.SubmitContestResponse, _ error) {
+	resp = new(rpcSubmit.SubmitContestResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// TODO
+	// 1. 必须已报名且在比赛过程中
+	// 2. 将提交记录入库MySQL
+	// 3. 并发计算分数
+	// 4. 将分数存储到mongodb
+	// 5. 定期刷到redis
+
+	return
+}

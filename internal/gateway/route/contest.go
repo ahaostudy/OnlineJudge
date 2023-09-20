@@ -12,6 +12,7 @@ func RegisterContestRouter(r *gin.RouterGroup) {
 
 	r.Use(jwt.Auth())
 	r.GET("/:id", contest.GetContest)
+	r.POST("/register/:id", contest.RegisterContest)
 
 	r.Use(jwt.AuthAdmin())
 	r.POST("/", contest.CreateContest)
