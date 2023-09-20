@@ -40,6 +40,25 @@ func (ProblemServer) GetProblem(ctx context.Context, req *rpcProblem.GetProblemR
 	return
 }
 
+func (ProblemServer) GetProblemList(ctx context.Context, req *rpcProblem.GetProblemListRequest) (resp *rpcProblem.GetProblemListResponse, _ error) {
+	resp = new(rpcProblem.GetProblemListResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	page, count := int(req.GetPage()), int(req.GetCount())
+	problemList, err := repository.GetProblemListLimit((page-1)*count, count)
+	if err != nil {
+		return
+	}
+
+	resp.ProblemList, err = build.BuildProblems(problemList)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
 func (ProblemServer) GetContestProblem(ctx context.Context, req *rpcProblem.GetContestProblemRequest) (resp *rpcProblem.GetContestProblemResponse, _ error) {
 	resp = new(rpcProblem.GetContestProblemResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
@@ -107,7 +126,7 @@ func (ProblemServer) GetContestProblemList(ctx context.Context, req *rpcProblem.
 	if err != nil {
 		return
 	}
-	resp.Problems, err = build.BuildProblems(problems)
+	resp.ProblemList, err = build.BuildProblems(problems)
 	if err != nil {
 		return
 	}

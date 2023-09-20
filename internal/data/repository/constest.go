@@ -5,13 +5,13 @@ import (
 	"main/internal/data/model"
 )
 
-func GetContent(id int64) (*model.Contest, error) {
+func GetContest(id int64) (*model.Contest, error) {
 	contest := new(model.Contest)
 	err := data.DB.Where("id = ?", id).First(contest).Error
 	return contest, err
 }
 
-func CreateContest(contest *model.Contest) error {
+func InsertContest(contest *model.Contest) error {
 	return data.DB.Create(contest).Error
 }
 

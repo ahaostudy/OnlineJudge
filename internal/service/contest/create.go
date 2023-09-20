@@ -20,7 +20,7 @@ func (ContestServer) CreateContest(ctx context.Context, req *rpcContest.CreateCo
 		StartTime:   time.UnixMilli(req.GetStartTime()),
 		EndTime:     time.UnixMilli(req.GetEndTime()),
 	}
-	err := repository.CreateContest(contest)
+	err := repository.InsertContest(contest)
 	if err != nil {
 		return
 	}

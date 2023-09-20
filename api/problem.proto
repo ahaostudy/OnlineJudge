@@ -7,8 +7,12 @@ option go_package = "api/problem;rpcProblem";
 
 service ProblemService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
+    rpc GetProblemList(GetProblemListRequest) returns (GetProblemListResponse) {}
     rpc GetContestProblem(GetContestProblemRequest) returns (GetContestProblemResponse) {}
     rpc GetContestProblemList(GetContestProblemListRequest) returns (GetContestProblemListResponse) {}
+    rpc CreateProblem(CreateProblemRequest) returns (CreateProblemResponse) {}
+    rpc DeleteProblem(DeleteProblemRequest) returns (DeleteProblemResponse) {}
+    rpc UpdateProblem(UpdateProblemRequest) returns (UpdateProblemResponse) {}
 
     rpc CreateTestcase(CreateTestcaseRequest) returns (CreateTestcaseResponse) {}
     rpc GetTestcase(GetTestcaseRequest) returns (GetTestcaseResponse) {}
@@ -51,6 +55,16 @@ message GetProblemResponse {
     Problem problem = 2;
 }
 
+message GetProblemListRequest {
+    int64 page = 1;
+    int64 count = 2;
+}
+
+message GetProblemListResponse {
+    int64 status_code = 1;
+    repeated Problem problem_list = 2;
+}
+
 message GetContestProblemListRequest {
     int64 user_id = 1;
     int64 contest_id = 2;
@@ -58,7 +72,7 @@ message GetContestProblemListRequest {
 
 message GetContestProblemListResponse {
     int64 status_code = 1;
-    repeated Problem problems = 2;
+    repeated Problem problem_list = 2;
 }
 
 message GetContestProblemRequest {
@@ -70,6 +84,32 @@ message GetContestProblemResponse {
     int64 status_code = 1;
     Problem problem = 2;
 }
+
+message CreateProblemRequest {
+    Problem problem = 1;
+}
+
+message CreateProblemResponse {
+    int64 status_code = 1;
+}
+
+message DeleteProblemRequest {
+    int64 problem_id = 1;
+}
+
+message DeleteProblemResponse {
+    int64 status_code = 1;
+}
+
+message UpdateProblemRequest {
+    int64 problem_id = 1;
+    bytes problem = 2;   // json
+}
+
+message UpdateProblemResponse {
+    int64 status_code = 1;
+}
+
 
 // testcase
 

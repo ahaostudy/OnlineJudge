@@ -20,8 +20,12 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	ProblemService_GetProblem_FullMethodName            = "/problem.ProblemService/GetProblem"
+	ProblemService_GetProblemList_FullMethodName        = "/problem.ProblemService/GetProblemList"
 	ProblemService_GetContestProblem_FullMethodName     = "/problem.ProblemService/GetContestProblem"
 	ProblemService_GetContestProblemList_FullMethodName = "/problem.ProblemService/GetContestProblemList"
+	ProblemService_CreateProblem_FullMethodName         = "/problem.ProblemService/CreateProblem"
+	ProblemService_DeleteProblem_FullMethodName         = "/problem.ProblemService/DeleteProblem"
+	ProblemService_UpdateProblem_FullMethodName         = "/problem.ProblemService/UpdateProblem"
 	ProblemService_CreateTestcase_FullMethodName        = "/problem.ProblemService/CreateTestcase"
 	ProblemService_GetTestcase_FullMethodName           = "/problem.ProblemService/GetTestcase"
 	ProblemService_DeleteTestcase_FullMethodName        = "/problem.ProblemService/DeleteTestcase"
@@ -32,8 +36,12 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProblemServiceClient interface {
 	GetProblem(ctx context.Context, in *GetProblemRequest, opts ...grpc.CallOption) (*GetProblemResponse, error)
+	GetProblemList(ctx context.Context, in *GetProblemListRequest, opts ...grpc.CallOption) (*GetProblemListResponse, error)
 	GetContestProblem(ctx context.Context, in *GetContestProblemRequest, opts ...grpc.CallOption) (*GetContestProblemResponse, error)
 	GetContestProblemList(ctx context.Context, in *GetContestProblemListRequest, opts ...grpc.CallOption) (*GetContestProblemListResponse, error)
+	CreateProblem(ctx context.Context, in *CreateProblemRequest, opts ...grpc.CallOption) (*CreateProblemResponse, error)
+	DeleteProblem(ctx context.Context, in *DeleteProblemRequest, opts ...grpc.CallOption) (*DeleteProblemResponse, error)
+	UpdateProblem(ctx context.Context, in *UpdateProblemRequest, opts ...grpc.CallOption) (*UpdateProblemResponse, error)
 	CreateTestcase(ctx context.Context, in *CreateTestcaseRequest, opts ...grpc.CallOption) (*CreateTestcaseResponse, error)
 	GetTestcase(ctx context.Context, in *GetTestcaseRequest, opts ...grpc.CallOption) (*GetTestcaseResponse, error)
 	DeleteTestcase(ctx context.Context, in *DeleteTestcaseRequest, opts ...grpc.CallOption) (*DeleteTestcaseResponse, error)
@@ -56,6 +64,15 @@ func (c *problemServiceClient) GetProblem(ctx context.Context, in *GetProblemReq
 	return out, nil
 }
 
+func (c *problemServiceClient) GetProblemList(ctx context.Context, in *GetProblemListRequest, opts ...grpc.CallOption) (*GetProblemListResponse, error) {
+	out := new(GetProblemListResponse)
+	err := c.cc.Invoke(ctx, ProblemService_GetProblemList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *problemServiceClient) GetContestProblem(ctx context.Context, in *GetContestProblemRequest, opts ...grpc.CallOption) (*GetContestProblemResponse, error) {
 	out := new(GetContestProblemResponse)
 	err := c.cc.Invoke(ctx, ProblemService_GetContestProblem_FullMethodName, in, out, opts...)
@@ -68,6 +85,33 @@ func (c *problemServiceClient) GetContestProblem(ctx context.Context, in *GetCon
 func (c *problemServiceClient) GetContestProblemList(ctx context.Context, in *GetContestProblemListRequest, opts ...grpc.CallOption) (*GetContestProblemListResponse, error) {
 	out := new(GetContestProblemListResponse)
 	err := c.cc.Invoke(ctx, ProblemService_GetContestProblemList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *problemServiceClient) CreateProblem(ctx context.Context, in *CreateProblemRequest, opts ...grpc.CallOption) (*CreateProblemResponse, error) {
+	out := new(CreateProblemResponse)
+	err := c.cc.Invoke(ctx, ProblemService_CreateProblem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *problemServiceClient) DeleteProblem(ctx context.Context, in *DeleteProblemRequest, opts ...grpc.CallOption) (*DeleteProblemResponse, error) {
+	out := new(DeleteProblemResponse)
+	err := c.cc.Invoke(ctx, ProblemService_DeleteProblem_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *problemServiceClient) UpdateProblem(ctx context.Context, in *UpdateProblemRequest, opts ...grpc.CallOption) (*UpdateProblemResponse, error) {
+	out := new(UpdateProblemResponse)
+	err := c.cc.Invoke(ctx, ProblemService_UpdateProblem_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -106,8 +150,12 @@ func (c *problemServiceClient) DeleteTestcase(ctx context.Context, in *DeleteTes
 // for forward compatibility
 type ProblemServiceServer interface {
 	GetProblem(context.Context, *GetProblemRequest) (*GetProblemResponse, error)
+	GetProblemList(context.Context, *GetProblemListRequest) (*GetProblemListResponse, error)
 	GetContestProblem(context.Context, *GetContestProblemRequest) (*GetContestProblemResponse, error)
 	GetContestProblemList(context.Context, *GetContestProblemListRequest) (*GetContestProblemListResponse, error)
+	CreateProblem(context.Context, *CreateProblemRequest) (*CreateProblemResponse, error)
+	DeleteProblem(context.Context, *DeleteProblemRequest) (*DeleteProblemResponse, error)
+	UpdateProblem(context.Context, *UpdateProblemRequest) (*UpdateProblemResponse, error)
 	CreateTestcase(context.Context, *CreateTestcaseRequest) (*CreateTestcaseResponse, error)
 	GetTestcase(context.Context, *GetTestcaseRequest) (*GetTestcaseResponse, error)
 	DeleteTestcase(context.Context, *DeleteTestcaseRequest) (*DeleteTestcaseResponse, error)
@@ -121,11 +169,23 @@ type UnimplementedProblemServiceServer struct {
 func (UnimplementedProblemServiceServer) GetProblem(context.Context, *GetProblemRequest) (*GetProblemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProblem not implemented")
 }
+func (UnimplementedProblemServiceServer) GetProblemList(context.Context, *GetProblemListRequest) (*GetProblemListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProblemList not implemented")
+}
 func (UnimplementedProblemServiceServer) GetContestProblem(context.Context, *GetContestProblemRequest) (*GetContestProblemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContestProblem not implemented")
 }
 func (UnimplementedProblemServiceServer) GetContestProblemList(context.Context, *GetContestProblemListRequest) (*GetContestProblemListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetContestProblemList not implemented")
+}
+func (UnimplementedProblemServiceServer) CreateProblem(context.Context, *CreateProblemRequest) (*CreateProblemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateProblem not implemented")
+}
+func (UnimplementedProblemServiceServer) DeleteProblem(context.Context, *DeleteProblemRequest) (*DeleteProblemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteProblem not implemented")
+}
+func (UnimplementedProblemServiceServer) UpdateProblem(context.Context, *UpdateProblemRequest) (*UpdateProblemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateProblem not implemented")
 }
 func (UnimplementedProblemServiceServer) CreateTestcase(context.Context, *CreateTestcaseRequest) (*CreateTestcaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTestcase not implemented")
@@ -167,6 +227,24 @@ func _ProblemService_GetProblem_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProblemService_GetProblemList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProblemListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProblemServiceServer).GetProblemList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProblemService_GetProblemList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProblemServiceServer).GetProblemList(ctx, req.(*GetProblemListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ProblemService_GetContestProblem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetContestProblemRequest)
 	if err := dec(in); err != nil {
@@ -199,6 +277,60 @@ func _ProblemService_GetContestProblemList_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProblemServiceServer).GetContestProblemList(ctx, req.(*GetContestProblemListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProblemService_CreateProblem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateProblemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProblemServiceServer).CreateProblem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProblemService_CreateProblem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProblemServiceServer).CreateProblem(ctx, req.(*CreateProblemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProblemService_DeleteProblem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteProblemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProblemServiceServer).DeleteProblem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProblemService_DeleteProblem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProblemServiceServer).DeleteProblem(ctx, req.(*DeleteProblemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProblemService_UpdateProblem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateProblemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProblemServiceServer).UpdateProblem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProblemService_UpdateProblem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProblemServiceServer).UpdateProblem(ctx, req.(*UpdateProblemRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -269,12 +401,28 @@ var ProblemService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProblemService_GetProblem_Handler,
 		},
 		{
+			MethodName: "GetProblemList",
+			Handler:    _ProblemService_GetProblemList_Handler,
+		},
+		{
 			MethodName: "GetContestProblem",
 			Handler:    _ProblemService_GetContestProblem_Handler,
 		},
 		{
 			MethodName: "GetContestProblemList",
 			Handler:    _ProblemService_GetContestProblemList_Handler,
+		},
+		{
+			MethodName: "CreateProblem",
+			Handler:    _ProblemService_CreateProblem_Handler,
+		},
+		{
+			MethodName: "DeleteProblem",
+			Handler:    _ProblemService_DeleteProblem_Handler,
+		},
+		{
+			MethodName: "UpdateProblem",
+			Handler:    _ProblemService_UpdateProblem_Handler,
 		},
 		{
 			MethodName: "CreateTestcase",
