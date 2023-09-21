@@ -9,5 +9,6 @@ type Contest struct {
 	StartTime   time.Time `json:"start_time"`
 	EndTime     time.Time `json:"end_time"`
 
+	IsRegister  bool       `gorm:"-:migration;<-:false" json:"is_register"`
 	ProblemList []*Problem `gorm:"-:migration;<-:false" json:"problem_list"`
 }

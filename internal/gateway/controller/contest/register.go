@@ -3,7 +3,6 @@ package contest
 import (
 	"main/api/contest"
 	"main/internal/common/code"
-	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
 	"net/http"
@@ -33,14 +32,11 @@ func RegisterContest(c *gin.Context) {
 	}
 	userID := c.GetInt64("user_id")
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 判断操作类型
 	switch req.ActionType {
 	case 1:
 		// 报名比赛
-		result, err := rpc.ContestCli.Register(ctx, &rpcContest.RegisterRequest{
+		result, err := rpc.ContestCli.Register(c.Request.Context(), &rpcContest.RegisterRequest{
 			ContestID: req.ContestID,
 			UserID:    userID,
 		})
@@ -51,7 +47,7 @@ func RegisterContest(c *gin.Context) {
 		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 	case 2:
 		// 取消报名比赛
-		result, err := rpc.ContestCli.UnRegister(ctx, &rpcContest.UnRegisterRequest{
+		result, err := rpc.ContestCli.UnRegister(c.Request.Context(), &rpcContest.UnRegisterRequest{
 			ContestID: req.ContestID,
 			UserID:    userID,
 		})

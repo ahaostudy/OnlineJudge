@@ -18,3 +18,14 @@ func GenerateJudgeMQMsg(judgeID string, codePath string, langID int64, problem *
 	msg, err := json.Marshal(req)
 	return msg, err
 }
+
+// GenerateContestSubmitMQMsg 生成提交服务消息
+func GenerateContestSubmitMQMsg(contestID, problemID, userID int64) ([]byte, error) {
+	req := contestSubmitRequest{
+		ContestID: contestID,
+		ProblemID: problemID,
+		UserID:    userID,
+	}
+	msg, err := json.Marshal(req)
+	return msg, err
+}

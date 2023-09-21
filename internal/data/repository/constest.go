@@ -11,6 +11,12 @@ func GetContest(id int64) (*model.Contest, error) {
 	return contest, err
 }
 
+func GetContestAndIsRegister(id, userID int64) (*model.Contest, error) {
+	contest := new(model.Contest)
+	err := data.DB.Select("*, (EXISTS(SELECT 1 FROM register WHERE contest_id = ? AND user_id = ?) AS is_register", id, userID).Where("id = ?", id).First(contest).Error
+	return contest, err
+}
+
 func GetContestList(start, count int) ([]*model.Contest, error) {
 	var contestList []*model.Contest
 	err := data.DB.Offset(start).Limit(count).Find(&contestList).Error

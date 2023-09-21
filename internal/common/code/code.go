@@ -21,6 +21,7 @@ const (
 	CodeContestNotStarted Code = 2013
 	CodeContestHasStarted Code = 2014
 	CodeContestNotExist   Code = 2015
+	CodeContestNotOngoing Code = 2016
 
 	CodeServerBusy Code = 4001
 )
@@ -43,6 +44,7 @@ var msg = map[Code]string{
 	CodeContestNotStarted: "比赛未开始",
 	CodeContestHasStarted: "比赛已经开始",
 	CodeContestNotExist:   "比赛不存在",
+	CodeContestNotOngoing: "比赛未开始或已结束",
 
 	CodeServerBusy: "服务繁忙",
 }

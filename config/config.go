@@ -8,6 +8,7 @@ var (
 	ConfRabbitMQ Rabbitmq
 	ConfMySQL    Mysql
 	ConfRedis    Redis
+	ConfMongodb  Mongodb
 	ConfEtcd     Etcd
 
 	ConfServer   Server
@@ -40,6 +41,7 @@ func InitConfig() error {
 		ConfRabbitMQ = conf.Rabbitmq
 		ConfMySQL = conf.Mysql
 		ConfRedis = conf.Redis
+		ConfMongodb = conf.Mongodb
 		ConfEtcd = conf.Etcd
 
 		ConfServer = conf.Server

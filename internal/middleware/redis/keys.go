@@ -13,3 +13,11 @@ func GenerateAuthKey(id int64) string {
 func GenerateSubmitKey(id int64) string {
 	return fmt.Sprintf("submit:%d", id)
 }
+
+func GenerateContestUserKey(contestID, userID int64) string{
+	return fmt.Sprintf("contest_user:%d_%d", contestID, userID)
+}
+
+func GenerateRankKey(contestID int64) string {
+	return fmt.Sprintf("rank:%d", contestID)
+}
