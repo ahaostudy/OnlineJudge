@@ -10,11 +10,11 @@ import (
 func RegisterSubmitRouter(r *gin.RouterGroup) {
 	r.Use(jwt.Auth())
 
-	r.POST("/", submit.GetSubmitList)
+	r.GET("/", submit.GetSubmitList)
 	r.GET("/:id", submit.GetSubmit)
+	r.POST("/", submit.Submit)
 	r.DELETE("/:id", submit.DeleteSubmit)
 
-	r.POST("/judge", submit.Submit)
 	r.POST("/result", submit.GetResult)
 	r.POST("/debug", submit.Debug)
 }

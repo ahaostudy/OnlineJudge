@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	rpcJudge "main/api/judge"
+	rpcProblem "main/api/problem"
 	"main/api/submit"
 	"main/config"
 	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/data/repository"
+	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	status "main/internal/service/judge/pkg/code"
 	"main/rpc"
@@ -62,13 +64,27 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	resp = new(rpcSubmit.SubmitContestResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
-	// 1. 必须已报名且在比赛过程中
+	// 1. 必须已报名且在比赛过程中且该比赛中存在该赛题
 	contest, err := repository.GetContestAndIsRegister(req.GetContestID(), req.GetUserID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		resp.StatusCode = code.CodeContestNotExist.Code()
 		return
 	}
 	if err != nil {
+		return
+	}
+	problem, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{
+		ProblemID: req.GetProblemID(),
+	})
+	if err != nil {
+		return
+	}
+	if problem.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = problem.StatusCode
+		return
+	}
+	if problem.Problem.GetContestID() != req.GetContestID() {
+		resp.StatusCode = code.CodeContestNotExist.Code()
 		return
 	}
 
@@ -105,6 +121,7 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 		LangID:    req.GetLangID(),
 		Code:      res.GetCodePath(),
 		Status:    int64(status.StatusRunning),
+		ContestID: req.GetContestID(),
 	}
 	if err := repository.InsertSubmit(submit); err != nil {
 		return
@@ -119,11 +136,15 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	resp.SubmitID = submit.ID
 	resp.StatusCode = code.CodeSuccess.Code()
 
-	// 4. 将提交打入MQ，异步计分、排名等
-
-	// 4. 并发计算分数
-	// 5. 将分数存储到mongodb
-	// 6. 定期刷到redis
+	// 4. 将提交打入MQ，进行异步计分、排名等
+	// BUG: 应等待判题完成后再进行计分
+	msg, err := mq.GenerateContestSubmitMQMsg(req.GetContestID(), req.GetProblemID(), req.GetUserID())
+	if err != nil {
+		return
+	}
+	if mq.RMQContestSubmit.Publish(msg); err != nil {
+		return
+	}
 
 	return
 }

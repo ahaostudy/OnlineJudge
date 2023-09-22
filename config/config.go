@@ -15,7 +15,6 @@ var (
 	ConfPrivate  Private
 	ConfJudge    Judge
 	ConfProblem  Problem
-	ConfTestcase Testcase
 	ConfSubmit   Submit
 	ConfChatGPT  Chatgpt
 	ConfContest  Contest
@@ -48,7 +47,6 @@ func InitConfig() error {
 		ConfPrivate = conf.Private
 		ConfJudge = conf.Judge
 		ConfProblem = conf.Problem
-		ConfTestcase = conf.Testcase
 		ConfSubmit = conf.Submit
 		ConfChatGPT = conf.Chatgpt
 		ConfContest = conf.Contest

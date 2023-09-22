@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "api/problem.proto";
-import "api/user.proto";
 
 package contest;
 
@@ -125,7 +124,20 @@ message ContestRankRequest {
     int64 Count = 3;
 }
 
+message Status {
+	int64 Penalty = 1;
+	bool Accepted = 2;
+	int64 AcTime = 3;
+	int64 LangID = 4;
+	int64 Score = 5;
+}
+
+message UserData {
+    int64 UserID = 1;
+    map<string, Status> Status = 2;
+}
+
 message ContestRankResponse {
     int64 StatusCode = 1;
-    repeated user.User Rank = 2;
+    repeated UserData Rank = 2;
 }

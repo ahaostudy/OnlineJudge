@@ -13,7 +13,7 @@ func GetContest(id int64) (*model.Contest, error) {
 
 func GetContestAndIsRegister(id, userID int64) (*model.Contest, error) {
 	contest := new(model.Contest)
-	err := data.DB.Select("*, (EXISTS(SELECT 1 FROM register WHERE contest_id = ? AND user_id = ?) AS is_register", id, userID).Where("id = ?", id).First(contest).Error
+	err := data.DB.Select("*, (EXISTS(SELECT * FROM registers WHERE contest_id = ? AND user_id = ?)) AS is_register", id, userID).Where("id = ?", id).First(contest).Error
 	return contest, err
 }
 

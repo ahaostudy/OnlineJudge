@@ -32,8 +32,9 @@ message Problem {
     int32 MaxMemory = 10;
     string Source = 11;
     int64 AuthorID = 12;
+    int64 ContestID = 13;
 
-    repeated Testcase Testcases = 13;
+    repeated Testcase Testcases = 14;
 }
 
 message Testcase {

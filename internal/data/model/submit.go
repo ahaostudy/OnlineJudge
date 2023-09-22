@@ -16,6 +16,8 @@ type Submit struct {
 	Memory    int64     `gorm:"comment:代码运行空间(byte)" json:"memory"`
 	ContestID int64     `gorm:"default:0;comment:比赛ID" json:"contest_id"`
 	CreatedAt time.Time `json:"created_at"`
+
+	User *User `gorm:"-:migration;<-:false" json:"user"`
 }
 
 func (s *Submit) MarshalJSON() ([]byte, error) {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"main/internal/common/ctxt"
 	"main/internal/data/repository"
+	"main/internal/service/contest"
 	"main/internal/service/judge/pkg/code"
 	"strings"
 
@@ -20,17 +21,8 @@ type contestSubmitRequest struct {
 	UserID    int64
 }
 
-type problemSubmitStatus struct {
-	Penalty  int   `json:"penalty"`
-	Accepted bool  `json:"accepted"`
-	AcTime   int64 `json:"ac_time"`
-	LangID   int64 `json:"lang_id"`
-	Score    int   `json:"score"`
-}
-
 func ContestSubmit(msg *amqp.Delivery) error {
 	// TODO: 写入redis失败后，应考虑重新打入mq重试，或者在定时任务中重新计算
-	// BUG: 应等待判题完成后再进行计算
 
 	req := new(contestSubmitRequest)
 	if err := json.Unmarshal(msg.Body, req); err != nil {
@@ -42,7 +34,7 @@ func ContestSubmit(msg *amqp.Delivery) error {
 	if err != nil {
 		return err
 	}
-	status := new(problemSubmitStatus)
+	status := new(contest.RankStatus)
 	for _, s := range submits {
 		if s.Status != int64(code.StatusAccepted) {
 			status.Penalty++
@@ -80,10 +72,11 @@ func ContestSubmit(msg *amqp.Delivery) error {
 		if !strings.HasPrefix(k, "problem:") {
 			continue
 		}
-		status := new(problemSubmitStatus)
+		status := new(contest.RankStatus)
 		if err := json.Unmarshal([]byte(v), status); err != nil {
 			return err
 		}
+		// TODO: 应遵循不同赛制计分
 		// TODO: 应该考虑每题的分数占比不一样的情况
 		// 目前实现为：每题20分，忽略罚时
 		if status.Accepted {
@@ -94,11 +87,15 @@ func ContestSubmit(msg *amqp.Delivery) error {
 			}
 		}
 	}
-	if err = redis.Rdb.HSet(ctx, key, "all", problemSubmitStatus{
+	bytes, err = json.Marshal(&contest.RankStatus{
 		Penalty: penalty,
 		AcTime:  acTime,
 		Score:   score,
-	}).Err(); err != nil {
+	})
+	if err != nil {
+		return err
+	}
+	if err := redis.Rdb.HSet(ctx, key, "all", string(bytes)).Err(); err != nil {
 		return err
 	}
 
@@ -106,7 +103,7 @@ func ContestSubmit(msg *amqp.Delivery) error {
 	if err := redis.Rdb.ZRem(ctx, redis.GenerateRankKey(req.ContestID), req.UserID).Err(); err != nil {
 		return err
 	}
-	redis.Rdb.ZAdd(ctx, redis.GenerateRankKey(req.ContestID), &rds.Z{Score: float64(score), Member: req.UserID}).Err()
+	err = redis.Rdb.ZAdd(ctx, redis.GenerateRankKey(req.ContestID), &rds.Z{Score: float64(score), Member: req.UserID}).Err()
 
 	return err
 }

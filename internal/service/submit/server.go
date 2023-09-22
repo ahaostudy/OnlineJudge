@@ -5,6 +5,7 @@ import (
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
+	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	"main/rpc"
 
@@ -26,11 +27,20 @@ type SubmitServer struct {
 }
 
 func Run() error {
-	conn, err := rpc.InitJudgeGRPC()
+	connJudge, err := rpc.InitJudgeGRPC()
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
+	defer connJudge.Close()
+
+	connProblem, err := rpc.InitProblemGRPC()
+	if err != nil {
+		panic(err)
+	}
+	defer connProblem.Close()
+
+	// 启动MQ
+	defer mq.RunContestSubmitMQ().Destroy()
 
 	conf := config.ConfSubmit
 

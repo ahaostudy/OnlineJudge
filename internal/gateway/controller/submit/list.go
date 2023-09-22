@@ -2,8 +2,8 @@ package submit
 
 import (
 	"main/api/submit"
-	"main/internal/common/code"
 	"main/internal/common/build"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
 	"main/internal/data/model"
 	"main/internal/gateway/controller/ctl"
@@ -30,7 +30,7 @@ func GetSubmitList(c *gin.Context) {
 	res := new(GetSubmitListResponse)
 
 	// 解析参数
-	if err := c.ShouldBindJSON(req); err != nil {
+	if err := c.ShouldBindQuery(req); err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
@@ -40,7 +40,7 @@ func GetSubmitList(c *gin.Context) {
 
 	// 获取提交数据
 	result, err := rpc.SubmitCli.GetSubmitList(ctx, &rpcSubmit.GetSubmitListRequest{
-		UserID: req.UserID,
+		UserID:    req.UserID,
 		ProblemID: req.ProblemID,
 	})
 	if err != nil {

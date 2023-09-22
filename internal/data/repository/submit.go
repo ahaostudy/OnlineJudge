@@ -14,7 +14,7 @@ func GetSubmit(id int64) (*model.Submit, error) {
 // GetContestUserProblemSubmits 获取比赛期间用户对特定题目的提交记录
 func GetContestUserProblemSubmits(contestID, problemID, userID int64) ([]*model.Submit, error) {
 	var submits []*model.Submit
-	err := data.DB.Where("contest_id = ? AND problem_id = ? AND user_id = ?", contestID, problemID, userID).Find(&submits).Error
+	err := data.DB.Preload("User").Where("contest_id = ? AND problem_id = ? AND user_id = ?", contestID, problemID, userID).Find(&submits).Error
 	return submits, err
 }
 
@@ -22,6 +22,13 @@ func GetContestUserProblemSubmits(contestID, problemID, userID int64) ([]*model.
 func GetContestSubmitsByUser(contestID, userID int64) ([]*model.Submit, error) {
 	var submits []*model.Submit
 	err := data.DB.Where("contest_id = ? AND user_id = ?", contestID, userID).Find(&submits).Error
+	return submits, err
+}
+
+// GetContestSubmits 获取比赛期间提交记录
+func GetContestSubmits(contestID int64) ([]*model.Submit, error) {
+	var submits []*model.Submit
+	err := data.DB.Where("contest_id = ?", contestID).Find(&submits).Error
 	return submits, err
 }
 
