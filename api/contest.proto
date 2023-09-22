@@ -125,16 +125,17 @@ message ContestRankRequest {
 }
 
 message Status {
-	int64 Penalty = 1;
-	bool Accepted = 2;
-	int64 AcTime = 3;
-	int64 LangID = 4;
-	int64 Score = 5;
+    int64 ProblemID = 1;
+	int64 Penalty = 2;
+	bool Accepted = 3;
+	int64 AcTime = 4;
+	int64 LangID = 5;
+	int64 Score = 6;
 }
 
 message UserData {
     int64 UserID = 1;
-    map<string, Status> Status = 2;
+    repeated Status Status = 2;
 }
 
 message ContestRankResponse {

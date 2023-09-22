@@ -17,9 +17,23 @@ type (
 		Count     int64 `json:"count"`
 	}
 
+	Status struct {
+		ProblemID int64 `json:"problem_id"`
+		Penalty   int64 `json:"penalty"`
+		Accepted  bool  `json:"accepted"`
+		AcTime    int64 `json:"ac_time"`
+		LangID    int64 `json:"lang_id"`
+		Score     int64 `json:"score"`
+	}
+
+	UserData struct {
+		UserID int64     `json:"user_id"`
+		Status []*Status `json:"status"`
+	}
+
 	ContestRankResponse struct {
 		ctl.Response
-		Rank []*rpcContest.UserData `json:"rank"`
+		Rank []*UserData `json:"rank"`
 	}
 )
 
@@ -51,6 +65,24 @@ func ContestRank(c *gin.Context) {
 	}
 
 	res.CodeOf(code.Code(result.StatusCode))
-	res.Rank = result.Rank
+	for i := range result.Rank {
+		res.Rank = append(res.Rank, &UserData{
+			UserID: result.Rank[i].UserID,
+		})
+		for j := range result.Rank[i].Status {
+			res.Rank[i].Status = append(
+				res.Rank[i].Status,
+				&Status{
+					ProblemID: result.Rank[i].Status[j].ProblemID,
+					Penalty:   result.Rank[i].Status[j].Penalty,
+					Accepted:  result.Rank[i].Status[j].Accepted,
+					AcTime:    result.Rank[i].Status[j].AcTime,
+					LangID:    result.Rank[i].Status[j].LangID,
+					Score:     result.Rank[i].Status[j].Score,
+				},
+			)
+		}
+	}
+
 	c.JSON(http.StatusOK, res)
 }

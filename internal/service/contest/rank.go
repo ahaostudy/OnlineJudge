@@ -11,6 +11,7 @@ import (
 	"main/internal/data/repository"
 	"main/internal/middleware/redis"
 	"strconv"
+	"strings"
 
 	status "main/internal/service/judge/pkg/code"
 
@@ -64,7 +65,6 @@ func (ContestServer) ContestRank(ctx context.Context, req *rpcContest.ContestRan
 		}
 		resp.Rank = append(resp.Rank, &rpcContest.UserData{
 			UserID: uid,
-			Status: make(map[string]*rpcContest.Status),
 		})
 		us, err := redis.Rdb.HGetAll(ctx, redis.GenerateContestUserKey(req.ContestID, uid)).Result()
 		if err != nil {
@@ -79,7 +79,21 @@ func (ContestServer) ContestRank(ctx context.Context, req *rpcContest.ContestRan
 			if err != nil {
 				return
 			}
-			resp.Rank[i].Status[k] = t
+			var pid int64
+			if strings.HasPrefix(k, "problem:") {
+				pid, err = strconv.ParseInt(strings.TrimPrefix(k, "problem:"), 10, 64)
+				if err != nil {
+					return
+				}
+			}
+			resp.Rank[i].Status = append(resp.Rank[i].Status, &rpcContest.Status{
+				ProblemID: pid,
+				Penalty:   t.Penalty,
+				Accepted:  t.Accepted,
+				AcTime:    t.AcTime,
+				LangID:    t.LangID,
+				Score:     t.Score,
+			})
 		}
 	}
 
