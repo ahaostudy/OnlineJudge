@@ -10,7 +10,6 @@ import (
 	"main/internal/middleware/mq"
 	"main/internal/service/judge/pkg/compiler"
 	"main/rpc"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -41,36 +40,8 @@ func (JudgeServer) Judge(ctx context.Context, req *rpcJudge.JudgeRequest) (resp 
 		return
 	}
 
+	// 将判题请求打入MQ
 	resp.JudgeID = uuid.NewString()
-
-	// 为当前判题开辟一个管道
-	mq.ResultChan.Store(resp.JudgeID, make(chan mq.JudgeResponse))
-	mq.DoneChan.Store(resp.JudgeID, make(chan struct{}))
-	// 如果30s后管道内容仍未被接收将自动清除
-	go func() {
-		done, ok := mq.GetDoneChan(resp.GetJudgeID())
-		if !ok || done == nil {
-			return
-		}
-
-		timer := time.NewTimer(30 * time.Second)
-		select {
-		case <-done:
-			break
-		case <-timer.C:
-			break
-		}
-
-		timer.Stop()
-		if ch, ok := mq.GetResultChan(resp.GetJudgeID()); ok {
-			close(ch)
-		}
-		close(done)
-		mq.DoneChan.Delete(resp.GetJudgeID())
-		mq.ResultChan.Delete(resp.GetJudgeID())
-	}()
-
-	// 将请求放入MQ
 	msg, err := mq.GenerateJudgeMQMsg(resp.JudgeID, path, langID, problem)
 	if err != nil {
 		return

@@ -38,7 +38,7 @@ var msg = map[Code]string{
 	CodeNotLogin:          "用户未登录",
 	CodeInvalidCaptcha:    "验证码错误",
 	CodeRecordNotFound:    "记录不存在",
-	CodeSubmitNotFound:    "提交不存在",
+	CodeSubmitNotFound:    "提交不存在或已过期",
 	CodeNotRegistred:      "未报名比赛",
 	CodeAlreadyRegistered: "用户已报名",
 	CodeContestNotStarted: "比赛未开始",

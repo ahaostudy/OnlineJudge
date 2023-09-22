@@ -41,11 +41,11 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 	resp.JudgeID = uuid.NewString()
 
 	// 为当前判题开辟一个管道
-	mq.ResultChan.Store(resp.JudgeID, make(chan mq.JudgeResponse))
-	mq.DoneChan.Store(resp.JudgeID, make(chan struct{}))
+	mq.PrivateResultChan.Store(resp.JudgeID, make(chan mq.PrivateJudgeResponse))
+	mq.PrivateDoneChan.Store(resp.JudgeID, make(chan struct{}))
 	// 如果30s后管道内容仍未被接收将自动清除
 	go func() {
-		done, ok := mq.GetDoneChan(resp.GetJudgeID())
+		done, ok := mq.GetPrivateDoneChan(resp.GetJudgeID())
 		if !ok || done == nil {
 			return
 		}
@@ -59,16 +59,16 @@ func (PrivateServer) Judge(ctx context.Context, req *rpcPrivate.JudgeRequest) (r
 		}
 
 		timer.Stop()
-		if ch, ok := mq.GetResultChan(resp.GetJudgeID()); ok {
+		if ch, ok := mq.GetPrivateResultChan(resp.GetJudgeID()); ok {
 			close(ch)
 		}
 		close(done)
-		mq.DoneChan.Delete(resp.GetJudgeID())
-		mq.ResultChan.Delete(resp.GetJudgeID())
+		mq.PrivateDoneChan.Delete(resp.GetJudgeID())
+		mq.PrivateResultChan.Delete(resp.GetJudgeID())
 	}()
 
 	// 将请求放入MQ
-	msg, err := mq.GenerateJudgeMQMsg(resp.JudgeID, path, langID, problem)
+	msg, err := mq.GeneratePrivateJudgeMQMsg(resp.JudgeID, path, langID, problem)
 	if err != nil {
 		return
 	}
@@ -86,13 +86,13 @@ func (PrivateServer) GetResult(ctx context.Context, req *rpcPrivate.GetResultReq
 	resp.StatusCode = status.CodeServerBusy.Code()
 
 	// 读取管道获取结果并关闭管道
-	ch, ok := mq.GetResultChan(req.GetJudgeID())
+	ch, ok := mq.GetPrivateResultChan(req.GetJudgeID())
 	if !ok || ch == nil {
 		resp.StatusCode = status.CodeSubmitNotFound.Code()
 		return
 	}
 	res := <-ch
-	if done, ok := mq.GetDoneChan(req.GetJudgeID()); ok && done != nil {
+	if done, ok := mq.GetPrivateDoneChan(req.GetJudgeID()); ok && done != nil {
 		done <- struct{}{}
 	}
 

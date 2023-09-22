@@ -11,7 +11,6 @@ import (
 
 var MongoClient *mongo.Client
 var MongoDB *mongo.Database
-var MongoContesScore *mongo.Collection
 
 func InitMongoDB() error {
 	conf := config.ConfMongodb
@@ -32,7 +31,6 @@ func InitMongoDB() error {
 
 	MongoClient = client
 	MongoDB = client.Database(conf.Dbname)
-	MongoContesScore = MongoDB.Collection("contest_score")
 
 	return nil
 }

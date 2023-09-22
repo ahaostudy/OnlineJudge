@@ -45,7 +45,6 @@ func (ContestServer) ContestRank(ctx context.Context, req *rpcContest.ContestRan
 		if err != nil {
 			return
 		}
-		fmt.Printf("submits: %v\n", submits)
 		if err := updateRedis(ctx, req.ContestID, submits); err != nil {
 			return
 		}
@@ -90,7 +89,7 @@ func (ContestServer) ContestRank(ctx context.Context, req *rpcContest.ContestRan
 
 // 根据提交记录计算分数并更新到redis
 func updateRedis(ctx context.Context, contestID int64, submits []*model.Submit) error {
-	// BUG: 添加对redis更新失败的处理
+	// TODO: 添加对redis更新失败的处理
 
 	// 整理每位用户每题的提交记录
 	subs := make(map[int64]map[int64][]int)

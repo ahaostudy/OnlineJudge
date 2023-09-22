@@ -4,6 +4,7 @@ var (
 	RMQJudge         *RabbitMQ
 	RMQPrivate       *RabbitMQ
 	RMQContestSubmit *RabbitMQ
+	RMQSubmit        *RabbitMQ
 )
 
 // RunJudgeMQ 启动JudgeMQ
@@ -16,7 +17,7 @@ func RunJudgeMQ() *RabbitMQ {
 // RunPrivateMQ 启动PrivateMQ
 func RunPrivateMQ() *RabbitMQ {
 	RMQPrivate = NewWorkRabbitMQ("private")
-	go RMQPrivate.Consume(Judge)
+	go RMQPrivate.Consume(PrivateJudge)
 	return RMQPrivate
 }
 
@@ -25,4 +26,10 @@ func RunContestSubmitMQ() *RabbitMQ {
 	RMQContestSubmit = NewWorkRabbitMQ("contest_submit")
 	go RMQContestSubmit.Consume(ContestSubmit)
 	return RMQContestSubmit
+}
+
+func RunSubmitMQ() *RabbitMQ {
+	RMQSubmit = NewWorkRabbitMQ("contest_submit")
+	go RMQSubmit.Consume(Submit)
+	return RMQSubmit
 }

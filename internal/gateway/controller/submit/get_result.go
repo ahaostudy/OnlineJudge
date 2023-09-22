@@ -2,10 +2,9 @@ package submit
 
 import (
 	rpcSubmit "main/api/submit"
-	"main/internal/common/code"
 	"main/internal/common/build"
+	"main/internal/common/code"
 	"main/internal/common/ctxt"
-	"main/internal/data/model"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
 	"net/http"
@@ -20,7 +19,7 @@ type (
 
 	GetResultResponse struct {
 		ctl.Response
-		Result *model.Submit `json:"result"`
+		Result any `json:"result"`
 	}
 )
 
@@ -49,7 +48,7 @@ func GetResult(c *gin.Context) {
 	}
 
 	// 将响应转换为模型对象
-	res.Result, err = build.UnBuildSubmit(result.GetResult())
+	res.Result, err = build.UnBuildResult(result.GetResult())
 	if err != nil {
 		return
 	}

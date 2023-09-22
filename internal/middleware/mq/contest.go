@@ -7,7 +7,6 @@ import (
 	"main/internal/data/repository"
 	"main/internal/service/contest"
 	"main/internal/service/judge/pkg/code"
-	"strings"
 
 	"main/internal/middleware/redis"
 
@@ -15,79 +14,72 @@ import (
 	"github.com/streadway/amqp"
 )
 
-type contestSubmitRequest struct {
+type ContestSubmitRequest struct {
 	ContestID int64
-	ProblemID int64
 	UserID    int64
 }
 
 func ContestSubmit(msg *amqp.Delivery) error {
-	// TODO: 写入redis失败后，应考虑重新打入mq重试，或者在定时任务中重新计算
-
-	req := new(contestSubmitRequest)
+	req := new(ContestSubmitRequest)
 	if err := json.Unmarshal(msg.Body, req); err != nil {
 		return err
 	}
 
-	// 1. 获取该题目的提交记录并统计该题的做题情况
-	submits, err := repository.GetContestUserProblemSubmits(req.ContestID, req.ProblemID, req.UserID)
-	if err != nil {
-		return err
-	}
-	status := new(contest.RankStatus)
-	for _, s := range submits {
-		if s.Status != int64(code.StatusAccepted) {
-			status.Penalty++
-		} else {
-			status.Accepted = true
-			status.AcTime = s.CreatedAt.UnixMilli()
-			status.LangID = s.LangID
-			status.Score = 20
-			break
-		}
-	}
-	bytes, err := json.Marshal(status)
+	// 获取用户的提交记录
+	submits, err := repository.GetContestSubmitsByUser(req.ContestID, req.UserID)
 	if err != nil {
 		return err
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
-	// 2. 更新该赛题的提交情况
-	key := redis.GenerateContestUserKey(req.ContestID, req.UserID)
-	err = redis.Rdb.HSet(ctx, key, fmt.Sprintf("problem:%d", req.ProblemID), string(bytes)).Err()
-	if err != nil {
-		return err
+	// 将每题的提交记录分开
+	subs := make( map[int64][]int)
+	for i, s := range submits {
+		subs[s.ProblemID] = append(subs[s.ProblemID], i)
 	}
 
-	// 3. 计算并更新该场比赛用户的总分
-	pss, err := redis.Rdb.HGetAll(ctx, key).Result()
-	if err != nil {
-		return err
-	}
 	var score, penalty int
 	var acTime int64
-	for k, v := range pss {
-		if !strings.HasPrefix(k, "problem:") {
-			continue
+	ctx, cancel := ctxt.WithTimeoutContext(2)
+	defer cancel()
+	key := redis.GenerateContestUserKey(req.ContestID, req.UserID)
+
+	// 遍历每题
+	for p, ps := range subs {
+		s := new(contest.RankStatus)
+
+		// 计算每题的分数
+		for _, idx := range ps {
+			if submits[idx].Status != int64(code.StatusAccepted) {
+				s.Penalty = len(ps)
+			} else {
+				s.Accepted = true
+				s.AcTime = submits[ps[0]].CreatedAt.UnixMilli()
+				s.LangID = submits[ps[0]].LangID
+				s.Score = 20
+			}
 		}
-		status := new(contest.RankStatus)
-		if err := json.Unmarshal([]byte(v), status); err != nil {
+		bytes, err := json.Marshal(s)
+		if err != nil {
 			return err
 		}
-		// TODO: 应遵循不同赛制计分
-		// TODO: 应该考虑每题的分数占比不一样的情况
-		// 目前实现为：每题20分，忽略罚时
-		if status.Accepted {
-			score += status.Score
-			penalty += status.Penalty
-			if acTime < status.AcTime {
-				acTime = status.AcTime
+
+		// 更新该题的分数
+		if err := redis.Rdb.HSet(ctx, key, fmt.Sprintf("problem:%d", p), string(bytes)).Err(); err != nil {
+			return err
+		}
+
+		// 更新该用户的成绩变量
+		if s.Accepted {
+			score += s.Score
+			penalty += s.Penalty
+			if acTime < s.AcTime {
+				acTime = s.AcTime
 			}
 		}
 	}
-	bytes, err = json.Marshal(&contest.RankStatus{
+
+	// 更新用户的总成绩
+	bytes, err := json.Marshal(&contest.RankStatus{
 		Penalty: penalty,
 		AcTime:  acTime,
 		Score:   score,
@@ -99,11 +91,13 @@ func ContestSubmit(msg *amqp.Delivery) error {
 		return err
 	}
 
-	// 4. 更新zset维护排行榜
+	// 更新zset维护排行榜
 	if err := redis.Rdb.ZRem(ctx, redis.GenerateRankKey(req.ContestID), req.UserID).Err(); err != nil {
 		return err
 	}
-	err = redis.Rdb.ZAdd(ctx, redis.GenerateRankKey(req.ContestID), &rds.Z{Score: float64(score), Member: req.UserID}).Err()
+	if err := redis.Rdb.ZAdd(ctx, redis.GenerateRankKey(req.ContestID), &rds.Z{Score: float64(score), Member: req.UserID}).Err(); err != nil {
+		return err
+	}
 
-	return err
+	return nil
 }

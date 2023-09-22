@@ -12,7 +12,7 @@ rabbitmq:
   host: 127.0.0.1
   port: 5672
   username: admin
-  password: ''
+  password: xxx
   vhost: ''
 
 mysql:
@@ -20,15 +20,23 @@ mysql:
   port: 3306
   dbname: oj
   username: root
-  password: ''
+  password: xxx
   charset: utf8mb4
 
 
 redis:
   addr: 127.0.0.1:6379
-  password: ''
+  password: xxx
   lockKey: lock
   ttl: 86400  # 24*60*60s
+  shortTtl: 300  # 5*60s
+
+mongodb:
+  host: 127.0.0.1
+  port: 27017
+  dbname: online_judge
+  username: root
+  password: xxx
 
 
 # 后端服务
@@ -39,9 +47,9 @@ server:
   email:
     addr: smtp.163.com:25
     host: smtp.163.com
-    from: "OnlineJudge <ahao_study@163.com>"
-    email: ahao_study@163.com
-    auth: DGRZGRZLEVSDTGWK  # 邮箱授权码
+    from: "OnlineJudge <xxx@163.com>"
+    email: xxx@163.com
+    auth: xxx  # 邮箱授权码
     expire: 300  # 5*60s
 
   auth:
@@ -55,10 +63,10 @@ judge:
   name: judge
   version: v1
   host: 192.168.1.67
-  port: 9999
+  port: 9991
 
   system:
-    sudoPwd: dream
+    sudoPwd: xxx
 
   exe:
     python: /usr/local/bin/python3.8
@@ -77,6 +85,7 @@ judge:
 
   file:
     tempPath: /projects/OnlineJudge/file
+    codePath: /projects/OnlineJudge/file/code
     demoPath: /projects/OnlineJudge/internal/service/judge/demo
 
 
@@ -85,3 +94,42 @@ problem:
   version: v1
   host: 192.168.1.67
   port: 9992
+
+  file:
+    testcasePath: /projects/OnlineJudge/file/testcase
+
+
+submit:
+  name: submit
+  version: v1
+  host: 192.168.1.67
+  port: 9993
+
+  jobs:
+    time: 5
+
+
+chatgpt:
+  name: chatgpt
+  version: v1
+  host: 192.168.1.67
+  port: 9994
+
+  openai:
+    baseUrl: https://api.openai.com/
+    apiKey: sk-xxx
+    model: gpt-3.5-turbo
+
+
+contest:
+  name: contest
+  version: v1
+  host: 192.168.1.67
+  port: 9995
+
+
+private:
+  name: private
+  version: v1
+  host: 192.168.1.67
+  port: 9001

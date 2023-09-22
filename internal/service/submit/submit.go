@@ -10,7 +10,6 @@ import (
 	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/data/repository"
-	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	status "main/internal/service/judge/pkg/code"
 	"main/rpc"
@@ -50,8 +49,10 @@ func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (r
 	}
 
 	// 将提交写入缓存
-	err = redis.Rdb.Set(ctx, redis.GenerateSubmitKey(submit.ID), res.GetJudgeID(), time.Duration(config.ConfRedis.ShortTtl)*time.Second).Err()
-	if err != nil {
+	if redis.Rdb.Set(ctx, redis.GenerateSubmitKey(submit.ID), res.GetJudgeID(), time.Duration(config.ConfRedis.ShortTtl)*time.Second).Err() != nil {
+		return
+	}
+	if redis.Rdb.SAdd(ctx, redis.GenerateSubmitsKey(), submit.ID).Err() != nil {
 		return
 	}
 
@@ -73,6 +74,18 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	if err != nil {
 		return
 	}
+	// 未报名比赛
+	if !contest.IsRegister {
+		resp.StatusCode = code.CodeNotRegistred.Code()
+		return
+	}
+	// 判断是否在比赛过程中
+	now := time.Now()
+	if now.Before(contest.StartTime) || now.After(contest.EndTime) {
+		resp.StatusCode = code.CodeContestNotOngoing.Code()
+		return
+	}
+	// 判断是否存在该赛题
 	problem, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{
 		ProblemID: req.GetProblemID(),
 	})
@@ -85,18 +98,6 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	}
 	if problem.Problem.GetContestID() != req.GetContestID() {
 		resp.StatusCode = code.CodeContestNotExist.Code()
-		return
-	}
-
-	// 未报名比赛
-	if !contest.IsRegister {
-		resp.StatusCode = code.CodeNotRegistred.Code()
-		return
-	}
-	// 判断是否在比赛过程中
-	now := time.Now()
-	if now.Before(contest.StartTime) || now.After(contest.EndTime) {
-		resp.StatusCode = code.CodeContestNotOngoing.Code()
 		return
 	}
 
@@ -128,23 +129,14 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	}
 
 	// 将提交写入缓存
-	err = redis.Rdb.Set(ctx, redis.GenerateSubmitKey(submit.ID), res.GetJudgeID(), time.Duration(config.ConfRedis.ShortTtl)*time.Second).Err()
-	if err != nil {
+	if redis.Rdb.Set(ctx, redis.GenerateSubmitKey(submit.ID), res.GetJudgeID(), time.Duration(config.ConfRedis.ShortTtl)*time.Second).Err() != nil {
+		return
+	}
+	if redis.Rdb.SAdd(ctx, redis.GenerateSubmitsKey(), submit.ID).Err() != nil {
 		return
 	}
 
 	resp.SubmitID = submit.ID
 	resp.StatusCode = code.CodeSuccess.Code()
-
-	// 4. 将提交打入MQ，进行异步计分、排名等
-	// BUG: 应等待判题完成后再进行计分
-	msg, err := mq.GenerateContestSubmitMQMsg(req.GetContestID(), req.GetProblemID(), req.GetUserID())
-	if err != nil {
-		return
-	}
-	if mq.RMQContestSubmit.Publish(msg); err != nil {
-		return
-	}
-
 	return
 }
