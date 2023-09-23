@@ -2,10 +2,11 @@ package judge
 
 import (
 	"fmt"
+	"strings"
+
 	"main/internal/data/model"
 	"main/internal/service/judge/pkg/code"
 	"main/internal/service/judge/pkg/errs"
-	"strings"
 )
 
 type TestcaseRunOutput struct {
@@ -92,7 +93,7 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 	}
 	defer c.Destroy()
 
-	// 并发执行每个样例
+	// 执行每个样例
 	result := code.Result{}
 	result.SetStatus(code.StatusAccepted)
 	for i, testcase := range problem.Testcases {
@@ -109,6 +110,7 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 			return result, nil
 		}
 
+		result.Message, result.Error = res.Message, res.Error
 		if res.Status != code.StatusAccepted {
 			result.SetStatus(res.Status)
 			return result, nil

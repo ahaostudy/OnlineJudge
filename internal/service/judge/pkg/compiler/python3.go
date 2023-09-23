@@ -2,11 +2,12 @@ package compiler
 
 import (
 	"fmt"
-	"main/config"
 	"os"
 	"path/filepath"
 
 	"github.com/google/uuid"
+
+	"main/config"
 )
 
 type Python3 struct {
@@ -22,7 +23,7 @@ func (c *Python3) Build(codePath string) (msg string, err error) {
 }
 
 func (c *Python3) Executable() (*Executable, error) {
-	exe := &Executable{path: config.ConfJudge.Exe.Python, args: []string{c.bin}}
+	exe := &Executable{path: config.ConfJudge.Exe.Python, args: []string{"-OO", c.bin}}
 	return exe, nil
 }
 

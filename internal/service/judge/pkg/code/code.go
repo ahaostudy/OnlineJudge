@@ -2,31 +2,35 @@ package code
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/google/uuid"
+
 	"main/config"
 	"main/internal/service/judge/pkg/compiler"
 	"main/internal/service/judge/pkg/errs"
 	"main/internal/service/judge/pkg/exec"
-	"os"
-	"path/filepath"
 )
 
 type Code struct {
-	path      string
-	langID    int
-	maxTime   int
-	maxMemory int
-	cpl       compiler.Compiler
-	exe       *compiler.Executable
+	path        string
+	langID      int
+	maxCpuTime  int
+	maxRealTime int
+	maxMemory   int
+	cpl         compiler.Compiler
+	exe         *compiler.Executable
 }
 
 func NewCode(path string, langID int) *Code {
 	conf := config.ConfJudge.Sandbox
-	return NewCodeLimit(path, langID, conf.DefaultMaxTime, conf.DefaultMaxMemory)
+	return NewCodeLimit(path, langID, conf.DefaultMaxCpuTime, conf.DefaultMaxMemory)
 }
 
 func NewCodeLimit(path string, langID int, maxTime, maxMemory int) *Code {
-	return &Code{path: path, langID: langID, maxTime: maxTime, maxMemory: maxMemory}
+	conf := config.ConfJudge.Sandbox
+	return &Code{path: path, langID: langID, maxCpuTime: maxTime, maxRealTime: conf.DefaultMaxRealTime, maxMemory: maxMemory}
 }
 
 // Build 编译代码
@@ -76,9 +80,8 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	}()
 
 	// 执行
-	res, err := exec.NewCommand(*c.exe, inputPath, outputPath, errorPath, c.maxTime, c.maxMemory).Exec()
+	res, err := exec.NewCommand(*c.exe, inputPath, outputPath, errorPath, c.maxCpuTime, c.maxRealTime, c.maxMemory).Exec()
 	if err != nil {
-		fmt.Println("1", err.Error())
 		return result, err
 	}
 
@@ -87,7 +90,7 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	if err != nil {
 		return result, err
 	}
-	result.Time, result.Memory, result.Output = res.RealTime, res.Memory, string(stdout)
+	result.Time, result.Memory, result.Output = res.CpuTime, res.Memory, string(stdout)
 
 	// 系统错误
 	switch res.Result {

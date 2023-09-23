@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"main/config"
-	"main/internal/service/judge/pkg/compiler"
-	"main/internal/service/judge/pkg/errs"
 	"os/exec"
 	"reflect"
 	"regexp"
 	"strings"
+
+	"main/config"
+	"main/internal/service/judge/pkg/compiler"
+	"main/internal/service/judge/pkg/errs"
 )
 
 // Command 沙箱调用命令
@@ -19,21 +20,22 @@ type Command struct {
 	InputPath     string              // 输入文件路径
 	OutputPath    string              // 输出文件路径
 	ErrorPath     string              // 错误文件路径
-	MaxTime       int                 // 最大运行时间
+	MaxCpuTime    int                 // 最大CPU运行时间
+	MaxRealTime   int                 // 最大实际运行时间
 	MaxMemory     int                 // 最大内存
 	MaxOutputSize int                 // 最大输出大小
 }
 
 // NewCommand 创建命令对象
-func NewCommand(exe compiler.Executable, inputPath string, outputPath string, errorPath string, maxTime int, maxMemory int) *Command {
+func NewCommand(exe compiler.Executable, inputPath string, outputPath string, errorPath string, maxCpuTime int, maxRealTime int, maxMemory int) *Command {
 	conf := config.ConfJudge.Sandbox
-	return &Command{exe: exe, InputPath: inputPath, OutputPath: outputPath, ErrorPath: errorPath, MaxTime: maxTime, MaxMemory: maxMemory, MaxOutputSize: conf.DefaultMaxOutputSize}
+	return &Command{exe: exe, InputPath: inputPath, OutputPath: outputPath, ErrorPath: errorPath, MaxCpuTime: maxCpuTime, MaxRealTime: maxRealTime, MaxMemory: maxMemory, MaxOutputSize: conf.DefaultMaxOutputSize}
 }
 
 // NewDefaultCommand 创建默认命令
 func NewDefaultCommand(exe compiler.Executable, inputPath string, outputPath string, errorPath string) *Command {
 	conf := config.ConfJudge.Sandbox
-	return NewCommand(exe, inputPath, outputPath, errorPath, conf.DefaultMaxTime, conf.DefaultMaxMemory)
+	return NewCommand(exe, inputPath, outputPath, errorPath, conf.DefaultMaxCpuTime, conf.DefaultMaxRealTime, conf.DefaultMaxMemory)
 }
 
 // Exec 执行命令
@@ -104,8 +106,8 @@ func (c *Command) Command() (string, error) {
 	})
 	c.exe.AddKwargs(map[string]interface{}{
 		"max_memory":      c.MaxMemory,
-		"max_cpu_time":    c.MaxTime,
-		"max_real_time":   c.MaxTime,
+		"max_cpu_time":    c.MaxCpuTime,
+		"max_real_time":   c.MaxRealTime,
 		"max_output_size": c.MaxOutputSize,
 	})
 	// 其它参数
