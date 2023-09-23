@@ -3,9 +3,13 @@ package submit
 import (
 	"context"
 	"errors"
+	"time"
+
+	"gorm.io/gorm"
+
 	rpcJudge "main/api/judge"
 	rpcProblem "main/api/problem"
-	"main/api/submit"
+	rpcSubmit "main/api/submit"
 	"main/config"
 	"main/internal/common/code"
 	"main/internal/data/model"
@@ -13,9 +17,6 @@ import (
 	"main/internal/middleware/redis"
 	status "main/internal/service/judge/pkg/code"
 	"main/rpc"
-	"time"
-
-	"gorm.io/gorm"
 )
 
 func (SubmitServer) Submit(ctx context.Context, req *rpcSubmit.SubmitRequest) (resp *rpcSubmit.SubmitResponse, _ error) {
@@ -137,6 +138,30 @@ func (SubmitServer) SubmitContest(ctx context.Context, req *rpcSubmit.SubmitCont
 	}
 
 	resp.SubmitID = submit.ID
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (SubmitServer) DeleteSubmit(_ context.Context, req *rpcSubmit.DeleteSubmitRequest) (resp *rpcSubmit.DeleteSubmitResponse, _ error) {
+	resp = new(rpcSubmit.DeleteSubmitResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 获取提交数据
+	submit, err := repository.GetSubmit(req.GetID())
+	if err == gorm.ErrRecordNotFound || (err == nil && submit.UserID != req.GetUserID()) {
+		resp.StatusCode = code.CodeRecordNotFound.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+
+	// 删除一条记录
+	err = repository.DeleteSubmit(req.GetID())
+	if err != nil {
+		return
+	}
+
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }
