@@ -89,11 +89,8 @@ func (SubmitServer) GetSubmitResult(ctx context.Context, req *rpcSubmit.GetSubmi
 
 	// 获取判题结果
 	res, err := redis.Rdb.Get(ctx, redis.GenerateJudgeKey(judgeID)).Bytes()
-	if err != nil {
-		return
-	}
 	// 运行中，未获取到结果
-	if len(res) == 0 {
+	if err != nil || len(res) == 0 {
 		resp.Result = &rpcJudge.JudgeResult{Status: int64(status.StatusRunning)}
 		resp.StatusCode = code.CodeSuccess.Code()
 		return
