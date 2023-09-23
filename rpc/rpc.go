@@ -39,6 +39,7 @@ func InitGRPCClients() error {
 	r.Run(InitPrivateGRPC)
 	r.Run(InitChatGPTGRPC)
 	r.Run(InitContestGRPC)
+	r.Run(InitUserGRPC)
 
 	return r.Error()
 }

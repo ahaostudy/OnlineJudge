@@ -1,15 +1,16 @@
 package contest
 
 import (
-	"main/api/contest"
-	"main/internal/common/code"
-	"main/internal/data/model"
-	"main/internal/gateway/controller/ctl"
-	"main/rpc"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+
+	rpcContest "main/api/contest"
+	"main/internal/common/code"
+	"main/internal/data/model"
+	"main/internal/gateway/controller/ctl"
+	"main/rpc"
 )
 
 type (

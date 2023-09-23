@@ -1,17 +1,17 @@
 package problem
 
 import (
-	rpcProblem "main/api/problem"
-	"main/internal/common/code"
-	"main/internal/common/build"
-	"main/internal/common/ctxt"
-	"main/internal/data/model"
-	"main/internal/gateway/controller/ctl"
-	"main/rpc"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+
+	rpcProblem "main/api/problem"
+	"main/internal/common/build"
+	"main/internal/common/code"
+	"main/internal/data/model"
+	"main/internal/gateway/controller/ctl"
+	"main/rpc"
 )
 
 type (
@@ -50,11 +50,8 @@ func CreateProblem(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 创建问题
-	result, err := rpc.ProblemCli.CreateProblem(ctx, &rpcProblem.CreateProblemRequest{Problem: problem})
+	result, err := rpc.ProblemCli.CreateProblem(c.Request.Context(), &rpcProblem.CreateProblemRequest{Problem: problem})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
@@ -73,11 +70,8 @@ func DeleteProblem(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 删除题目
-	result, err := rpc.ProblemCli.DeleteProblem(ctx, &rpcProblem.DeleteProblemRequest{
+	result, err := rpc.ProblemCli.DeleteProblem(c.Request.Context(), &rpcProblem.DeleteProblemRequest{
 		ProblemID: id,
 	})
 	if err != nil {
@@ -103,11 +97,8 @@ func UpdateProblem(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 更新题目信息
-	result, err := rpc.ProblemCli.UpdateProblem(ctx, &rpcProblem.UpdateProblemRequest{
+	result, err := rpc.ProblemCli.UpdateProblem(c.Request.Context(), &rpcProblem.UpdateProblemRequest{
 		ProblemID: id,
 		Problem:   rawData,
 	})

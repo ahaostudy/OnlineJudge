@@ -2,17 +2,19 @@ package email
 
 import (
 	"fmt"
-	"main/config"
 	"net/smtp"
 
 	"github.com/jordan-wright/email"
+
+	"main/config"
 )
 
 func Send(subject, html string, toEmails ...string) error {
+	conf := config.ConfUser
 	e := email.NewEmail()
 
 	// 发送方的邮箱
-	e.From = config.ConfServer.Email.From
+	e.From = conf.Email.From
 	// 接收方的邮箱
 	e.To = toEmails
 	// 主题
@@ -20,10 +22,10 @@ func Send(subject, html string, toEmails ...string) error {
 	// 邮件内容
 	e.HTML = []byte(html)
 	// 服务器配置
-	auth := smtp.PlainAuth("", config.ConfServer.Email.Email, config.ConfServer.Email.Auth, config.ConfServer.Email.Host)
+	auth := smtp.PlainAuth("", conf.Email.Email, conf.Email.Auth, conf.Email.Host)
 
 	// 发送消息
-	return e.Send(config.ConfServer.Email.Addr, auth)
+	return e.Send(conf.Email.Addr, auth)
 }
 
 func SendCaptcha(captcha string, toEmails ...string) error {

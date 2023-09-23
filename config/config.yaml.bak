@@ -12,7 +12,7 @@ rabbitmq:
   host: 127.0.0.1
   port: 5672
   username: admin
-  password: xxx
+  password: admin
   vhost: ''
 
 mysql:
@@ -38,24 +38,15 @@ mongodb:
   username: root
   password: xxx
 
-
-# 后端服务
-server:
+auth:
+  # jwt
+  issuer: zty
+  key: ztyyyds666
+  expire: 720  # 30*24h
+  # sha256
   salt: 2023/08/31
+  # snowflake
   node: 1  # 雪花节点编号
-
-  email:
-    addr: smtp.163.com:25
-    host: smtp.163.com
-    from: "OnlineJudge <xxx@163.com>"
-    email: xxx@163.com
-    auth: xxx  # 邮箱授权码
-    expire: 300  # 5*60s
-
-  auth:
-    issuer: zty
-    key: ztyyyds666
-    expire: 720  # 30*24h
 
 
 # 判题服务
@@ -119,6 +110,21 @@ chatgpt:
     baseUrl: https://api.openai.com/
     apiKey: sk-xxx
     model: gpt-3.5-turbo
+
+
+user:
+  name: user
+  version: v1
+  host: 192.168.1.67
+  port: 9996
+
+  email:
+    addr: smtp.163.com:25
+    host: smtp.163.com
+    from: "xxx <xxx@163.com>"
+    email: xxx@163.com
+    auth: xxx  # 邮箱授权码
+    expire: 300  # 5*60s
 
 
 contest:

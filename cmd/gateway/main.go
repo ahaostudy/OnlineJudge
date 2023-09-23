@@ -2,22 +2,12 @@ package main
 
 import (
 	"main/config"
-	"main/internal/gateway/dao"
 	"main/internal/gateway/route"
-	"main/internal/middleware/redis"
 	"main/rpc"
 )
 
 func init() {
 	if err := config.InitConfig(); err != nil {
-		panic(err)
-	}
-
-	if err := dao.InitMySQL(); err != nil {
-		panic(err)
-	}
-
-	if err := redis.InitRedis(); err != nil {
 		panic(err)
 	}
 }

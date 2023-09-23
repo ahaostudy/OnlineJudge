@@ -4,6 +4,15 @@ package user;
 
 option go_package = "api/user;rpcUser";
 
+service UserService {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
+    rpc GetCaptcha(GetCaptchaRequest) returns (GetCaptchaResponse) {}
+    rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse) {}
+}
+
 message User {
     int64 ID = 1;
     string Nickname = 2;
@@ -13,4 +22,71 @@ message User {
     string Avatar = 6;
     string Signature = 7;
     int64 Role = 8;
+}
+
+message RegisterRequest {
+    string Email = 1;
+    string Captcha = 2;
+    string Password = 3;
+}
+
+message RegisterResponse {
+    int64 StatusCode = 1;
+    string Token = 2;
+    int64 UserID = 3;
+}
+
+message LoginRequest {
+    string Username = 1;
+    string Email = 2;
+    string Password = 3;
+    string Captcha = 4;
+}
+
+message LoginResponse {
+    int64 StatusCode = 1;
+    string Token = 2;
+    int64 UserID = 3;
+}
+
+message CreateUserRequest {
+    string Nickname = 1;
+    string Username = 2;
+    string Password = 3;
+    string Email = 4;
+    string Avatar = 5;
+    string Signature = 6;
+    int64 Role = 7;
+}
+
+message CreateUserResponse {
+    int64 StatusCode = 1;
+}
+
+message UpdateUserRequest {
+    int64 ID = 1;
+    bytes User = 2;
+    int64 LoggedInID = 3;
+}
+
+message UpdateUserResponse {
+    int64 StatusCode = 1;
+}
+
+message GetCaptchaRequest {
+    string Email = 1;
+}
+
+message GetCaptchaResponse {
+    int64 StatusCode = 1;
+    string Captcha = 2;
+}
+
+message IsAdminRequest {
+    int64 ID = 1;
+}
+
+message IsAdminResponse {
+    int64 StatusCode = 1;
+    bool IsAdmin = 2;
 }

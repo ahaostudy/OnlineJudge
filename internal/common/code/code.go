@@ -23,6 +23,8 @@ const (
 	CodeContestNotExist   Code = 2015
 	CodeContestNotOngoing Code = 2016
 
+	CodeForbidden Code = 3001
+
 	CodeServerBusy Code = 4001
 )
 
@@ -30,7 +32,7 @@ var msg = map[Code]string{
 	CodeSuccess: "success",
 
 	CodeInvalidParams:     "请求参数错误",
-	CodeUserExist:         "用户已存在",
+	CodeUserExist:         "用户名已存在",
 	CodeUserNotExist:      "用户不存在",
 	CodeInvalidPassword:   "用户名或密码错误",
 	CodeNotMatchPassword:  "两次密码不一致",
@@ -45,6 +47,8 @@ var msg = map[Code]string{
 	CodeContestHasStarted: "比赛已经开始",
 	CodeContestNotExist:   "比赛不存在",
 	CodeContestNotOngoing: "比赛未开始或已结束",
+
+	CodeForbidden: "权限不足",
 
 	CodeServerBusy: "服务繁忙",
 }

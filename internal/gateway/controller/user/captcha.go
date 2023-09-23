@@ -1,12 +1,14 @@
 package user
 
 import (
-	"main/internal/common/code"
-	"main/internal/gateway/controller/ctl"
-	"main/internal/gateway/service/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	rpcUser "main/api/user"
+	"main/internal/common/code"
+	"main/internal/gateway/controller/ctl"
+	"main/rpc"
 )
 
 type (
@@ -30,10 +32,10 @@ func GetCaptcha(c *gin.Context) {
 	}
 
 	// 发送验证码到邮箱
-	if ok := user.SendCaptcha(req.Email); !ok {
+	result, err := rpc.UserCli.GetCaptcha(c.Request.Context(), &rpcUser.GetCaptchaRequest{Email: req.Email})
+	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
-
-	c.JSON(http.StatusOK, res.CodeOf(code.CodeSuccess))
+	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.GetStatusCode())))
 }

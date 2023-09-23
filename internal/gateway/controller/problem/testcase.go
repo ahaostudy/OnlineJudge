@@ -1,19 +1,17 @@
 package problem
 
 import (
-	"context"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+
 	rpcProblem "main/api/problem"
-	"main/internal/common/code"
 	"main/internal/common/build"
-	"main/internal/common/ctxt"
+	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
-	"net/http"
-	"strconv"
-	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 type (
@@ -48,11 +46,8 @@ func GetTestcase(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 获取样例数据
-	result, err := rpc.ProblemCli.GetTestcase(ctx, &rpcProblem.GetTestcaseRequest{
+	result, err := rpc.ProblemCli.GetTestcase(c.Request.Context(), &rpcProblem.GetTestcaseRequest{
 		ID: id,
 	})
 	if err != nil {
@@ -85,13 +80,10 @@ func CreateTestcase(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
 	switch req.ActionType {
 	case 1:
 		// 创建题目
-		result, err := rpc.ProblemCli.CreateTestcase(ctx, &rpcProblem.CreateTestcaseRequest{
+		result, err := rpc.ProblemCli.CreateTestcase(c.Request.Context(), &rpcProblem.CreateTestcaseRequest{
 			ProblemID: req.ProblemID,
 			Input:     []byte(req.Input),
 			Output:    []byte(req.Output),
@@ -118,11 +110,8 @@ func DeleteTestcase(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 删除样例
-	result, err := rpc.ProblemCli.DeleteTestcase(ctx, &rpcProblem.DeleteTestcaseRequest{
+	result, err := rpc.ProblemCli.DeleteTestcase(c.Request.Context(), &rpcProblem.DeleteTestcaseRequest{
 		ID: id,
 	})
 	if err != nil {

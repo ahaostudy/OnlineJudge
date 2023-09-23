@@ -10,14 +10,15 @@ var (
 	ConfRedis    Redis
 	ConfMongodb  Mongodb
 	ConfEtcd     Etcd
+	ConfAuth     Auth
 
-	ConfServer   Server
-	ConfPrivate  Private
-	ConfJudge    Judge
-	ConfProblem  Problem
-	ConfSubmit   Submit
-	ConfChatGPT  Chatgpt
-	ConfContest  Contest
+	ConfPrivate Private
+	ConfJudge   Judge
+	ConfProblem Problem
+	ConfSubmit  Submit
+	ConfChatGPT Chatgpt
+	ConfContest Contest
+	ConfUser    User
 )
 
 // InitConfig 初始化配置
@@ -42,14 +43,15 @@ func InitConfig() error {
 		ConfRedis = conf.Redis
 		ConfMongodb = conf.Mongodb
 		ConfEtcd = conf.Etcd
+		ConfAuth = conf.Auth
 
-		ConfServer = conf.Server
 		ConfPrivate = conf.Private
 		ConfJudge = conf.Judge
 		ConfProblem = conf.Problem
 		ConfSubmit = conf.Submit
 		ConfChatGPT = conf.Chatgpt
 		ConfContest = conf.Contest
+		ConfUser = conf.User
 	}
 
 	// consts

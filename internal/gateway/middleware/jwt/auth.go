@@ -1,11 +1,14 @@
 package jwt
 
 import (
-	"main/internal/gateway/service/auth"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+
+	"main/api/user"
+	"main/internal/common/code"
+	"main/rpc"
 )
 
 // Auth JWT鉴权中间件
@@ -39,13 +42,12 @@ func Auth() gin.HandlerFunc {
 func AuthAdmin() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.GetInt64("user_id")
-		isAdmin, ok := auth.IsAdmin(id)
-		if !ok {
-			// TODO 这里是否需要使用500
+		result, err := rpc.UserCli.IsAdmin(ctx.Request.Context(), &rpcUser.IsAdminRequest{ID: id})
+		if err != nil || result.GetStatusCode() != code.CodeSuccess.Code() {
 			ctx.AbortWithStatus(http.StatusInternalServerError)
 			return
 		}
-		if !isAdmin {
+		if !result.GetIsAdmin() {
 			ctx.AbortWithStatus(http.StatusForbidden)
 			return
 		}

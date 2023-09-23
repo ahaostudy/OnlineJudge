@@ -2,13 +2,13 @@ package chatgpt
 
 import (
 	"io"
-	rpcChatGPT "main/api/chatgpt"
-	"main/internal/common/code"
-	"main/internal/common/build"
-	"main/internal/common/ctxt"
-	"main/rpc"
 
 	"github.com/gin-gonic/gin"
+
+	rpcChatGPT "main/api/chatgpt"
+	"main/internal/common/build"
+	"main/internal/common/code"
+	"main/rpc"
 )
 
 type (
@@ -50,9 +50,7 @@ func Chat(c *gin.Context) {
 	}
 
 	// 调用Chat服务
-	ctx, cancel := ctxt.WithTimeoutContext(60)
-	defer cancel()
-	stream, err := rpc.ChatGPTCli.Chat(ctx, &rpcChatGPT.ChatRequest{Messages: messages})
+	stream, err := rpc.ChatGPTCli.Chat(c.Request.Context(), &rpcChatGPT.ChatRequest{Messages: messages})
 	if err != nil {
 		panic(err)
 	}
