@@ -1,15 +1,16 @@
 package contest
 
 import (
+	"github.com/opentracing/opentracing-go"
+	"google.golang.org/grpc"
+
 	"main/api/contest"
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
-	"main/internal/middleware/mongodb"
+	"main/internal/middleware/tracing"
 	"main/internal/middleware/redis"
 	"main/rpc"
-
-	"google.golang.org/grpc"
 )
 
 func init() {
@@ -33,11 +34,16 @@ type ContestServer struct {
 func Run() error {
 	conf := config.ConfContest
 
+	// 初始化tracer
+	tracer, closer := tracing.InitTracer(conf.Name)
+	defer closer.Close()
+	opentracing.SetGlobalTracer(tracer)
+
 	// 连接MongoDB
-	if err := mongodb.InitMongoDB(); err != nil {
-		return err
-	}
-	defer mongodb.Disconnect()
+	// if err := mongodb.InitMongoDB(); err != nil {
+	// 	return err
+	// }
+	// defer mongodb.Disconnect()
 
 	// 连接problem服务
 	conn, err := rpc.InitProblemGRPC()

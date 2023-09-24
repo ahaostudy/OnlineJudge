@@ -1,16 +1,18 @@
 package submit
 
 import (
+	"github.com/opentracing/opentracing-go"
+	"google.golang.org/grpc"
+
 	rpcSubmit "main/api/submit"
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
+	"main/internal/middleware/tracing"
 	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	"main/internal/service/submit/jobs"
 	"main/rpc"
-
-	"google.golang.org/grpc"
 )
 
 func init() {
@@ -28,6 +30,13 @@ type SubmitServer struct {
 }
 
 func Run() error {
+	conf := config.ConfSubmit
+
+	// 初始化tracer
+	tracer, closer := tracing.InitTracer(conf.Name)
+	defer closer.Close()
+	opentracing.SetGlobalTracer(tracer)
+
 	// 连接需要的rpc服务
 	connJudge, err := rpc.InitJudgeGRPC()
 	if err != nil {
@@ -45,8 +54,6 @@ func Run() error {
 
 	// 启动定时任务
 	jobs.RunSubmitJobs()
-
-	conf := config.ConfSubmit
 
 	run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
 		rpcSubmit.RegisterSubmitServiceServer(grpcServ, new(SubmitServer))

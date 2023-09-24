@@ -3,6 +3,7 @@ package rpc
 import (
 	"fmt"
 
+	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/naming/resolver"
 	"google.golang.org/grpc"
@@ -68,6 +69,7 @@ func NewGRPCClient(addr, name string) (*grpc.ClientConn, error) {
 		grpc.WithResolvers(etcdResolver),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultServiceConfig(fmt.Sprintf(`{"LoadBalancingPolicy": "%s"}`, roundrobin.Name)),
+		grpc.WithChainUnaryInterceptor(grpc_opentracing.UnaryClientInterceptor()),
 	)
 	if err != nil {
 		return conn, err
