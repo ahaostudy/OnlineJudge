@@ -1,11 +1,11 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"main/internal/gateway/controller/chatgpt"
 	"main/internal/gateway/middleware/cors"
 	"main/internal/gateway/middleware/jwt"
-
-	"github.com/gin-gonic/gin"
 )
 
 func InitRoute() *gin.Engine {

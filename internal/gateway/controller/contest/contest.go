@@ -81,6 +81,8 @@ func DeleteContest(c *gin.Context) {
 }
 
 func UpdateContest(c *gin.Context) {
+	// span, ctx := opentracing.StartSpanFromContext(c.Request.Context(), "UpdateContest")
+	// defer span.Finish()
 	res := new(UpdateContestResonse)
 
 	// 解析参数

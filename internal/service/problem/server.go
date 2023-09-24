@@ -1,13 +1,15 @@
 package problem
 
 import (
+	"github.com/opentracing/opentracing-go"
+	"google.golang.org/grpc"
+
 	rpcProblem "main/api/problem"
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
+	"main/internal/middleware/tracing"
 	"main/rpc"
-
-	"google.golang.org/grpc"
 )
 
 func init() {
@@ -26,6 +28,11 @@ type ProblemServer struct {
 
 func Run() error {
 	conf := config.ConfProblem
+
+	// 初始化tracer
+	tracer, closer := tracing.InitTracer(conf.Name)
+	defer closer.Close()
+	opentracing.SetGlobalTracer(tracer)
 
 	// 连接contest服务
 	conn, err := rpc.InitContestGRPC()

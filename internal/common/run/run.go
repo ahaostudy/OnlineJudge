@@ -3,11 +3,13 @@ package run
 import (
 	"flag"
 	"fmt"
-	"main/config"
-	"main/discovery"
 	"net"
 
+	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"google.golang.org/grpc"
+
+	"main/config"
+	"main/discovery"
 )
 
 func init() {
@@ -34,7 +36,9 @@ func Run(host string, port int, name, version string, register func(grpcServ *gr
 	if err != nil {
 		return err
 	}
-	grpcServ := grpc.NewServer()
+	grpcServ := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(grpc_opentracing.UnaryServerInterceptor()),
+	)
 
 	// 注册服务节点
 	register(grpcServ)
