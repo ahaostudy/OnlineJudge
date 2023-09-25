@@ -1,10 +1,10 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"main/internal/gateway/controller/user"
 	"main/internal/gateway/middleware/jwt"
-
-	"github.com/gin-gonic/gin"
 )
 
 func RegisterUserRouter(r *gin.RouterGroup) {
@@ -13,6 +13,7 @@ func RegisterUserRouter(r *gin.RouterGroup) {
 	r.POST("/captcha", user.GetCaptcha)
 
 	r.Use(jwt.Auth())
+	r.GET("/:id", user.GetUser)
 	r.PUT("/:id", user.UpdateUser)
 
 	r.Use(jwt.AuthAdmin())

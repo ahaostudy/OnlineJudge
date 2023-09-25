@@ -3,15 +3,15 @@ package problem
 import (
 	"context"
 	"errors"
+
+	"gorm.io/gorm"
+
 	"main/api/contest"
 	"main/api/problem"
 	"main/internal/common/build"
 	"main/internal/common/code"
-	"main/rpc"
-
 	"main/internal/data/repository"
-
-	"gorm.io/gorm"
+	"main/rpc"
 )
 
 // 返回值中的测试样例应返回前面两个作为示例
@@ -55,6 +55,20 @@ func (ProblemServer) GetProblemList(ctx context.Context, req *rpcProblem.GetProb
 		return
 	}
 
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (ProblemServer) GetProblemCount(ctx context.Context, req *rpcProblem.GetProblemCountRequest) (resp *rpcProblem.GetProblemCountResponse, _ error) {
+	resp = new(rpcProblem.GetProblemCountResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	count, err := repository.GetProblemCount()
+	if err != nil {
+		return
+	}
+
+	resp.Count = count
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

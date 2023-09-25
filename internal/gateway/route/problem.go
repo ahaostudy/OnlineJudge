@@ -1,15 +1,16 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"main/internal/gateway/controller/problem"
 	"main/internal/gateway/middleware/jwt"
-
-	"github.com/gin-gonic/gin"
 )
 
 func RegisterProblemRouter(r *gin.RouterGroup) {
 	r.GET("/", problem.GetProblemList)
 	r.GET("/:id", problem.GetProblem)
+	r.GET("/count", problem.CreateProblemCount)
 	r.GET("/testcase/:id", problem.GetTestcase)
 
 	r.Use(jwt.Auth(), jwt.AuthAdmin())

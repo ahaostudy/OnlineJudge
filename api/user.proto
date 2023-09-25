@@ -11,6 +11,7 @@ service UserService {
     rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
     rpc GetCaptcha(GetCaptchaRequest) returns (GetCaptchaResponse) {}
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse) {}
+    rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
 }
 
 message User {
@@ -89,4 +90,13 @@ message IsAdminRequest {
 message IsAdminResponse {
     int64 StatusCode = 1;
     bool IsAdmin = 2;
+}
+
+message GetUserRequest {
+    int64 ID = 1;
+}
+
+message GetUserResponse {
+    int64 StatusCode = 1;
+    User User = 2;
 }

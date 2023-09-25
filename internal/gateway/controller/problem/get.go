@@ -2,17 +2,18 @@ package problem
 
 import (
 	"context"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/gin-gonic/gin"
+
 	rpcProblem "main/api/problem"
 	"main/internal/common/build"
 	"main/internal/common/code"
 	"main/internal/data/model"
 	"main/internal/gateway/controller/ctl"
 	"main/rpc"
-	"net/http"
-	"strconv"
-	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 // 默认每页的数量
@@ -34,6 +35,11 @@ type (
 	GetProblemListResponse struct {
 		ctl.Response
 		ProblemList []*model.Problem `json:"problem_list"`
+	}
+
+	GetProblemCountResponse struct {
+		ctl.Response
+		Count int64 `json:"count"`
 	}
 
 	GetContestProblemResponse struct {
@@ -122,6 +128,20 @@ func GetProblemList(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+func CreateProblemCount(c *gin.Context) {
+	res := new(GetProblemCountResponse)
+
+	result, err := rpc.ProblemCli.GetProblemCount(c.Request.Context(), &rpcProblem.GetProblemCountRequest{})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	res.Count = result.GetCount()
+	res.CodeOf(code.Code(result.GetStatusCode()))
+	c.JSON(http.StatusOK, res)
+}
+
 func GetContestProblem(c *gin.Context) {
 	res := new(GetContestProblemResponse)
 
@@ -135,7 +155,7 @@ func GetContestProblem(c *gin.Context) {
 
 	// 获取比赛题目
 	result, err := rpc.ProblemCli.GetContestProblem(c.Request.Context(), &rpcProblem.GetContestProblemRequest{
-		UserID: userID,
+		UserID:    userID,
 		ProblemID: id,
 	})
 	if err != nil {
@@ -172,7 +192,7 @@ func GetContestProblemList(c *gin.Context) {
 	// 获取比赛题目列表
 	result, err := rpc.ProblemCli.GetContestProblemList(c.Request.Context(), &rpcProblem.GetContestProblemListRequest{
 		ContestID: contestID,
-		UserID: userID,
+		UserID:    userID,
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
