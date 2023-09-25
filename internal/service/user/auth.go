@@ -38,7 +38,8 @@ func (UserServer) Login(ctx context.Context, req *rpcUser.LoginRequest) (resp *r
 		// 获取用户信息
 		if len(req.GetUsername()) > 0 {
 			user, err = repository.GetUserByUsername(req.GetUsername())
-		} else {
+		}
+		if len(req.GetEmail()) > 0 && errors.Is(err, gorm.ErrRecordNotFound) {
 			user, err = repository.GetUserByEmail(req.GetEmail())
 		}
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -56,7 +57,7 @@ func (UserServer) Login(ctx context.Context, req *rpcUser.LoginRequest) (resp *r
 		}
 	} else {
 		// 通过邮箱获取用户，判断用户是否存在
-		_, err := repository.GetUserByEmail(req.GetEmail())
+		user, err = repository.GetUserByEmail(req.GetEmail())
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			resp.StatusCode = code.CodeUserNotExist.Code()
 			return
@@ -71,6 +72,11 @@ func (UserServer) Login(ctx context.Context, req *rpcUser.LoginRequest) (resp *r
 			resp.StatusCode = code.CodeInvalidCaptcha.Code()
 			return
 		}
+	}
+
+	if user == nil {
+		resp.StatusCode = code.CodeServerBusy.Code()
+		return
 	}
 
 	// 生成token

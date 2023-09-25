@@ -1,0 +1,1366 @@
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.167ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.519ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.251ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.245ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.698ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.266ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.146ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.220ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.705ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.048ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.242ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.748ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.323ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.362ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.224ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.688ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.072ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.220ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.603ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.224ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.026ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.201ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.646ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.056ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.222ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.626ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.285ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.261ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.357ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.747ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.089ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.222ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.614ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.902ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.883ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.138ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.150ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.209ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.654ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.304ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.297ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.304ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.926ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[4.942ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.759ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.042ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.271ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.314ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.294ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.811ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.253ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.275ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.813ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:58:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.169ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+2023/09/24 21:58:37 debug logging disabled
+2023/09/24 21:58:37 Initializing logging reporter
+2023/09/24 21:58:37 debug logging disabled
+address:  192.168.1.67:9991
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.656ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.128ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.192ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.252ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.726ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.212ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.351ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.207ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.632ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.958ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.172ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.555ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.213ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.162ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.225ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.643ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.217ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.182ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.692ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.274ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.155ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.195ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.695ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.118ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.277ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.741ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.315ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.384ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.245ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.656ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.934ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.213ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.775ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.102ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.231ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.678ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.247ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.229ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.744ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.379ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[3.063ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.184ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.603ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.888ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.282ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.598ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.621ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.209ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.293ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.726ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.025ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.232ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.688ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:01 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[4.613ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+2023/09/24 21:59:01 debug logging disabled
+2023/09/24 21:59:01 Initializing logging reporter
+2023/09/24 21:59:01 debug logging disabled
+address:  192.168.1.67:9992
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.169ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.958ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.026ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.147ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.665ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.233ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.281ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.205ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.643ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.908ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.157ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.880ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.290ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.437ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.282ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.185ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.113ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[6.073ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.821ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.300ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.126ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.223ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.747ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.001ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.186ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.649ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.297ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.263ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.288ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.891ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.301ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.187ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.631ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.197ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.276ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.850ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.133ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.225ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.653ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.316ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.010ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.225ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.706ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.002ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.186ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.616ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.220ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.085ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.225ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.688ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.903ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.233ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.646ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.030ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.166ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.326ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.623ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.335ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.013ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.302ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.108ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.235ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.166ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.911ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.226ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.723ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.258ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.259ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.251ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.677ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.014ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.194ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.249ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.517ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.222ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.223ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.691ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.976ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.200ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.122ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.394ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.356ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.249ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.867ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.078ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.189ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.718ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.053ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.250ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.801ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.126ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.245ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.684ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.282ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.164ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.226ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.694ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.064ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.229ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.688ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.274ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.204ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.257ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.731ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.236ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.265ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.866ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:18 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.388ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+2023/09/24 21:59:18 debug logging disabled
+2023/09/24 21:59:18 Initializing logging reporter
+2023/09/24 21:59:18 debug logging disabled
+address:  192.168.1.67:9993
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.299ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.246ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.071ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.237ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.694ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.544ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.941ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.248ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.705ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.036ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.261ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.719ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.295ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.372ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.294ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.755ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.077ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.231ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.700ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.294ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.287ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.252ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.737ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.418ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.340ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.852ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.313ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.667ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.182ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.557ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.564ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.363ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.764ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.965ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.185ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.040ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.144ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.294ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.693ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.380ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.167ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.154ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.669ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.158ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.244ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.726ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.408ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.124ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.253ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.508ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.099ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.199ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[4.819ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:26 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.623ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+2023/09/24 21:59:26 debug logging disabled
+2023/09/24 21:59:26 Initializing logging reporter
+2023/09/24 21:59:26 debug logging disabled
+address:  192.168.1.67:9995
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.163ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.652ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.685ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.278ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.899ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.275ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.369ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.278ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.758ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.095ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.272ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.811ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.548ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.279ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.257ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.753ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.234ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.275ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.798ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.276ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.282ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.270ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.025ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.056ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.231ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.706ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.563ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.382ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.292ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.790ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.123ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.237ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.677ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.101ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.260ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.698ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.193ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.233ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.749ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.306ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.260ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.296ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.819ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.203ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.352ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.882ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.322ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.418ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.321ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.880ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.160ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.285ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.839ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.304ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.224ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.815ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.769ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.291ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.820ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.341ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.246ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.290ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.797ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.143ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.272ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.786ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.343ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.433ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.309ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.725ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.178ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.259ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.699ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.288ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.131ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.275ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.791ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.180ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.290ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.750ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.309ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.223ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.290ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.779ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.227ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.400ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.729ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.937ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.363ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.834ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.286ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.349ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.908ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.380ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[2.086ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.348ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.881ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.490ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.301ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.835ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.329ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.328ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.303ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.820ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.000ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.227ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.715ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:37 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.115ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+address:  192.168.1.67:9001
+address:  192.168.1.67:9994
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.197ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.019ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.114ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.179ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.671ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.237ms] [34;1m[rows:-][0m SELECT * FROM `users` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.285ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'users' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.202ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.783ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.014ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'problems' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.580ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.839ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.385ms] [34;1m[rows:-][0m SELECT * FROM `problems` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.156ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'problems' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.205ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.001ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.941ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'testcases' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.151ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.528ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.185ms] [34;1m[rows:-][0m SELECT * FROM `testcases` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.863ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'testcases' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.129ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.592ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.882ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'submits' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.171ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.712ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.282ms] [34;1m[rows:-][0m SELECT * FROM `submits` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.141ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'submits' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.247ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.575ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.024ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'uid'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.179ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.570ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.889ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'submits' AND index_name = 'pid'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.203ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.525ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.836ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'contests' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.154ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.573ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.222ms] [34;1m[rows:-][0m SELECT * FROM `contests` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.167ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'contests' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.637ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.604ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.692ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = 'oj' AND table_name = 'registers' AND table_type = 'BASE TABLE'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.291ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.611ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.243ms] [34;1m[rows:-][0m SELECT * FROM `registers` LIMIT 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.044ms] [34;1m[rows:-][0m SELECT column_name, column_default, is_nullable = 'YES', data_type, character_maximum_length, column_type, column_key, extra, column_comment, numeric_precision, numeric_scale FROM information_schema.columns WHERE table_schema = 'oj' AND table_name = 'registers' ORDER BY ORDINAL_POSITION
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.270ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.722ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[1.111ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_contest_id'
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.150ms] [34;1m[rows:-][0m SELECT DATABASE()
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.568ms] [34;1m[rows:1][0m SELECT SCHEMA_NAME from Information_schema.SCHEMATA where SCHEMA_NAME LIKE 'oj%' ORDER BY SCHEMA_NAME='oj' DESC,SCHEMA_NAME limit 1
+
+2023/09/24 21:59:49 [32m/projects/OnlineJudge/internal/data/db.go:63
+[0m[33m[0.934ms] [34;1m[rows:-][0m SELECT count(*) FROM information_schema.statistics WHERE table_schema = 'oj' AND table_name = 'registers' AND index_name = 'idx_registers_user_id'
+2023/09/24 21:59:49 debug logging disabled
+2023/09/24 21:59:49 Initializing logging reporter
+2023/09/24 21:59:49 debug logging disabled
+address:  192.168.1.67:9996
+2023/09/24 21:59:55 debug logging disabled
+2023/09/24 21:59:55 Initializing logging reporter
+2023/09/24 21:59:55 debug logging disabled
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/v1/user/register     --> main/internal/gateway/controller/user.Register (4 handlers)
+[GIN-debug] POST   /api/v1/user/login        --> main/internal/gateway/controller/user.Login (4 handlers)
+[GIN-debug] POST   /api/v1/user/captcha      --> main/internal/gateway/controller/user.GetCaptcha (4 handlers)
+[GIN-debug] PUT    /api/v1/user/:id          --> main/internal/gateway/controller/user.UpdateUser (5 handlers)
+[GIN-debug] POST   /api/v1/user/             --> main/internal/gateway/controller/user.CreateUser (6 handlers)
+[GIN-debug] GET    /api/v1/problem/          --> main/internal/gateway/controller/problem.GetProblemList (4 handlers)
+[GIN-debug] GET    /api/v1/problem/:id       --> main/internal/gateway/controller/problem.GetProblem (4 handlers)
+[GIN-debug] GET    /api/v1/problem/testcase/:id --> main/internal/gateway/controller/problem.GetTestcase (4 handlers)
+[GIN-debug] POST   /api/v1/problem/          --> main/internal/gateway/controller/problem.CreateProblem (6 handlers)
+[GIN-debug] PUT    /api/v1/problem/:id       --> main/internal/gateway/controller/problem.UpdateProblem (6 handlers)
+[GIN-debug] DELETE /api/v1/problem/:id       --> main/internal/gateway/controller/problem.DeleteProblem (6 handlers)
+[GIN-debug] POST   /api/v1/problem/testcase/ --> main/internal/gateway/controller/problem.CreateTestcase (6 handlers)
+[GIN-debug] DELETE /api/v1/problem/testcase/:id --> main/internal/gateway/controller/problem.DeleteTestcase (6 handlers)
+[GIN-debug] GET    /api/v1/problem/contest/:id --> main/internal/gateway/controller/problem.GetContestProblem (6 handlers)
+[GIN-debug] GET    /api/v1/problem/contest/  --> main/internal/gateway/controller/problem.GetContestProblemList (6 handlers)
+[GIN-debug] GET    /api/v1/submit/           --> main/internal/gateway/controller/submit.GetSubmitList (5 handlers)
+[GIN-debug] GET    /api/v1/submit/:id        --> main/internal/gateway/controller/submit.GetSubmit (5 handlers)
+[GIN-debug] POST   /api/v1/submit/           --> main/internal/gateway/controller/submit.Submit (5 handlers)
+[GIN-debug] DELETE /api/v1/submit/:id        --> main/internal/gateway/controller/submit.DeleteSubmit (5 handlers)
+[GIN-debug] POST   /api/v1/submit/result     --> main/internal/gateway/controller/submit.GetResult (5 handlers)
+[GIN-debug] POST   /api/v1/submit/debug      --> main/internal/gateway/controller/submit.Debug (5 handlers)
+[GIN-debug] GET    /api/v1/contest/          --> main/internal/gateway/controller/contest.GetContestList (4 handlers)
+[GIN-debug] POST   /api/v1/contest/rank      --> main/internal/gateway/controller/contest.ContestRank (4 handlers)
+[GIN-debug] GET    /api/v1/contest/:id       --> main/internal/gateway/controller/contest.GetContest (5 handlers)
+[GIN-debug] POST   /api/v1/contest/register  --> main/internal/gateway/controller/contest.RegisterContest (5 handlers)
+[GIN-debug] POST   /api/v1/contest/          --> main/internal/gateway/controller/contest.CreateContest (6 handlers)
+[GIN-debug] PUT    /api/v1/contest/:id       --> main/internal/gateway/controller/contest.UpdateContest (6 handlers)
+[GIN-debug] DELETE /api/v1/contest/:id       --> main/internal/gateway/controller/contest.DeleteContest (6 handlers)
+[GIN-debug] POST   /api/v1/chat              --> main/internal/gateway/controller/chatgpt.Chat (5 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Environment variable PORT is undefined. Using port :8080 by default
+[GIN-debug] Listening and serving HTTP on :8080
+
+2023/09/24 22:00:15 [32m/projects/OnlineJudge/internal/data/repository/user.go:17
+[0m[33m[0.538ms] [34;1m[rows:1][0m SELECT * FROM `users` WHERE username = 'ahao' ORDER BY `users`.`id` LIMIT 1
+2023/09/24 22:00:15 Reporting span 3f75256a8075067c:5d5c47ecb9669d1b:3f75256a8075067c:1
+2023/09/24 22:00:15 Reporting span 3f75256a8075067c:3f75256a8075067c:0000000000000000:1
+[GIN] 2023/09/24 - 22:00:15 | 200 |    1.521524ms |     192.168.1.9 | POST     "/api/v1/user/login"
