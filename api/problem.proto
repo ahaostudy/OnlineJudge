@@ -8,6 +8,7 @@ option go_package = "api/problem;rpcProblem";
 service ProblemService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
     rpc GetProblemList(GetProblemListRequest) returns (GetProblemListResponse) {}
+    rpc GetProblemCount(GetProblemCountRequest) returns (GetProblemCountResponse) {}
     rpc GetContestProblem(GetContestProblemRequest) returns (GetContestProblemResponse) {}
     rpc GetContestProblemList(GetContestProblemListRequest) returns (GetContestProblemListResponse) {}
     rpc CreateProblem(CreateProblemRequest) returns (CreateProblemResponse) {}
@@ -64,6 +65,14 @@ message GetProblemListRequest {
 message GetProblemListResponse {
     int64 StatusCode = 1;
     repeated Problem ProblemList = 2;
+}
+
+message GetProblemCountRequest {
+}
+
+message GetProblemCountResponse {
+    int64 StatusCode = 1;
+    int64 Count = 2;
 }
 
 message GetContestProblemListRequest {
