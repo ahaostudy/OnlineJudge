@@ -1,10 +1,8 @@
 package problem
 
 import (
-	"context"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -27,9 +25,15 @@ type (
 		ID int64
 	}
 
+	Sample struct {
+		Input  string `json:"input"`
+		Output string `json:"output"`
+	}
+
 	GetProblemResponse struct {
 		ctl.Response
 		Problem *model.Problem `json:"problem"`
+		Samples []*Sample      `json:"samples"`
 	}
 
 	GetProblemListResponse struct {
@@ -65,10 +69,7 @@ func GetProblem(c *gin.Context) {
 	}
 
 	// 获取题目
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
-	result, err := rpc.ProblemCli.GetProblem(ctx, &rpcProblem.GetProblemRequest{ProblemID: req.ID})
+	result, err := rpc.ProblemCli.GetProblem(c.Request.Context(), &rpcProblem.GetProblemRequest{ProblemID: req.ID})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
@@ -87,6 +88,15 @@ func GetProblem(c *gin.Context) {
 		return
 	}
 	res.Problem = problem
+	res.Problem.Testcases = nil
+
+	// 复制示例
+	for _, sample := range result.GetProblem().GetSamples() {
+		res.Samples = append(res.Samples, &Sample{
+			Input:  sample.Input,
+			Output: sample.Output,
+		})
+	}
 
 	res.Success()
 	c.JSON(http.StatusOK, res)
@@ -100,11 +110,8 @@ func GetProblemList(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", strconv.Itoa(defaultPage)))
 	count, _ := strconv.Atoi(c.DefaultQuery("count", strconv.Itoa(defaultCount)))
 
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
 	// 获取题目列表
-	result, err := rpc.ProblemCli.GetProblemList(ctx, &rpcProblem.GetProblemListRequest{
+	result, err := rpc.ProblemCli.GetProblemList(c.Request.Context(), &rpcProblem.GetProblemListRequest{
 		Page:  int64(page),
 		Count: int64(count),
 	})

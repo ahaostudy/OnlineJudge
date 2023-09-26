@@ -9,7 +9,6 @@ import (
 
 	"main/config"
 	"main/internal/service/judge/pkg/compiler"
-	"main/internal/service/judge/pkg/errs"
 	"main/internal/service/judge/pkg/exec"
 )
 
@@ -62,7 +61,7 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	// 如果未编译则编译代码
 	if c.exe == nil {
 		if r, ok := c.Build(); !ok {
-			return r, errs.ErrCompilationFailed
+			return r, nil
 		}
 	}
 
