@@ -1,25 +1,25 @@
 package compiler
 
 const (
-	LangC = iota + 1
-	LangCPP
+	LangCPP = iota + 1
+	LangC
 	LangPython3
-	LangGo
 	LangJava
+	LangGo
 )
 
 func GetCompiler(langID int) Compiler {
 	switch langID {
-	case LangC:
-		return new(GCC)
 	case LangCPP:
 		return new(GPP)
+	case LangC:
+		return new(GCC)
 	case LangPython3:
 		return new(Python3)
-	case LangGo:
-		return new(GO)
 	case LangJava:
 		return new(Java)
+	case LangGo:
+		return new(GO)
 	default:
 		return nil
 	}

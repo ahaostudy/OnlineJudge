@@ -13,6 +13,7 @@ type Problem struct {
 	MaxMemory   int    `gorm:"default:536870912;comment:空间限制" json:"max_memory"` // 512 * 1024 * 1024 byte = 512MB
 	Source      string `gorm:"comment:题目来源" json:"source"`
 	ContestID   int64  `gorm:"default:0;comment:比赛ID" json:"contest_id"`
+	SampleCount int    `gorm:"default:2;comment:示例数" json:"sample_count"`
 	AuthorID    int64  `gorm:"comment:作者ID" json:"author_id"`
 
 	Testcases []*Testcase `gorm:"-:migration;<-:false" json:"testcases"`

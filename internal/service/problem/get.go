@@ -20,7 +20,7 @@ func (ProblemServer) GetProblem(ctx context.Context, req *rpcProblem.GetProblemR
 	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 访问数据库获取题目信息
-	problem, err := repository.GetProblem_(req.GetProblemID())
+	problem, err := repository.GetProblemDetail(req.GetProblemID())
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		resp.StatusCode = code.CodeRecordNotFound.Code()
 		return
@@ -35,6 +35,22 @@ func (ProblemServer) GetProblem(ctx context.Context, req *rpcProblem.GetProblemR
 		return
 	}
 	resp.Problem = p
+
+	// 获取示例内容
+	for i := 0; i < problem.SampleCount && i < len(problem.Testcases); i++ {
+		input, ok := problem.Testcases[i].GetInput()
+		if !ok {
+			return
+		}
+		output, ok := problem.Testcases[i].GetOutput()
+		if !ok {
+			return
+		}
+		resp.Problem.Samples = append(resp.Problem.Samples, &rpcProblem.Sample{
+			Input:  input,
+			Output: output,
+		})
+	}
 
 	resp.StatusCode = code.CodeSuccess.Code()
 	return

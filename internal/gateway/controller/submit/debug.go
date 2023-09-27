@@ -1,15 +1,16 @@
 package submit
 
 import (
-	"main/api/judge"
-	"main/api/submit"
-	"main/internal/common/code"
-	"main/internal/common/ctxt"
-	"main/internal/gateway/controller/ctl"
-	"main/rpc"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	rpcSubmit "main/api/submit"
+	"main/internal/common/build"
+	"main/internal/common/code"
+	"main/internal/gateway/controller/ctl"
+	cr "main/internal/service/judge/pkg/code"
+	"main/rpc"
 )
 
 type (
@@ -21,7 +22,7 @@ type (
 
 	DebugResponse struct {
 		ctl.Response
-		Result *rpcJudge.JudgeResult `json:"result"`
+		Result *cr.Result `json:"result"`
 	}
 )
 
@@ -35,11 +36,8 @@ func Debug(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 使用给定的代码、输入和语言ID调用 SubmitCli 的 Debug 方法
-	result, err := rpc.SubmitCli.Debug(ctx, &rpcSubmit.DebugReqeust{
+	result, err := rpc.SubmitCli.Debug(c.Request.Context(), &rpcSubmit.DebugReqeust{
 		Code:   []byte(req.Code),
 		Input:  []byte(req.Input),
 		LangID: req.LangID,
@@ -48,9 +46,18 @@ func Debug(c *gin.Context) {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
+	if result.GetStatusCode() != code.CodeSuccess.Code() {
+		res.CodeOf(code.Code(result.StatusCode))
+		return
+	}
 
 	// 将响应结果和状态码设置为来自 SubmitCli 响应的值
-	res.CodeOf(code.Code(result.StatusCode))
-	res.Result = result.Result
+	res.Result, err = build.UnBuildResult(result.Result)
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	res.Success()
 	c.JSON(http.StatusOK, res)
 }

@@ -36,6 +36,7 @@ message Problem {
     int64 ContestID = 13;
 
     repeated Testcase Testcases = 14;
+    repeated Sample Samples = 15;
 }
 
 message Testcase {
@@ -43,6 +44,11 @@ message Testcase {
     int64 ProblemID = 2;
     string InputPath = 3;
     string OutputPath = 4;
+}
+
+message Sample {
+    string Input = 1;
+    string Output = 2;
 }
 
 

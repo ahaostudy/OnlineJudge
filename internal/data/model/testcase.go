@@ -1,9 +1,10 @@
 package model
 
 import (
-	"main/config"
 	"os"
 	"path/filepath"
+
+	"main/config"
 )
 
 type Testcase struct {
@@ -21,6 +22,16 @@ func (t *Testcase) GetLocalInput() (string, bool) {
 // GetLocalOutput 获取本地的输出文件，实现从从网络获取到本地再返回
 func (t *Testcase) GetLocalOutput() (string, bool) {
 	return filepath.Join(config.ConfProblem.File.TestcasePath, t.OutputPath), true
+}
+
+// GetInput 获取输入内容
+func (t *Testcase) GetInput() (string, bool) {
+	inputPath := filepath.Join(config.ConfProblem.File.TestcasePath, t.InputPath)
+	bytes, err := os.ReadFile(inputPath)
+	if err != nil {
+		return "", false
+	}
+	return string(bytes), true
 }
 
 // GetOutput 获取输出内容
