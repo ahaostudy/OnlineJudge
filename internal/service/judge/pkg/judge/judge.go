@@ -61,8 +61,8 @@ func Judge_(problem *model.Problem, codePath string, langID int) (code.Result, e
 			continue
 		}
 
-		result.Time += o.result.Time
-		result.Memory += o.result.Memory
+		result.Time = max(result.Time, o.result.Time)
+		result.Memory = max(result.Memory, o.result.Memory)
 
 		// 如果没有其它错误，判断是否wa
 		output, ok := problem.Testcases[o.idx].GetOutput()
@@ -118,8 +118,8 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 
 		fmt.Printf("out_%d: %#v\n", i+1, res)
 
-		result.Time += res.Time
-		result.Memory += res.Memory
+		result.Time = max(result.Time, res.Time)
+		result.Memory = max(result.Memory, res.Memory)
 
 		// 如果没有其它错误，判断是否wa
 		output, ok := problem.Testcases[i].GetOutput()
@@ -158,4 +158,11 @@ func CmpOutput(a, b string) bool {
 	}
 
 	return true
+}
+
+func max(x, y int64) int64 {
+	if x > y {
+		return x
+	}
+	return y
 }

@@ -3,6 +3,7 @@ package route
 import (
 	"github.com/gin-gonic/gin"
 
+	"main/config"
 	"main/internal/gateway/controller/chatgpt"
 	"main/internal/gateway/middleware/cors"
 	"main/internal/gateway/middleware/jwt"
@@ -10,6 +11,8 @@ import (
 
 func InitRoute() *gin.Engine {
 	r := gin.Default()
+
+	r.Static("static", config.Root+"/file/static")
 
 	api := r.Group("/api/v1")
 	api.Use(cors.Cors())

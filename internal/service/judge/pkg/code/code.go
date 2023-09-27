@@ -116,6 +116,7 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	// 超出输出长度限制
 	if len(result.Output) >= config.ConfJudge.Sandbox.DefaultMaxOutputSize {
 		result.SetStatus(StatusOutputLimitExceeded)
+		result.Output = ""
 	}
 
 	return result, nil

@@ -8,7 +8,6 @@ import (
 	rpcSubmit "main/api/submit"
 	"main/internal/common/build"
 	"main/internal/common/code"
-	"main/internal/common/ctxt"
 	"main/internal/gateway/controller/ctl"
 	cr "main/internal/service/judge/pkg/code"
 	"main/rpc"
@@ -37,11 +36,8 @@ func Debug(c *gin.Context) {
 		return
 	}
 
-	ctx, cancel := ctxt.WithTimeoutContext(2)
-	defer cancel()
-
 	// 使用给定的代码、输入和语言ID调用 SubmitCli 的 Debug 方法
-	result, err := rpc.SubmitCli.Debug(ctx, &rpcSubmit.DebugReqeust{
+	result, err := rpc.SubmitCli.Debug(c.Request.Context(), &rpcSubmit.DebugReqeust{
 		Code:   []byte(req.Code),
 		Input:  []byte(req.Input),
 		LangID: req.LangID,

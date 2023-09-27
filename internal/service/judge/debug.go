@@ -50,6 +50,7 @@ func (JudgeServer) Debug(ctx context.Context, req *rpcJudge.DebugRequest) (resp 
 	if resp.Result.GetStatus() == int64(code.StatusAccepted) {
 		resp.Result.Status = int64(code.StatusFinished)
 	}
+	fmt.Printf("resp: %v\n", resp.Result)
 
 	resp.StatusCode = status.CodeSuccess.Code()
 	return
