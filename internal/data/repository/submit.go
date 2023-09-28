@@ -35,21 +35,21 @@ func GetContestSubmits(contestID int64) ([]*model.Submit, error) {
 // GetSubmitList 获取提交记录
 func GetSubmitList(UserID, ProblemID int64) ([]*model.Submit, error) {
 	var submitList []*model.Submit
-	err := data.DB.Where("user_id = ? AND problem_id = ?", UserID, ProblemID).Find(&submitList).Error
+	err := data.DB.Where("user_id = ? AND problem_id = ?", UserID, ProblemID).Order("created_at desc").Find(&submitList).Error
 	return submitList, err
 }
 
 // GetSubmitListByUser 获取用户提交记录
 func GetSubmitListByUser(UserID int64) ([]*model.Submit, error) {
 	var submitList []*model.Submit
-	err := data.DB.Where("user_id = ?", UserID).Find(&submitList).Error
+	err := data.DB.Where("user_id = ?", UserID).Order("created_at desc").Find(&submitList).Error
 	return submitList, err
 }
 
 // GetSubmitListByProblem 获取问题提交记录
 func GetSubmitListByProblem(ProblemID int64) ([]*model.Submit, error) {
 	var submitList []*model.Submit
-	err := data.DB.Where("problem_id = ?", ProblemID).Find(&submitList).Error
+	err := data.DB.Where("problem_id = ?", ProblemID).Order("created_at desc").Find(&submitList).Error
 	return submitList, err
 }
 

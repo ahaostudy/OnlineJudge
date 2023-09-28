@@ -16,9 +16,10 @@ import (
 	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	status "main/internal/service/judge/pkg/code"
+	"main/rpc"
 )
 
-func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
+func (SubmitServer) GetSubmit(ctx context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
 	resp = new(rpcSubmit.GetSubmitResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
@@ -37,6 +38,18 @@ func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest
 	if err != nil {
 		return
 	}
+
+	// 获取提交的代码内容
+	res, err := rpc.JudgeCli.GetCode(ctx, &rpcJudge.GetCodeRequest{CodePath: submit.Code})
+	if err != nil {
+		return
+	}
+	if res.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = res.StatusCode
+		return
+	}
+	// 复制代码内容
+	resp.Submit.Code = string(res.Code)
 
 	resp.StatusCode = code.CodeSuccess.Code()
 	return

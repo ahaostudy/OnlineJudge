@@ -17,14 +17,11 @@ import (
 type (
 	GetSubmitResponse struct {
 		ctl.Response
-		StatusCode int           `json:"status_code"`
-		StatusMsg  string        `json:"status_msg"`
 		Submit     *model.Submit `json:"submit"`
 	}
 
 	GetSubmitListRequest struct {
-		UserID    int64 `json:"user_id"`
-		ProblemID int64 `json:"problem_id"`
+		ProblemID int64 `form:"problem_id"`
 	}
 
 	GetSubmitListResponse struct {
@@ -87,7 +84,7 @@ func GetSubmitList(c *gin.Context) {
 
 	// 获取提交数据
 	result, err := rpc.SubmitCli.GetSubmitList(c.Request.Context(), &rpcSubmit.GetSubmitListRequest{
-		UserID:    req.UserID,
+		UserID:    c.GetInt64("user_id"),
 		ProblemID: req.ProblemID,
 	})
 	if err != nil {

@@ -4,16 +4,18 @@ import (
 	"encoding/json"
 	"io"
 	"log"
-	"main/api/chatgpt"
+	"strings"
+
+	rpcChatGPT "main/api/chatgpt"
 	"main/config"
 	"main/internal/common/code"
 	"main/internal/service/chatgpt/pkg/request"
 	"main/internal/service/chatgpt/pkg/result"
-	"strings"
 )
 
 func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPTService_ChatServer) error {
-	log.Println("request: chat")
+	b, _ := json.Marshal(req.GetMessages())
+	log.Println("request chat:", string(b))
 	// url
 	baseUrl := strings.TrimSuffix(config.ConfChatGPT.Openai.BaseUrl, "/")
 	url := baseUrl + "/v1/chat/completions"

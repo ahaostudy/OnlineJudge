@@ -5,9 +5,10 @@ package judge;
 option go_package = "api/judge;rpcJudge";
 
 service JudgeService {
-    rpc judge(JudgeRequest) returns (JudgeResponse) {}
-    rpc getResult(GetResultRequest) returns (GetResultResponse) {}
-    rpc debug(DebugRequest) returns (DebugResponse) {}
+    rpc Judge(JudgeRequest) returns (JudgeResponse) {}
+    rpc GetResult(GetResultRequest) returns (GetResultResponse) {}
+    rpc Debug(DebugRequest) returns (DebugResponse) {}
+    rpc GetCode(GetCodeRequest) returns (GetCodeResponse) {}
 }
 
 message JudgeRequest {
@@ -49,4 +50,13 @@ message DebugRequest {
 message DebugResponse {
     int64 StatusCode = 1;
     JudgeResult Result = 2;
+}
+
+message GetCodeRequest {
+    string CodePath = 1;
+}
+
+message GetCodeResponse {
+    int64 StatusCode = 1;
+    bytes Code = 2;
 }
