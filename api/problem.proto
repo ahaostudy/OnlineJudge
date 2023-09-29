@@ -35,8 +35,11 @@ message Problem {
     int64 AuthorID = 12;
     int64 ContestID = 13;
 
-    repeated Testcase Testcases = 14;
-    repeated Sample Samples = 15;
+    int64 SubmitCount = 14;
+    int64 AcceptedCount = 15;
+    bool IsAccepted = 16;
+    repeated Testcase Testcases = 17;
+    repeated Sample Samples = 18;
 }
 
 message Testcase {
@@ -66,6 +69,7 @@ message GetProblemResponse {
 message GetProblemListRequest {
     int64 Page = 1;
     int64 Count = 2;
+    int64 UserID = 3;
 }
 
 message GetProblemListResponse {

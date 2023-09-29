@@ -35,11 +35,17 @@ func Run() error {
 	opentracing.SetGlobalTracer(tracer)
 
 	// 连接contest服务
-	conn, err := rpc.InitContestGRPC()
+	connContest, err := rpc.InitContestGRPC()
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	defer connContest.Close()
+	// 连接submit服务
+	connSubmit, err := rpc.InitSubmitGRPC()
+	if err != nil {
+		return err
+	}
+	defer connSubmit.Close()
 
 	// 启动服务
 	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {

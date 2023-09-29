@@ -32,6 +32,32 @@ func GetContestSubmits(contestID int64) ([]*model.Submit, error) {
 	return submits, err
 }
 
+// GetSubmitStatus 获取每道题的提交状态
+func GetSubmitStatus() ([]*model.SubmitStatus, error) {
+	var status []*model.SubmitStatus
+	err := data.DB.
+		Select("problem_id," +
+			"COUNT(id) count," +
+			"SUM(IF(status = 10, 1, 0)) accepted_count").
+		Table("submits").
+		Group("problem_id").
+		Find(&status).Error
+
+	return status, err
+}
+
+// GetAcceptedStatus 获取用户每道题的通过状态
+func GetAcceptedStatus(UserID int64) ([]*model.AcceptedStatus, error) {
+	var status []*model.AcceptedStatus
+	err := data.DB.
+		Select("problem_id, MAX(IF(status = 10, 1, 0)) is_accepted").
+		Table("submits").
+		Where("user_id = ?", UserID).
+		Group("problem_id").
+		Find(&status).Error
+	return status, err
+}
+
 // GetSubmitList 获取提交记录
 func GetSubmitList(UserID, ProblemID int64) ([]*model.Submit, error) {
 	var submitList []*model.Submit
@@ -51,6 +77,13 @@ func GetSubmitListByProblem(ProblemID int64) ([]*model.Submit, error) {
 	var submitList []*model.Submit
 	err := data.DB.Where("problem_id = ?", ProblemID).Order("created_at desc").Find(&submitList).Error
 	return submitList, err
+}
+
+// GetUserLastSubmits 获取用户最近提交记录
+func GetUserLastSubmits(userID int64, count int) ([]*model.Submit, error) {
+	var submits []*model.Submit
+	err := data.DB.Where("user_id = ?", userID).Order("created_at desc").Limit(count).Find(&submits).Error
+	return submits, err
 }
 
 // InsertSubmit 插入一条提交记录

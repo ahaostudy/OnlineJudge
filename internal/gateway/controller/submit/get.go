@@ -14,10 +14,12 @@ import (
 	"main/rpc"
 )
 
+const defaultLatestCount int64 = 10
+
 type (
 	GetSubmitResponse struct {
 		ctl.Response
-		Submit     *model.Submit `json:"submit"`
+		Submit *model.Submit `json:"submit"`
 	}
 
 	GetSubmitListRequest struct {
@@ -36,6 +38,15 @@ type (
 	GetResultResponse struct {
 		ctl.Response
 		Result any `json:"result"`
+	}
+
+	GetLatestSubmitsRequest struct {
+		Count int64 `form:"count"`
+	}
+
+	GetLatestSubmitsResponse struct {
+		ctl.Response
+		SubmitList []*model.Submit `json:"submit_list"`
 	}
 )
 
@@ -97,13 +108,50 @@ func GetSubmitList(c *gin.Context) {
 	}
 
 	// 将结果反编译为模型对象
-	submitList, err := build.UnBuildSubmitList(result.GetSubmitList())
+	res.SubmitList, err = build.UnBuildSubmitList(result.GetSubmitList())
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}
 
-	res.SubmitList = submitList
+	res.Success()
+	c.JSON(http.StatusOK, res)
+}
+
+func GetLatestSubmits(c *gin.Context) {
+	req := new(GetLatestSubmitsRequest)
+	res := new(GetLatestSubmitsResponse)
+
+	// 解析参数
+	if err := c.ShouldBindQuery(req); err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+	if req.Count == 0 {
+		req.Count = defaultLatestCount
+	}
+
+	// 获取提交数据
+	result, err := rpc.SubmitCli.GetLatestSubmits(c.Request.Context(), &rpcSubmit.GetLatestSubmitsRequest{
+		UserID: c.GetInt64("user_id"),
+		Count:  req.Count,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+	if result.GetStatusCode() != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.GetStatusCode())))
+		return
+	}
+
+	// 将结果反编译为模型对象
+	res.SubmitList, err = build.UnBuildSubmitList(result.GetSubmitList())
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
 	res.Success()
 	c.JSON(http.StatusOK, res)
 }

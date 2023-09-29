@@ -2,6 +2,7 @@ package chatgpt
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"strings"
@@ -57,6 +58,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 			break
 		}
 		if err != nil {
+			fmt.Printf("err1: %v\n", err)
 			stream.Send(&rpcChatGPT.ChatResponse{
 				StatusCode: code.CodeServerBusy.Code(),
 			})
@@ -77,6 +79,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 			// 解析
 			s := new(result.ChatStream)
 			if err := json.Unmarshal([]byte(strings.Trim(line, "\n")), s); err != nil || len(s.Choices) == 0 {
+				fmt.Printf("err2: %v\n", err)
 				stream.Send(&rpcChatGPT.ChatResponse{
 					StatusCode: code.CodeServerBusy.Code(),
 				})

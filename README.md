@@ -64,5 +64,11 @@ go mod tidy
 #### 启动项目
 进入`cmd`目录，根据需要启动的模块分别启动。
 ```shell
-go run xxx/main.go
+go run cmd/judge/main.go
+go run cmd/problem/main.go
+go run cmd/submit/main.go
+go run cmd/contest/main.go
+go run cmd/user/main.go
+go run cmd/chatgpt/main.go
+go run cmd/gateway/main.go
 ```

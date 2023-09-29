@@ -8,9 +8,9 @@ import (
 	"main/config"
 	"main/internal/common/run"
 	"main/internal/data"
-	"main/internal/middleware/tracing"
 	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
+	"main/internal/middleware/tracing"
 	"main/internal/service/submit/jobs"
 	"main/rpc"
 )
@@ -55,9 +55,7 @@ func Run() error {
 	// 启动定时任务
 	jobs.RunSubmitJobs()
 
-	run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
+	return run.Run(conf.Host, conf.Port, conf.Name, conf.Version, func(grpcServ *grpc.Server) {
 		rpcSubmit.RegisterSubmitServiceServer(grpcServ, new(SubmitServer))
 	})
-
-	return nil
 }

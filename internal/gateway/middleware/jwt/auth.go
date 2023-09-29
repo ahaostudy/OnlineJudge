@@ -11,6 +11,26 @@ import (
 	"main/rpc"
 )
 
+func Parse() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var id int64
+		defer func() {
+			ctx.Set("user_id", id)
+			ctx.Next()
+		}()
+
+		prefix := "Bearer "
+
+		// 获取Token
+		token := ctx.GetHeader("Authorization")
+		if !strings.HasPrefix(token, prefix) {
+			return
+		}
+		// 解析并校验Token
+		id, _ = ParseToken(strings.TrimPrefix(token, prefix))
+	}
+}
+
 // Auth JWT鉴权中间件
 func Auth() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
