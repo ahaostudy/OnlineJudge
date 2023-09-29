@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	JudgeService_Judge_FullMethodName     = "/judge.JudgeService/judge"
-	JudgeService_GetResult_FullMethodName = "/judge.JudgeService/getResult"
-	JudgeService_Debug_FullMethodName     = "/judge.JudgeService/debug"
+	JudgeService_Judge_FullMethodName     = "/judge.JudgeService/Judge"
+	JudgeService_GetResult_FullMethodName = "/judge.JudgeService/GetResult"
+	JudgeService_Debug_FullMethodName     = "/judge.JudgeService/Debug"
+	JudgeService_GetCode_FullMethodName   = "/judge.JudgeService/GetCode"
 )
 
 // JudgeServiceClient is the client API for JudgeService service.
@@ -31,6 +32,7 @@ type JudgeServiceClient interface {
 	Judge(ctx context.Context, in *JudgeRequest, opts ...grpc.CallOption) (*JudgeResponse, error)
 	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
 	Debug(ctx context.Context, in *DebugRequest, opts ...grpc.CallOption) (*DebugResponse, error)
+	GetCode(ctx context.Context, in *GetCodeRequest, opts ...grpc.CallOption) (*GetCodeResponse, error)
 }
 
 type judgeServiceClient struct {
@@ -68,6 +70,15 @@ func (c *judgeServiceClient) Debug(ctx context.Context, in *DebugRequest, opts .
 	return out, nil
 }
 
+func (c *judgeServiceClient) GetCode(ctx context.Context, in *GetCodeRequest, opts ...grpc.CallOption) (*GetCodeResponse, error) {
+	out := new(GetCodeResponse)
+	err := c.cc.Invoke(ctx, JudgeService_GetCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // JudgeServiceServer is the server API for JudgeService service.
 // All implementations must embed UnimplementedJudgeServiceServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type JudgeServiceServer interface {
 	Judge(context.Context, *JudgeRequest) (*JudgeResponse, error)
 	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
 	Debug(context.Context, *DebugRequest) (*DebugResponse, error)
+	GetCode(context.Context, *GetCodeRequest) (*GetCodeResponse, error)
 	mustEmbedUnimplementedJudgeServiceServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedJudgeServiceServer) GetResult(context.Context, *GetResultRequ
 }
 func (UnimplementedJudgeServiceServer) Debug(context.Context, *DebugRequest) (*DebugResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Debug not implemented")
+}
+func (UnimplementedJudgeServiceServer) GetCode(context.Context, *GetCodeRequest) (*GetCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCode not implemented")
 }
 func (UnimplementedJudgeServiceServer) mustEmbedUnimplementedJudgeServiceServer() {}
 
@@ -158,6 +173,24 @@ func _JudgeService_Debug_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JudgeService_GetCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JudgeServiceServer).GetCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: JudgeService_GetCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JudgeServiceServer).GetCode(ctx, req.(*GetCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // JudgeService_ServiceDesc is the grpc.ServiceDesc for JudgeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,16 +199,20 @@ var JudgeService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*JudgeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "judge",
+			MethodName: "Judge",
 			Handler:    _JudgeService_Judge_Handler,
 		},
 		{
-			MethodName: "getResult",
+			MethodName: "GetResult",
 			Handler:    _JudgeService_GetResult_Handler,
 		},
 		{
-			MethodName: "debug",
+			MethodName: "Debug",
 			Handler:    _JudgeService_Debug_Handler,
+		},
+		{
+			MethodName: "GetCode",
+			Handler:    _JudgeService_GetCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -20,6 +20,17 @@ type Submit struct {
 	User *User `gorm:"-:migration;<-:false" json:"user"`
 }
 
+type SubmitStatus struct {
+	ProblemID     int64 `json:"problem_id"`
+	Count         int64 `json:"count"`
+	AcceptedCount int64 `json:"accepted_count"`
+}
+
+type AcceptedStatus struct {
+	ProblemID  int64 `json:"problem_id"`
+	IsAccepted bool  `json:"is_accepted"`
+}
+
 func (s *Submit) MarshalJSON() ([]byte, error) {
 	type Alias Submit
 	return json.Marshal(&struct {

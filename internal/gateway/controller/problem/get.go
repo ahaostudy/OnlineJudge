@@ -114,6 +114,7 @@ func GetProblemList(c *gin.Context) {
 	result, err := rpc.ProblemCli.GetProblemList(c.Request.Context(), &rpcProblem.GetProblemListRequest{
 		Page:  int64(page),
 		Count: int64(count),
+		UserID: c.GetInt64("user_id"),
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))

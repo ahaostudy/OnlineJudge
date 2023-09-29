@@ -2,18 +2,21 @@ package chatgpt
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
-	"main/api/chatgpt"
+	"strings"
+
+	rpcChatGPT "main/api/chatgpt"
 	"main/config"
 	"main/internal/common/code"
 	"main/internal/service/chatgpt/pkg/request"
 	"main/internal/service/chatgpt/pkg/result"
-	"strings"
 )
 
 func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPTService_ChatServer) error {
-	log.Println("request: chat")
+	b, _ := json.Marshal(req.GetMessages())
+	log.Println("request chat:", string(b))
 	// url
 	baseUrl := strings.TrimSuffix(config.ConfChatGPT.Openai.BaseUrl, "/")
 	url := baseUrl + "/v1/chat/completions"
@@ -55,6 +58,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 			break
 		}
 		if err != nil {
+			fmt.Printf("err1: %v\n", err)
 			stream.Send(&rpcChatGPT.ChatResponse{
 				StatusCode: code.CodeServerBusy.Code(),
 			})
@@ -75,6 +79,7 @@ func (ChatGPTServer) Chat(req *rpcChatGPT.ChatRequest, stream rpcChatGPT.ChatGPT
 			// 解析
 			s := new(result.ChatStream)
 			if err := json.Unmarshal([]byte(strings.Trim(line, "\n")), s); err != nil || len(s.Choices) == 0 {
+				fmt.Printf("err2: %v\n", err)
 				stream.Send(&rpcChatGPT.ChatResponse{
 					StatusCode: code.CodeServerBusy.Code(),
 				})

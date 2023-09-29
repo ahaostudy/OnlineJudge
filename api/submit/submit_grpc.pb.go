@@ -19,13 +19,17 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	SubmitService_Debug_FullMethodName           = "/submit.SubmitService/Debug"
-	SubmitService_Submit_FullMethodName          = "/submit.SubmitService/Submit"
-	SubmitService_SubmitContest_FullMethodName   = "/submit.SubmitService/SubmitContest"
-	SubmitService_GetSubmitResult_FullMethodName = "/submit.SubmitService/GetSubmitResult"
-	SubmitService_GetSubmitList_FullMethodName   = "/submit.SubmitService/GetSubmitList"
-	SubmitService_GetSubmit_FullMethodName       = "/submit.SubmitService/GetSubmit"
-	SubmitService_DeleteSubmit_FullMethodName    = "/submit.SubmitService/DeleteSubmit"
+	SubmitService_Debug_FullMethodName             = "/submit.SubmitService/Debug"
+	SubmitService_Submit_FullMethodName            = "/submit.SubmitService/Submit"
+	SubmitService_SubmitContest_FullMethodName     = "/submit.SubmitService/SubmitContest"
+	SubmitService_GetSubmitResult_FullMethodName   = "/submit.SubmitService/GetSubmitResult"
+	SubmitService_GetSubmitList_FullMethodName     = "/submit.SubmitService/GetSubmitList"
+	SubmitService_GetSubmit_FullMethodName         = "/submit.SubmitService/GetSubmit"
+	SubmitService_GetSubmitStatus_FullMethodName   = "/submit.SubmitService/GetSubmitStatus"
+	SubmitService_IsAccepted_FullMethodName        = "/submit.SubmitService/IsAccepted"
+	SubmitService_GetAcceptedStatus_FullMethodName = "/submit.SubmitService/GetAcceptedStatus"
+	SubmitService_GetLatestSubmits_FullMethodName  = "/submit.SubmitService/GetLatestSubmits"
+	SubmitService_DeleteSubmit_FullMethodName      = "/submit.SubmitService/DeleteSubmit"
 )
 
 // SubmitServiceClient is the client API for SubmitService service.
@@ -38,6 +42,10 @@ type SubmitServiceClient interface {
 	GetSubmitResult(ctx context.Context, in *GetSubmitResultRequest, opts ...grpc.CallOption) (*GetSubmitResultResponse, error)
 	GetSubmitList(ctx context.Context, in *GetSubmitListRequest, opts ...grpc.CallOption) (*GetSubmitListResponse, error)
 	GetSubmit(ctx context.Context, in *GetSubmitRequest, opts ...grpc.CallOption) (*GetSubmitResponse, error)
+	GetSubmitStatus(ctx context.Context, in *GetSubmitStatusRequest, opts ...grpc.CallOption) (*GetSubmitStatusResponse, error)
+	IsAccepted(ctx context.Context, in *IsAcceptedRequest, opts ...grpc.CallOption) (*IsAcceptedResponse, error)
+	GetAcceptedStatus(ctx context.Context, in *GetAcceptedStatusRequest, opts ...grpc.CallOption) (*GetAcceptedStatusResponse, error)
+	GetLatestSubmits(ctx context.Context, in *GetLatestSubmitsRequest, opts ...grpc.CallOption) (*GetLatestSubmitsResponse, error)
 	DeleteSubmit(ctx context.Context, in *DeleteSubmitRequest, opts ...grpc.CallOption) (*DeleteSubmitResponse, error)
 }
 
@@ -103,6 +111,42 @@ func (c *submitServiceClient) GetSubmit(ctx context.Context, in *GetSubmitReques
 	return out, nil
 }
 
+func (c *submitServiceClient) GetSubmitStatus(ctx context.Context, in *GetSubmitStatusRequest, opts ...grpc.CallOption) (*GetSubmitStatusResponse, error) {
+	out := new(GetSubmitStatusResponse)
+	err := c.cc.Invoke(ctx, SubmitService_GetSubmitStatus_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *submitServiceClient) IsAccepted(ctx context.Context, in *IsAcceptedRequest, opts ...grpc.CallOption) (*IsAcceptedResponse, error) {
+	out := new(IsAcceptedResponse)
+	err := c.cc.Invoke(ctx, SubmitService_IsAccepted_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *submitServiceClient) GetAcceptedStatus(ctx context.Context, in *GetAcceptedStatusRequest, opts ...grpc.CallOption) (*GetAcceptedStatusResponse, error) {
+	out := new(GetAcceptedStatusResponse)
+	err := c.cc.Invoke(ctx, SubmitService_GetAcceptedStatus_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *submitServiceClient) GetLatestSubmits(ctx context.Context, in *GetLatestSubmitsRequest, opts ...grpc.CallOption) (*GetLatestSubmitsResponse, error) {
+	out := new(GetLatestSubmitsResponse)
+	err := c.cc.Invoke(ctx, SubmitService_GetLatestSubmits_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *submitServiceClient) DeleteSubmit(ctx context.Context, in *DeleteSubmitRequest, opts ...grpc.CallOption) (*DeleteSubmitResponse, error) {
 	out := new(DeleteSubmitResponse)
 	err := c.cc.Invoke(ctx, SubmitService_DeleteSubmit_FullMethodName, in, out, opts...)
@@ -122,6 +166,10 @@ type SubmitServiceServer interface {
 	GetSubmitResult(context.Context, *GetSubmitResultRequest) (*GetSubmitResultResponse, error)
 	GetSubmitList(context.Context, *GetSubmitListRequest) (*GetSubmitListResponse, error)
 	GetSubmit(context.Context, *GetSubmitRequest) (*GetSubmitResponse, error)
+	GetSubmitStatus(context.Context, *GetSubmitStatusRequest) (*GetSubmitStatusResponse, error)
+	IsAccepted(context.Context, *IsAcceptedRequest) (*IsAcceptedResponse, error)
+	GetAcceptedStatus(context.Context, *GetAcceptedStatusRequest) (*GetAcceptedStatusResponse, error)
+	GetLatestSubmits(context.Context, *GetLatestSubmitsRequest) (*GetLatestSubmitsResponse, error)
 	DeleteSubmit(context.Context, *DeleteSubmitRequest) (*DeleteSubmitResponse, error)
 	mustEmbedUnimplementedSubmitServiceServer()
 }
@@ -147,6 +195,18 @@ func (UnimplementedSubmitServiceServer) GetSubmitList(context.Context, *GetSubmi
 }
 func (UnimplementedSubmitServiceServer) GetSubmit(context.Context, *GetSubmitRequest) (*GetSubmitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubmit not implemented")
+}
+func (UnimplementedSubmitServiceServer) GetSubmitStatus(context.Context, *GetSubmitStatusRequest) (*GetSubmitStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSubmitStatus not implemented")
+}
+func (UnimplementedSubmitServiceServer) IsAccepted(context.Context, *IsAcceptedRequest) (*IsAcceptedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsAccepted not implemented")
+}
+func (UnimplementedSubmitServiceServer) GetAcceptedStatus(context.Context, *GetAcceptedStatusRequest) (*GetAcceptedStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAcceptedStatus not implemented")
+}
+func (UnimplementedSubmitServiceServer) GetLatestSubmits(context.Context, *GetLatestSubmitsRequest) (*GetLatestSubmitsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLatestSubmits not implemented")
 }
 func (UnimplementedSubmitServiceServer) DeleteSubmit(context.Context, *DeleteSubmitRequest) (*DeleteSubmitResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteSubmit not implemented")
@@ -272,6 +332,78 @@ func _SubmitService_GetSubmit_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubmitService_GetSubmitStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSubmitStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmitServiceServer).GetSubmitStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmitService_GetSubmitStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmitServiceServer).GetSubmitStatus(ctx, req.(*GetSubmitStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubmitService_IsAccepted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsAcceptedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmitServiceServer).IsAccepted(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmitService_IsAccepted_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmitServiceServer).IsAccepted(ctx, req.(*IsAcceptedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubmitService_GetAcceptedStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAcceptedStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmitServiceServer).GetAcceptedStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmitService_GetAcceptedStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmitServiceServer).GetAcceptedStatus(ctx, req.(*GetAcceptedStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SubmitService_GetLatestSubmits_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLatestSubmitsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubmitServiceServer).GetLatestSubmits(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SubmitService_GetLatestSubmits_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubmitServiceServer).GetLatestSubmits(ctx, req.(*GetLatestSubmitsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SubmitService_DeleteSubmit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSubmitRequest)
 	if err := dec(in); err != nil {
@@ -320,6 +452,22 @@ var SubmitService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSubmit",
 			Handler:    _SubmitService_GetSubmit_Handler,
+		},
+		{
+			MethodName: "GetSubmitStatus",
+			Handler:    _SubmitService_GetSubmitStatus_Handler,
+		},
+		{
+			MethodName: "IsAccepted",
+			Handler:    _SubmitService_IsAccepted_Handler,
+		},
+		{
+			MethodName: "GetAcceptedStatus",
+			Handler:    _SubmitService_GetAcceptedStatus_Handler,
+		},
+		{
+			MethodName: "GetLatestSubmits",
+			Handler:    _SubmitService_GetLatestSubmits_Handler,
 		},
 		{
 			MethodName: "DeleteSubmit",

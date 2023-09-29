@@ -6,8 +6,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"main/api/contest"
-	"main/api/problem"
+	rpcContest "main/api/contest"
+	rpcProblem "main/api/problem"
+	rpcSubmit "main/api/submit"
 	"main/internal/common/build"
 	"main/internal/common/code"
 	"main/internal/data/repository"
@@ -69,6 +70,28 @@ func (ProblemServer) GetProblemList(ctx context.Context, req *rpcProblem.GetProb
 	resp.ProblemList, err = build.BuildProblems(problemList)
 	if err != nil {
 		return
+	}
+
+	// 获取题目的提交情况
+	submitStatus, err := rpc.SubmitCli.GetSubmitStatus(ctx, &rpcSubmit.GetSubmitStatusRequest{})
+	if err != nil || submitStatus.StatusCode != code.CodeSuccess.Code() {
+		return
+	}
+	// 判断当前用户是否ac
+	acceptedStatus, err := rpc.SubmitCli.GetAcceptedStatus(ctx, &rpcSubmit.GetAcceptedStatusRequest{UserID: req.GetUserID()})
+	if err != nil || acceptedStatus.StatusCode != code.CodeSuccess.Code() {
+		return
+	}
+
+	for i := range resp.ProblemList {
+		id := resp.ProblemList[i].ID
+		if v, ok := submitStatus.SubmitStatus[id]; ok {
+			resp.ProblemList[i].SubmitCount = v.Count
+			resp.ProblemList[i].AcceptedCount = v.AcceptedCount
+		}
+		if v, ok := acceptedStatus.AcceptedStatus[id]; ok {
+			resp.ProblemList[i].IsAccepted = v
+		}
 	}
 
 	resp.StatusCode = code.CodeSuccess.Code()

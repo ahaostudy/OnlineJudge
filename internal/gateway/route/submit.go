@@ -1,13 +1,15 @@
 package route
 
 import (
+	"github.com/gin-gonic/gin"
+
 	"main/internal/gateway/controller/submit"
 	"main/internal/gateway/middleware/jwt"
-
-	"github.com/gin-gonic/gin"
 )
 
 func RegisterSubmitRouter(r *gin.RouterGroup) {
+	r.GET("/latest", jwt.Parse(), submit.GetLatestSubmits)
+
 	r.Use(jwt.Auth())
 
 	r.GET("/", submit.GetSubmitList)

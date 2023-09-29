@@ -16,7 +16,10 @@ type Problem struct {
 	SampleCount int    `gorm:"default:2;comment:示例数" json:"sample_count"`
 	AuthorID    int64  `gorm:"comment:作者ID" json:"author_id"`
 
-	Testcases []*Testcase `gorm:"-:migration;<-:false" json:"testcases"`
+	SubmitCount   int64       `gorm:"-:migration;<-:false" json:"submit_count"`
+	AcceptedCount int64       `gorm:"-:migration;<-:false" json:"accepted_count"`
+	IsAccepted    bool        `gorm:"-:migration;<-:false" json:"is_accepted"`
+	Testcases     []*Testcase `gorm:"-:migration;<-:false" json:"testcases"`
 }
 
 // 题目难度

@@ -10,6 +10,7 @@ var (
 	ConfRedis    Redis
 	ConfMongodb  Mongodb
 	ConfEtcd     Etcd
+	ConfJaeger   Jaeger
 	ConfAuth     Auth
 
 	ConfPrivate Private
@@ -43,6 +44,7 @@ func InitConfig() error {
 		ConfRedis = conf.Redis
 		ConfMongodb = conf.Mongodb
 		ConfEtcd = conf.Etcd
+		ConfJaeger = conf.Jaeger
 		ConfAuth = conf.Auth
 
 		ConfPrivate = conf.Private

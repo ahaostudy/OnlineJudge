@@ -16,9 +16,10 @@ import (
 	"main/internal/middleware/mq"
 	"main/internal/middleware/redis"
 	status "main/internal/service/judge/pkg/code"
+	"main/rpc"
 )
 
-func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
+func (SubmitServer) GetSubmit(ctx context.Context, req *rpcSubmit.GetSubmitRequest) (resp *rpcSubmit.GetSubmitResponse, _ error) {
 	resp = new(rpcSubmit.GetSubmitResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
@@ -37,6 +38,18 @@ func (SubmitServer) GetSubmit(_ context.Context, req *rpcSubmit.GetSubmitRequest
 	if err != nil {
 		return
 	}
+
+	// 获取提交的代码内容
+	res, err := rpc.JudgeCli.GetCode(ctx, &rpcJudge.GetCodeRequest{CodePath: submit.Code})
+	if err != nil {
+		return
+	}
+	if res.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = res.StatusCode
+		return
+	}
+	// 复制代码内容
+	resp.Submit.Code = string(res.Code)
 
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
@@ -110,6 +123,75 @@ func (SubmitServer) GetSubmitResult(ctx context.Context, req *rpcSubmit.GetSubmi
 	// 将结果转换为rpc响应
 	resp.Result = new(rpcJudge.JudgeResult)
 	if new(build.Builder).Build(result.Result, resp.Result).Error() != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (SubmitServer) GetSubmitStatus(ctx context.Context, req *rpcSubmit.GetSubmitStatusRequest) (resp *rpcSubmit.GetSubmitStatusResponse, _ error) {
+	resp = new(rpcSubmit.GetSubmitStatusResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 获取提交记录信息
+	status, err := repository.GetSubmitStatus()
+	if err != nil {
+		return
+	}
+
+	resp.SubmitStatus = make(map[int64]*rpcSubmit.SubmitStatus)
+	for _, s := range status {
+		resp.SubmitStatus[s.ProblemID] = &rpcSubmit.SubmitStatus{
+			Count:         s.Count,
+			AcceptedCount: s.AcceptedCount,
+		}
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (SubmitServer) IsAccepted(ctx context.Context, req *rpcSubmit.IsAcceptedRequest) (resp *rpcSubmit.IsAcceptedResponse, _ error) {
+	resp = new(rpcSubmit.IsAcceptedResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+	return
+}
+
+func (SubmitServer) GetAcceptedStatus(ctx context.Context, req *rpcSubmit.GetAcceptedStatusRequest) (resp *rpcSubmit.GetAcceptedStatusResponse, _ error) {
+	resp = new(rpcSubmit.GetAcceptedStatusResponse)
+
+	if req.GetUserID() == 0 {
+		resp.StatusCode = code.CodeSuccess.Code()
+		return
+	}
+
+	status, err := repository.GetAcceptedStatus(req.GetUserID())
+	if err != nil {
+		resp.StatusCode = code.CodeServerBusy.Code()
+		return
+	}
+
+	resp.AcceptedStatus = make(map[int64]bool)
+	for _, s := range status {
+		resp.AcceptedStatus[s.ProblemID] = s.IsAccepted
+	}
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+func (SubmitServer) GetLatestSubmits(ctx context.Context, req *rpcSubmit.GetLatestSubmitsRequest) (resp *rpcSubmit.GetLatestSubmitsResponse, _ error) {
+	resp = new(rpcSubmit.GetLatestSubmitsResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 获取提交记录信息
+	submits, err := repository.GetUserLastSubmits(req.GetUserID(), int(req.GetCount()))
+	if err != nil {
+		return
+	}
+
+	resp.SubmitList, err = build.BuildSubmitList(submits)
+	if err != nil {
 		return
 	}
 

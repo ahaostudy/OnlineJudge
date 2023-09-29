@@ -1,19 +1,21 @@
 package tracing
 
 import (
+	"fmt"
 	"io"
 	"os"
 
 	opentracing "github.com/opentracing/opentracing-go"
 	jaeger "github.com/uber/jaeger-client-go"
 	config "github.com/uber/jaeger-client-go/config"
+
+	cfg "main/config"
 )
 
-func init() {
-	os.Setenv("JAEGER_AGENT_HOST", "192.168.1.67")
-}
-
 func InitTracer(service string) (opentracing.Tracer, io.Closer) {
+	os.Setenv("JAEGER_AGENT_HOST", cfg.ConfJaeger.Host)
+	os.Setenv("JAEGER_AGENT_PORT", fmt.Sprintf("%d", cfg.ConfJaeger.Port))
+
 	cfg, err := config.FromEnv()
 	if err != nil {
 		panic(err)

@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterProblemRouter(r *gin.RouterGroup) {
-	r.GET("/", problem.GetProblemList)
+	r.GET("/", jwt.Parse(), problem.GetProblemList)
 	r.GET("/:id", problem.GetProblem)
 	r.GET("/count", problem.CreateProblemCount)
 	r.GET("/testcase/:id", problem.GetTestcase)
