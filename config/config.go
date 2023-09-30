@@ -2,7 +2,7 @@ package config
 
 import "github.com/spf13/viper"
 
-const configPath = "/projects/OnlineJudge/config/config.yaml"
+const configPath = "config/config.yaml"
 
 var (
 	ConfRabbitMQ Rabbitmq

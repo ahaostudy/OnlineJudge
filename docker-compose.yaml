@@ -1,0 +1,61 @@
+services:
+  gateway:
+    image: oj
+    ports:
+      - 8080:8080
+    networks:
+      - oj-net
+    environment:
+      - SERVER=gateway
+
+  problem:
+    image: oj
+    ports:
+      - 9992:9992
+    networks:
+      - oj-net
+    environment:
+      - SERVER=problem
+
+  submit:
+    image: oj
+    ports:
+      - 9993:9993
+    networks:
+      - oj-net
+    environment:
+      - SERVER=submit
+
+  contest:
+    image: oj
+    ports:
+      - 9994:9994
+    networks:
+      - oj-net
+    environment:
+      - SERVER=contest
+
+  user:
+    image: oj
+    ports:
+      - 9995:9995
+    networks:
+      - oj-net
+    environment:
+      - SERVER=user
+
+  chatgpt:
+    image: oj
+    ports:
+      - 9996:9996
+    networks:
+      - oj-net
+    environment:
+      - SERVER=chatgpt
+
+volumes:
+  oj-data:
+
+
+networks:
+  oj-net:

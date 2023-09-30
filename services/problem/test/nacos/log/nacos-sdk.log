@@ -1,0 +1,18 @@
+2023-09-30T10:20:01.711-0400	[34mINFO[0m	clients/client_factory.go:60	logDir:<nacos/log>   cacheDir:<nacos/cache>
+2023-09-30T10:20:01.713-0400	[34mINFO[0m	naming_client/push_receiver.go:81	udp server start, port: 55514
+2023-09-30T10:20:01.714-0400	[34mINFO[0m	util/common.go:94	Local IP:192.168.1.75
+2023-09-30T10:20:01.733-0400	[33mWARN[0m	util/common.go:43	instance list is empty,json string:{"name":"DEFAULT_GROUP@@submit","groupName":"DEFAULT_GROUP","clusters":"DEFAULT","cacheMillis":10000,"hosts":[],"lastRefTime":1696083601725,"checksum":"","allIPs":false,"reachProtectionThreshold":false,"valid":true}
+2023-09-30T10:20:01.733-0400	[34mINFO[0m	naming_client/host_reactor.go:100	service not found in cache DEFAULT_GROUP@@submit@@DEFAULT
+2023-09-30T10:20:24.659-0400	[34mINFO[0m	clients/client_factory.go:60	logDir:<nacos/log>   cacheDir:<nacos/cache>
+2023-09-30T10:20:24.660-0400	[34mINFO[0m	naming_client/push_receiver.go:81	udp server start, port: 55036
+2023-09-30T10:20:24.661-0400	[34mINFO[0m	util/common.go:94	Local IP:192.168.1.75
+2023-09-30T10:20:24.663-0400	[33mWARN[0m	util/common.go:43	instance list is empty,json string:{"name":"DEFAULT_GROUP@@submit","groupName":"DEFAULT_GROUP","clusters":"DEFAULT","cacheMillis":10000,"hosts":[],"lastRefTime":1696083624662,"checksum":"","allIPs":false,"reachProtectionThreshold":false,"valid":true}
+2023-09-30T10:20:24.663-0400	[34mINFO[0m	naming_client/host_reactor.go:100	service not found in cache DEFAULT_GROUP@@submit@@DEFAULT
+2023-09-30T10:21:30.805-0400	[34mINFO[0m	clients/client_factory.go:60	logDir:<nacos/log>   cacheDir:<nacos/cache>
+2023-09-30T10:21:30.805-0400	[34mINFO[0m	naming_client/push_receiver.go:81	udp server start, port: 55664
+2023-09-30T10:21:30.807-0400	[34mINFO[0m	util/common.go:94	Local IP:192.168.1.75
+2023-09-30T10:21:30.810-0400	[34mINFO[0m	naming_client/host_reactor.go:100	service not found in cache DEFAULT_GROUP@@problem@@DEFAULT
+2023-09-30T10:21:55.699-0400	[34mINFO[0m	clients/client_factory.go:60	logDir:<nacos/log>   cacheDir:<nacos/cache>
+2023-09-30T10:21:55.700-0400	[34mINFO[0m	naming_client/push_receiver.go:81	udp server start, port: 55824
+2023-09-30T10:21:55.702-0400	[34mINFO[0m	util/common.go:94	Local IP:192.168.1.75
+2023-09-30T10:21:55.704-0400	[34mINFO[0m	naming_client/host_reactor.go:100	service not found in cache DEFAULT_GROUP@@problem@@DEFAULT

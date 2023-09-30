@@ -10,8 +10,12 @@ import (
 	"main/internal/common/build"
 	"main/internal/common/code"
 	"main/internal/data/model"
+	"main/internal/gateway/client"
 	"main/internal/gateway/controller/ctl"
+	"main/kitex_gen/problem"
+	"main/pkg/pack"
 	"main/rpc"
+	newModel "main/services/problem/dal/model"
 )
 
 // 默认每页的数量
@@ -38,7 +42,7 @@ type (
 
 	GetProblemListResponse struct {
 		ctl.Response
-		ProblemList []*model.Problem `json:"problem_list"`
+		ProblemList []*newModel.Problem `json:"problem_list"`
 	}
 
 	GetProblemCountResponse struct {
@@ -111,9 +115,9 @@ func GetProblemList(c *gin.Context) {
 	count, _ := strconv.Atoi(c.DefaultQuery("count", strconv.Itoa(defaultCount)))
 
 	// 获取题目列表
-	result, err := rpc.ProblemCli.GetProblemList(c.Request.Context(), &rpcProblem.GetProblemListRequest{
-		Page:  int64(page),
-		Count: int64(count),
+	result, err := client.ProblemCli.GetProblemList(c.Request.Context(), &problem.GetProblemListRequest{
+		Page:   int64(page),
+		Count:  int64(count),
 		UserID: c.GetInt64("user_id"),
 	})
 	if err != nil {
@@ -126,7 +130,7 @@ func GetProblemList(c *gin.Context) {
 	}
 
 	// 转换为模型对象
-	res.ProblemList, err = build.UnBuildProblems(result.GetProblemList())
+	res.ProblemList, err = pack.UnBuildProblems(result.GetProblemList())
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
@@ -187,7 +191,7 @@ func GetContestProblem(c *gin.Context) {
 }
 
 func GetContestProblemList(c *gin.Context) {
-	res := new(GetProblemListResponse)
+	res := new(GetContestProblemListResponse)
 
 	// 解析参数
 	contestID, err := strconv.ParseInt(c.Query("contest_id"), 10, 64)

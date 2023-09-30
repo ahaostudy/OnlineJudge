@@ -9,12 +9,12 @@ import (
 	jaeger "github.com/uber/jaeger-client-go"
 	config "github.com/uber/jaeger-client-go/config"
 
-	cfg "main/config"
+	conf "main/config"
 )
 
 func InitTracer(service string) (opentracing.Tracer, io.Closer) {
-	os.Setenv("JAEGER_AGENT_HOST", cfg.ConfJaeger.Host)
-	os.Setenv("JAEGER_AGENT_PORT", fmt.Sprintf("%d", cfg.ConfJaeger.Port))
+	os.Setenv("JAEGER_AGENT_HOST", conf.ConfJaeger.Host)
+	os.Setenv("JAEGER_AGENT_PORT", fmt.Sprintf("%d", conf.ConfJaeger.Port))
 
 	cfg, err := config.FromEnv()
 	if err != nil {

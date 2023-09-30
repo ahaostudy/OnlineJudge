@@ -1,0 +1,2 @@
+2023-09-30T08:19:53.534-0400	[34mINFO[0m	clients/client_factory.go:60	logDir:<nacos/log>   cacheDir:<nacos/cache>
+2023-09-30T08:19:53.536-0400	[34mINFO[0m	naming_client/push_receiver.go:81	udp server start, port: 55062
