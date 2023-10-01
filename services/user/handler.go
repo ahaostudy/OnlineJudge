@@ -1,7 +1,8 @@
-package main
+package user
 
 import (
 	"context"
+
 	user "main/kitex_gen/user"
 )
 

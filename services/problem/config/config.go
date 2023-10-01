@@ -1,8 +1,8 @@
 package config
 
-var Config = new(Problem)
+var Config = new(Default)
 
-type Problem struct {
+type Default struct {
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`

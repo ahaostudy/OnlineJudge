@@ -3,15 +3,14 @@ package mq
 import (
 	"encoding/json"
 	"fmt"
-	"main/internal/common/ctxt"
-	"main/internal/data/repository"
-	"main/internal/service/contest"
-	"main/internal/service/judge/pkg/code"
-
-	"main/internal/middleware/redis"
 
 	rds "github.com/go-redis/redis/v8"
 	"github.com/streadway/amqp"
+
+	"main/internal/common/ctxt"
+	"main/internal/data/repository"
+	"main/internal/middleware/redis"
+	"main/internal/service/judge/pkg/code"
 )
 
 type ContestSubmitRequest struct {
@@ -32,7 +31,7 @@ func ContestSubmit(msg *amqp.Delivery) error {
 	}
 
 	// 将每题的提交记录分开
-	subs := make( map[int64][]int)
+	subs := make(map[int64][]int)
 	for i, s := range submits {
 		subs[s.ProblemID] = append(subs[s.ProblemID], i)
 	}

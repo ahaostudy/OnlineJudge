@@ -1,4 +1,4 @@
-package problem
+package user
 
 import (
 	"log"
@@ -8,14 +8,13 @@ import (
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
 
-	"main/kitex_gen/problem/problemservice"
+	"main/kitex_gen/user/userservice"
 	"main/pkg/common"
-	"main/services/problem/client"
-	"main/services/problem/config"
-	"main/services/problem/dal/db"
+	"main/services/user/config"
+	"main/services/user/dal/db"
 )
 
-const DataId = "problem"
+const DataId = "user"
 
 func Run() {
 	cli, err := common.NewNamingClient()
@@ -28,16 +27,13 @@ func Run() {
 		panic(err)
 	}
 
-	// 初始化客户端连接
-	client.InitClient(cli)
-
 	// 连接数据库
 	if err := db.InitMySQL(); err != nil {
 		panic(err)
 	}
 
-	svr := problemservice.NewServer(
-		new(ProblemServiceImpl),
+	svr := userservice.NewServer(
+		new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),
