@@ -8,8 +8,18 @@ type Default struct {
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`
 	Port    int    `yaml:"port"`
+	Auth    Auth   `yaml:"auth"`
 	Mysql   Mysql  `yaml:"mysql"`
 	Redis   Redis  `yaml:"redis"`
+}
+
+// Auth
+type Auth struct {
+	Issuer string `yaml:"issuer"`
+	Key    string `yaml:"key"`
+	Expire int    `yaml:"expire"`
+	Salt   string `yaml:"salt"`
+	Node   int    `yaml:"node"`
 }
 
 // Email

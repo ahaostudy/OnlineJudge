@@ -11,6 +11,7 @@ import (
 	"main/kitex_gen/user/userservice"
 	"main/pkg/common"
 	"main/services/user/config"
+	"main/services/user/dal/cache"
 	"main/services/user/dal/db"
 )
 
@@ -29,6 +30,11 @@ func Run() {
 
 	// 连接数据库
 	if err := db.InitMySQL(); err != nil {
+		panic(err)
+	}
+
+	// 连接缓存
+	if err := cache.InitRedis(); err != nil {
 		panic(err)
 	}
 
