@@ -4,8 +4,8 @@ import (
 	"github.com/opentracing/opentracing-go"
 
 	"main/config"
-	"main/internal/middleware/tracing"
 	"main/internal/gateway/route"
+	"main/internal/middleware/tracing"
 	"main/rpc"
 )
 
@@ -14,6 +14,7 @@ func init() {
 		panic(err)
 	}
 }
+
 
 func main() {
 	// 链路追踪

@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package contest;
+
+option go_package = "contest;contest";
+
+service ContestService {
+    // 赛事管理
+    rpc GetContest(GetContestRequest) returns (GetContestResponse) {}
+    rpc GetContestList(GetContestListRequest) returns (GetContestListResponse) {}
+    rpc CreateContest(CreateContestRequest) returns (CreateContestResponse) {}
+    rpc DeleteContest(DeleteContestRequest) returns (DeleteContestResponse) {}
+    rpc UpdateContest(UpdateContestRequest) returns (UpdateContestResponse) {}
+
+    // 报名管理
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc UnRegister(UnRegisterRequest) returns (UnRegisterResponse) {}
+
+    rpc IsRegister(IsRegisterRequest) returns (IsRegisterResponse) {}
+    rpc IsAccessible(IsAccessibleRequest) returns (IsAccessibleResponse) {}
+    rpc ContestRank(ContestRankRequest) returns (ContestRankResponse) {}
+}
+
+message Contest {
+    int64 ID = 1;
+    string Title = 2;
+    string Description = 3;
+    int64 StartTime = 4;
+    int64 EndTime = 5;
+}
+
+message GetContestRequest {
+    int64 ID = 1;
+    int64 UserID = 2;
+}
+
+message GetContestResponse {
+    int64 StatusCode = 1;
+    Contest Contest = 2;
+}
+
+message GetContestListRequest {
+    int64 Page = 1;
+    int64 Count = 2;
+}
+
+message GetContestListResponse {
+    int64 StatusCode = 1;
+    repeated Contest ContestList = 2;
+}
+
+message CreateContestRequest {
+    string Title = 1;
+    string Description = 2;
+    int64 StartTime = 3;
+    int64 EndTime = 4;
+}
+
+message CreateContestResponse {
+    int64 StatusCode = 1;
+}
+
+message DeleteContestRequest {
+    int64 ID = 1;
+}
+
+message DeleteContestResponse {
+    int64 StatusCode = 1;
+}
+
+message UpdateContestRequest {
+    int64 ID = 1;
+    bytes Contest = 2;
+}
+
+message UpdateContestResponse {
+    int64 StatusCode = 1;
+}
+
+message RegisterRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message RegisterResponse {
+    int64 StatusCode = 1;
+}
+
+message UnRegisterRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message UnRegisterResponse {
+    int64 StatusCode = 1;
+}
+
+message IsRegisterRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message IsRegisterResponse {
+    int64 StatusCode = 1;
+    bool IsRegister = 2;
+}
+
+message IsAccessibleRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message IsAccessibleResponse {
+    int64 StatusCode = 1;
+    bool IsAccessible = 2;
+}
+
+message ContestRankRequest {
+    int64 ContestID = 1;
+    int64 Page = 2;
+    int64 Count = 3;
+}
+
+message Status {
+    int64 ProblemID = 1;
+	int64 Penalty = 2;
+	bool Accepted = 3;
+	int64 AcTime = 4;
+	int64 LangID = 5;
+	int64 Score = 6;
+}
+
+message UserData {
+    int64 UserID = 1;
+    repeated Status Status = 2;
+}
+
+message ContestRankResponse {
+    int64 StatusCode = 1;
+    repeated UserData Rank = 2;
+}
