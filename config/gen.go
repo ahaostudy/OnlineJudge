@@ -199,4 +199,3 @@ type JudgeFile struct {
 type Jobs struct {
 	Time int `yaml:"time"`
 }
-
