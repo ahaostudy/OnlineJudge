@@ -2,10 +2,12 @@ package cache
 
 import (
 	"context"
-	"main/services/submit/config"
+	"fmt"
 	"time"
 
 	"github.com/go-redis/redis/v8"
+
+	"main/services/submit/config"
 )
 
 var (
@@ -61,4 +63,20 @@ func Del(key string) {
 	defer cancel()
 
 	Rdb.Del(ctx, key)
+}
+
+func GenerateSubmitKey(id int64) string {
+	return fmt.Sprintf("submit:%d", id)
+}
+
+func GenerateSubmitsKey() string {
+	return "submits"
+}
+
+func GenerateContestUserKey(contestID, userID int64) string {
+	return fmt.Sprintf("contest_user:%d_%d", contestID, userID)
+}
+
+func GenerateRankKey(contestID int64) string {
+	return fmt.Sprintf("rank:%d", contestID)
 }

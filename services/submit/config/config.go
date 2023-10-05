@@ -4,13 +4,14 @@ var Config = new(Default)
 
 // Submit
 type Default struct {
-	Port    int    `yaml:"port"`
-	Jobs    Jobs   `yaml:"jobs"`
-	Name    string `yaml:"name"`
-	Version string `yaml:"version"`
-	Host    string `yaml:"host"`
-	Redis   Redis  `yaml:"redis"`
-	Mysql   Mysql  `yaml:"mysql"`
+	Port     int      `yaml:"port"`
+	Jobs     Jobs     `yaml:"jobs"`
+	Name     string   `yaml:"name"`
+	Version  string   `yaml:"version"`
+	Host     string   `yaml:"host"`
+	Redis    Redis    `yaml:"redis"`
+	Mysql    Mysql    `yaml:"mysql"`
+	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
 }
 
 // Jobs
@@ -35,4 +36,13 @@ type Mysql struct {
 	Charset  string `yaml:"charset"`
 	Host     string `yaml:"host"`
 	Port     int    `yaml:"port"`
+}
+
+// Rabbitmq
+type Rabbitmq struct {
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Vhost    string `yaml:"vhost"`
 }

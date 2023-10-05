@@ -14,6 +14,7 @@ import (
 	"main/services/submit/config"
 	"main/services/submit/dal/cache"
 	"main/services/submit/dal/db"
+	"main/services/submit/dal/mq"
 )
 
 const DataId = "submit"
@@ -41,6 +42,9 @@ func Run() {
 	if err := cache.InitRedis(); err != nil {
 		panic(err)
 	}
+
+	// 连接并启动MQ
+	defer mq.Run().Destroy()
 
 	svr := submitservice.NewServer(
 		new(SubmitServiceImpl),
