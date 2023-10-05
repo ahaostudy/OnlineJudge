@@ -1,4 +1,4 @@
-package submit
+package judge
 
 import (
 	"log"
@@ -8,16 +8,16 @@ import (
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
 
-	"main/kitex_gen/submit/submitservice"
+	"main/kitex_gen/judge/judgeservice"
 	"main/pkg/common"
-	"main/services/submit/client"
-	"main/services/submit/config"
-	"main/services/submit/dal/cache"
-	"main/services/submit/dal/db"
-	"main/services/submit/dal/mq"
+	"main/services/judge/client"
+	"main/services/judge/config"
+	"main/services/judge/dal/cache"
+	"main/services/judge/dal/db"
+	"main/services/judge/dal/mq"
 )
 
-const DataId = "submit"
+const DataId = "judge"
 
 func Run() {
 	cli, err := common.NewNamingClient()
@@ -46,8 +46,8 @@ func Run() {
 	// 连接并启动MQ
 	defer mq.Run().Destroy()
 
-	svr := submitservice.NewServer(
-		new(SubmitServiceImpl),
+	svr := judgeservice.NewServer(
+		new(JudgeServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),

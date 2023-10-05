@@ -1,13 +1,14 @@
 package mq
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	redis "github.com/go-redis/redis/v8"
 	"github.com/streadway/amqp"
 
-	"main/internal/common/ctxt"
 	"main/pkg/status"
 	"main/services/submit/dal/cache"
 	"main/services/submit/dal/db"
@@ -46,7 +47,7 @@ func ContestSubmit(msg *amqp.Delivery) error {
 
 	var score, penalty int
 	var acTime int64
-	ctx, cancel := ctxt.WithTimeoutContext(2)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 	key := cache.GenerateContestUserKey(req.ContestID, req.UserID)
 
