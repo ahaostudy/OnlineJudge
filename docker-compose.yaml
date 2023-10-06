@@ -1,0 +1,59 @@
+services:
+  gateway:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=g
+
+  judge:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=j
+
+  problem:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=p
+
+  submit:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=s
+
+  contest:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=c
+
+  user:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=u
+
+  chatgpt:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=c
+
+volumes:
+  oj-data:

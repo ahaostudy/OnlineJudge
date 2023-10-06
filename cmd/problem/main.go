@@ -1,9 +1,7 @@
 package main
 
-import "main/internal/service/problem"
+import "main/services/problem"
 
 func main() {
-	if err := problem.Run(); err != nil {
-		panic(err)
-	}
+	problem.Run()
 }

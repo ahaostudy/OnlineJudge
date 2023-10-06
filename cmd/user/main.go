@@ -1,9 +1,7 @@
 package main
 
-import "main/internal/service/user"
+import "main/services/user"
 
 func main() {
-	if err := user.Run(); err != nil {
-		panic(err)
-	}
+	user.Run()
 }

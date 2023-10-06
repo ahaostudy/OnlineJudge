@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package problem;
+
+option go_package = "problem;problem";
+
+service ProblemService {
+    rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
+    rpc GetProblemList(GetProblemListRequest) returns (GetProblemListResponse) {}
+    rpc GetProblemCount(GetProblemCountRequest) returns (GetProblemCountResponse) {}
+    rpc GetContestProblem(GetContestProblemRequest) returns (GetContestProblemResponse) {}
+    rpc GetContestProblemList(GetContestProblemListRequest) returns (GetContestProblemListResponse) {}
+    rpc CreateProblem(CreateProblemRequest) returns (CreateProblemResponse) {}
+    rpc DeleteProblem(DeleteProblemRequest) returns (DeleteProblemResponse) {}
+    rpc UpdateProblem(UpdateProblemRequest) returns (UpdateProblemResponse) {}
+
+    rpc CreateTestcase(CreateTestcaseRequest) returns (CreateTestcaseResponse) {}
+    rpc GetTestcase(GetTestcaseRequest) returns (GetTestcaseResponse) {}
+    rpc DeleteTestcase(DeleteTestcaseRequest) returns (DeleteTestcaseResponse) {}
+}
+
+message Problem {
+    int64 ID = 1;
+    string Title = 2;
+    string Description = 3;
+    int32 Difficulty = 4;
+    string InputDesc = 5;
+    string OutputDesc = 6;
+    string DataRange = 7;
+    string Tips = 8;
+    int32 MaxTime = 9;
+    int32 MaxMemory = 10;
+    string Source = 11;
+    int64 AuthorID = 12;
+    int64 ContestID = 13;
+
+    int64 SubmitCount = 14;
+    int64 AcceptedCount = 15;
+    bool IsAccepted = 16;
+    repeated Testcase Testcases = 17;
+    repeated Sample Samples = 18;
+}
+
+message Testcase {
+    int64 ID = 1;
+    int64 ProblemID = 2;
+    string InputPath = 3;
+    string OutputPath = 4;
+    bytes Input = 5;
+    bytes Output = 6;
+}
+
+message Sample {
+    string Input = 1;
+    string Output = 2;
+}
+
+
+// problem
+
+message GetProblemRequest {
+    int64 ProblemID = 1;
+}
+
+message GetProblemResponse {
+    int64 StatusCode = 1;
+    Problem Problem = 2;
+}
+
+message GetProblemListRequest {
+    int64 Page = 1;
+    int64 Count = 2;
+    int64 UserID = 3;
+}
+
+message GetProblemListResponse {
+    int64 StatusCode = 1;
+    repeated Problem ProblemList = 2;
+}
+
+message GetProblemCountRequest {
+}
+
+message GetProblemCountResponse {
+    int64 StatusCode = 1;
+    int64 Count = 2;
+}
+
+message GetContestProblemListRequest {
+    int64 UserID = 1;
+    int64 ContestID = 2;
+}
+
+message GetContestProblemListResponse {
+    int64 StatusCode = 1;
+    repeated Problem ProblemList = 2;
+}
+
+message GetContestProblemRequest {
+    int64 UserID = 1;
+    int64 ProblemID = 2;
+}
+
+message GetContestProblemResponse {
+    int64 StatusCode = 1;
+    Problem Problem = 2;
+}
+
+message CreateProblemRequest {
+    Problem Problem = 1;
+}
+
+message CreateProblemResponse {
+    int64 StatusCode = 1;
+}
+
+message DeleteProblemRequest {
+    int64 ProblemID = 1;
+}
+
+message DeleteProblemResponse {
+    int64 StatusCode = 1;
+}
+
+message UpdateProblemRequest {
+    int64 ProblemID = 1;
+    bytes Problem = 2;   // json
+}
+
+message UpdateProblemResponse {
+    int64 StatusCode = 1;
+}
+
+
+// testcase
+
+message CreateTestcaseRequest {
+    int64 ProblemID = 1;
+    bytes Input = 2;
+    bytes Output = 3;
+}
+
+message CreateTestcaseResponse {
+    int64 StatusCode = 1;
+}
+
+message GetTestcaseRequest {
+    int64 ID = 1;
+}
+
+message GetTestcaseResponse {
+    int64 StatusCode = 1;
+    Testcase Testcase = 2;
+}
+
+message DeleteTestcaseRequest {
+    int64 ID = 1;
+}
+
+message DeleteTestcaseResponse {
+    int64 StatusCode = 1;
+}
