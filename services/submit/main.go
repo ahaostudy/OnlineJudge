@@ -1,7 +1,9 @@
 package submit
 
 import (
+	"fmt"
 	"log"
+	"net"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -16,6 +18,7 @@ import (
 	"main/services/submit/dal/cache"
 	"main/services/submit/dal/db"
 	"main/services/submit/dal/mq"
+	"main/services/submit/jobs"
 )
 
 const DataId = "submit"
@@ -47,11 +50,20 @@ func Run() {
 	// 连接并启动MQ
 	defer mq.Run().Destroy()
 
+	// 运行启动任务
+	jobs.RunSubmitJobs()
+
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	if err != nil {
+		panic(err)
+	}
+
 	svr := submitservice.NewServer(
 		new(SubmitServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),
+		server.WithServiceAddr(addr),
 	)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)

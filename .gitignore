@@ -4,8 +4,7 @@
 go.mod
 go.sum
 
-file/*
-!file/.gitkeep
-config/config.yaml
-test/_
+data/*
+!data/.gitkeep
 nohup.out
+cache/

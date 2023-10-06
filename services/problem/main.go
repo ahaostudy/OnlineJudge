@@ -1,7 +1,9 @@
 package problem
 
 import (
+	"fmt"
 	"log"
+	"net"
 
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -37,11 +39,17 @@ func Run() {
 		panic(err)
 	}
 
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	if err != nil {
+		panic(err)
+	}
+
 	svr := problemservice.NewServer(
 		new(ProblemServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),
+		server.WithServiceAddr(addr),
 	)
 	if err := svr.Run(); err != nil {
 		log.Println("server stopped with error:", err)

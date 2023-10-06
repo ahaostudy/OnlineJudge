@@ -3,12 +3,12 @@ package config
 var Config = new(Default)
 
 type Default struct {
-	Email   Email  `yaml:"email"`
 	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`
 	Port    int    `yaml:"port"`
 	Auth    Auth   `yaml:"auth"`
+	Email   Email  `yaml:"email"`
 	Mysql   Mysql  `yaml:"mysql"`
 	Redis   Redis  `yaml:"redis"`
 }

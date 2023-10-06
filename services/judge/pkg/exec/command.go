@@ -45,6 +45,7 @@ func (c *Command) Exec() (*Result, error) {
 	if err != nil {
 		return nil, errs.ErrCodeNotCompiled
 	}
+	fmt.Printf("command: %v\n", command)
 
 	// 为命令添加sudo权限
 	cmd := exec.Command("sudo", "-S", "sh", "-c", command)

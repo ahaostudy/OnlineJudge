@@ -109,19 +109,21 @@ func (s *JudgeServiceImpl) Debug(ctx context.Context, req *judge.DebugRequest) (
 		return
 	}
 	codePath := filepath.Join(config.Config.File.CodePath, codeName)
-	defer os.Remove(codePath)
+	fmt.Printf("codePath: %v\n", codePath)
+	// defer os.Remove(codePath)
 
 	inputPath := filepath.Join(config.Config.File.TempPath, fmt.Sprintf("%s.in", uuid.New().String()))
 	err = os.WriteFile(inputPath, req.GetInput(), 0644)
 	if err != nil {
 		return
 	}
-	defer os.Remove(inputPath)
+	// defer os.Remove(inputPath)
+	fmt.Printf("inputPath: %v\n", inputPath)
 
 	c := coder.NewCode(codePath, int(req.GetLangID()))
 
 	result, err := c.Run(inputPath)
-	defer c.Destroy()
+	// defer c.Destroy()
 	if err != nil {
 		return
 	}

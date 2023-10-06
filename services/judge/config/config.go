@@ -48,7 +48,6 @@ type Exe struct {
 type File struct {
 	TempPath     string `yaml:"tempPath"`
 	CodePath     string `yaml:"codePath"`
-	DemoPath     string `yaml:"demoPath"`
 	TestcasePath string `yaml:"testcasePath"`
 }
 

@@ -27,6 +27,16 @@ type RankStatus struct {
 	Score    int   `json:"score"`
 }
 
+// GenerateContestSubmitMQMsg 生成比赛提交服务消息
+func GenerateContestSubmitMQMsg(contestID, userID int64) ([]byte, error) {
+	req := ContestSubmitRequest{
+		ContestID: contestID,
+		UserID:    userID,
+	}
+	msg, err := json.Marshal(req)
+	return msg, err
+}
+
 func ContestSubmit(msg *amqp.Delivery) error {
 	req := new(ContestSubmitRequest)
 	if err := json.Unmarshal(msg.Body, req); err != nil {
