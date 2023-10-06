@@ -39,11 +39,10 @@ func (s *ProblemServiceImpl) GetProblem(ctx context.Context, req *problem.GetPro
 	}
 
 	// 将模型对象转换为响应结果
-	p, err := pack.BuildProblem(prob)
+	resp.Problem, err = pack.BuildProblem(prob)
 	if err != nil {
 		return
 	}
-	resp.Problem = p
 
 	// 获取示例内容
 	for i := 0; i < prob.SampleCount && i < len(prob.Testcases); i++ {

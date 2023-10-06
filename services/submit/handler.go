@@ -3,6 +3,7 @@ package submit
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -203,6 +204,7 @@ func (s *SubmitServiceImpl) GetSubmitResult(ctx context.Context, req *submit.Get
 		resp.StatusCode = res.StatusCode
 		return
 	}
+	fmt.Printf("res.Result: %#v\n", res.Result)
 
 	resp.Result, err = pack.BuildResult(res.Result)
 	if err != nil {

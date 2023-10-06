@@ -101,6 +101,7 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 		// 获取样例输入
 		input, ok := testcase.GetLocalInput()
 		if !ok {
+			result.SetStatus(status.StatusServerFailed)
 			return result, nil
 		}
 

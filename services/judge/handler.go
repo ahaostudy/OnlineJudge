@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	judge "main/kitex_gen/judge"
-	"main/kitex_gen/problem"
 	"main/common/code"
 	"main/common/pack"
 	"main/common/status"
+	judge "main/kitex_gen/judge"
+	"main/kitex_gen/problem"
 	"main/services/judge/client"
 	"main/services/judge/config"
 	"main/services/judge/dal/cache"
@@ -44,10 +44,20 @@ func (s *JudgeServiceImpl) Judge(ctx context.Context, req *judge.JudgeRequest) (
 		return
 	}
 
+	// TODO: 将判题模块与题目模块解耦
 	// 将结果转换为模型对象
-	problem := new(model.Problem)
-	if new(pack.Builder).Build(prob.GetProblem(), problem).Error() != nil {
+	p, problem := prob.GetProblem(), new(model.Problem)
+	builder := new(pack.Builder)
+	if builder.Build(p, problem).Error() != nil {
 		return
+	}
+	if p.GetTestcases() != nil {
+		for i := range p.Testcases {
+			t := new(model.Testcase)
+			builder.Build(p.Testcases[i], t)
+			problem.Testcases = append(problem.Testcases, t)
+		}
+
 	}
 
 	// 将判题请求打入MQ
@@ -109,21 +119,19 @@ func (s *JudgeServiceImpl) Debug(ctx context.Context, req *judge.DebugRequest) (
 		return
 	}
 	codePath := filepath.Join(config.Config.File.CodePath, codeName)
-	fmt.Printf("codePath: %v\n", codePath)
-	// defer os.Remove(codePath)
+	defer os.Remove(codePath)
 
 	inputPath := filepath.Join(config.Config.File.TempPath, fmt.Sprintf("%s.in", uuid.New().String()))
 	err = os.WriteFile(inputPath, req.GetInput(), 0644)
 	if err != nil {
 		return
 	}
-	// defer os.Remove(inputPath)
-	fmt.Printf("inputPath: %v\n", inputPath)
+	defer os.Remove(inputPath)
 
 	c := coder.NewCode(codePath, int(req.GetLangID()))
 
 	result, err := c.Run(inputPath)
-	// defer c.Destroy()
+	defer c.Destroy()
 	if err != nil {
 		return
 	}

@@ -10,8 +10,15 @@ import (
 )
 
 func BuildResult(r *judge.JudgeResult) (*submit.JudgeResult, error) {
-	result := new(submit.JudgeResult)
-	return result, new(pack.Builder).Build(r, &result).Error()
+	result := &submit.JudgeResult{
+		Time: r.GetTime(),
+		Memory: r.GetMemory(),
+		Status: r.GetStatus(),
+		Message: r.GetMessage(),
+		Output: r.GetOutput(),
+		Error: r.GetError(),
+	}
+	return result, nil
 }
 
 func BuildSubmit(s *model.Submit) (*submit.Submit, error) {
