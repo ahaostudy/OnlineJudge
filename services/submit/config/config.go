@@ -5,10 +5,10 @@ var Config = new(Default)
 // Submit
 type Default struct {
 	Port     int      `yaml:"port"`
-	Jobs     Jobs     `yaml:"jobs"`
 	Name     string   `yaml:"name"`
 	Version  string   `yaml:"version"`
 	Host     string   `yaml:"host"`
+	Jobs     Jobs     `yaml:"jobs"`
 	Redis    Redis    `yaml:"redis"`
 	Mysql    Mysql    `yaml:"mysql"`
 	Rabbitmq Rabbitmq `yaml:"rabbitmq"`

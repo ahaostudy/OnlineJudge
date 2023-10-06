@@ -8,8 +8,9 @@ import (
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
 
+	nacosclient "main/common/nacos_client"
+	nacosconfig "main/common/nacos_config"
 	"main/kitex_gen/submit/submitservice"
-	"main/pkg/common"
 	"main/services/submit/client"
 	"main/services/submit/config"
 	"main/services/submit/dal/cache"
@@ -20,12 +21,12 @@ import (
 const DataId = "submit"
 
 func Run() {
-	cli, err := common.NewNamingClient()
+	cli, err := nacosclient.NewNamingClient()
 	if err != nil {
 		panic(err)
 	}
 
-	nacosClient, err := common.NewNacosConfig(DataId, &config.Config)
+	nacosClient, err := nacosconfig.NewNacosConfig(DataId, &config.Config)
 	if err != nil {
 		panic(err)
 	}

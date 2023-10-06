@@ -1,31 +1,18 @@
 package main
 
 import (
-	"github.com/opentracing/opentracing-go"
-
-	"main/config"
-	"main/internal/gateway/route"
-	"main/internal/middleware/tracing"
-	"main/rpc"
+	nacosclient "main/common/nacos_client"
+	"main/gateway/client"
+	"main/gateway/route"
 )
 
-func init() {
-	if err := config.InitConfig(); err != nil {
-		panic(err)
-	}
-}
-
-
 func main() {
-	// 链路追踪
-	tracer, closer := tracing.InitTracer("gateway")
-	defer closer.Close()
-	opentracing.SetGlobalTracer(tracer)
-
-	if err := rpc.InitGRPCClients(); err != nil {
+	cli, err := nacosclient.NewNamingClient()
+	if err != nil {
 		panic(err)
 	}
-	defer rpc.CloseGPRCClients()
+
+	client.InitClient(cli)
 
 	if err := route.InitRoute().Run(); err != nil {
 		panic(err)

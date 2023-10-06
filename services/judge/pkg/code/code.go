@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"main/pkg/status"
+	"main/common/status"
 	"main/services/judge/config"
 	"main/services/judge/pkg/compiler"
 	"main/services/judge/pkg/exec"

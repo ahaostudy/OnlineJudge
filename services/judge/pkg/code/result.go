@@ -1,6 +1,6 @@
 package code
 
-import "main/pkg/status"
+import "main/common/status"
 
 type Result struct {
 	Time    int64  `json:"time"`

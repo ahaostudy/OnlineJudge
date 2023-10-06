@@ -9,15 +9,15 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
+	"main/common/code"
+	"main/common/raw"
 	"main/kitex_gen/contest"
 	"main/kitex_gen/problem"
 	"main/kitex_gen/submit"
-	"main/pkg/code"
-	"main/pkg/pack"
-	"main/pkg/raw"
+	"main/services/problem/client"
 	"main/services/problem/dal/db"
 	"main/services/problem/dal/model"
-	"main/services/problem/client"
+	"main/services/problem/pack"
 )
 
 // ProblemServiceImpl implements the last service interface defined in the IDL.

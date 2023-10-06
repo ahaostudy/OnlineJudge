@@ -3,7 +3,7 @@ package mq
 import (
 	"context"
 	"encoding/json"
-	"main/config"
+	"main/services/judge/config"
 	"main/services/judge/dal/cache"
 	"main/services/judge/dal/model"
 	"main/services/judge/pkg/code"
@@ -32,7 +32,7 @@ type (
 func GenerateJudgeMQMsg(judgeID string, codePath string, langID int64, problem *model.Problem) ([]byte, error) {
 	req := JudgeRequest{
 		JudgeID:  judgeID,
-		Codepath: filepath.Join(config.ConfJudge.File.CodePath, codePath),
+		Codepath: filepath.Join(config.Config.File.CodePath, codePath),
 		LangID:   int(langID),
 		Problem:  problem,
 	}
@@ -59,7 +59,7 @@ func Judge(msg *amqp.Delivery) error {
 	// 将执行结果缓存到redis
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	key, ttl := cache.GenerateJudgeKey(req.JudgeID), time.Duration(config.ConfRedis.ShortTtl)*time.Second
+	key, ttl := cache.GenerateJudgeKey(req.JudgeID), time.Duration(config.Config.Redis.ShortTtl)*time.Second
 	if err := cache.Rdb.Set(ctx, key, bytes, ttl).Err(); err != nil {
 		return err
 	}

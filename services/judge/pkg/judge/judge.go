@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"main/pkg/status"
+	"main/common/status"
 	"main/services/judge/dal/model"
 	"main/services/judge/pkg/code"
 	"main/services/judge/pkg/errs"

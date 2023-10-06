@@ -1,9 +1,8 @@
 package main
 
-import "main/internal/service/submit"
+import "main/services/submit"
+
 
 func main() {
-	if err := submit.Run(); err != nil {
-		panic(err)
-	}
+	submit.Run()
 }

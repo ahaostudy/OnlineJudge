@@ -8,16 +8,16 @@ import (
 	"strconv"
 	"time"
 
+	"main/common/code"
+	"main/common/jwt"
+	"main/common/raw"
 	user "main/kitex_gen/user"
-	"main/pkg/code"
-	"main/pkg/pack"
-	"main/pkg/raw"
 	"main/services/user/config"
 	"main/services/user/dal/cache"
 	"main/services/user/dal/db"
 	"main/services/user/dal/model"
+	"main/services/user/pack"
 	"main/services/user/pkg/email"
-	"main/services/user/pkg/jwt"
 	"main/services/user/pkg/sha256"
 	"main/services/user/pkg/snowflake"
 
@@ -314,7 +314,6 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *user.GetUserRequest)
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }
-
 
 // CheckCaptcha 校验验证码
 func CheckCaptcha(ctx context.Context, email, captche string) (bool, bool) {

@@ -7,19 +7,18 @@ import (
 
 	"gorm.io/gorm"
 
+	"main/common/code"
+	"main/common/status"
 	"main/kitex_gen/contest"
-	judge "main/kitex_gen/judge"
+	"main/kitex_gen/judge"
 	"main/kitex_gen/problem"
-	submit "main/kitex_gen/submit"
-	"main/pkg/code"
-	"main/pkg/pack"
-	"main/pkg/status"
-	"main/rpc"
+	"main/kitex_gen/submit"
 	"main/services/submit/client"
 	"main/services/submit/config"
 	"main/services/submit/dal/cache"
 	"main/services/submit/dal/db"
 	"main/services/submit/dal/model"
+	"main/services/submit/pack"
 )
 
 // SubmitServiceImpl implements the last service interface defined in the IDL.
@@ -138,7 +137,7 @@ func (s *SubmitServiceImpl) SubmitContest(ctx context.Context, req *submit.Submi
 	}
 
 	// 2. 提交判题
-	res, err := rpc.JudgeCli.Judge(ctx, &judge.JudgeRequest{
+	res, err := client.JudgeCli.Judge(ctx, &judge.JudgeRequest{
 		ProblemID: req.GetProblemID(),
 		Code:      req.GetCode(),
 		LangID:    req.GetLangID(),
@@ -267,7 +266,7 @@ func (s *SubmitServiceImpl) GetSubmit(ctx context.Context, req *submit.GetSubmit
 	}
 
 	// 获取提交的代码内容
-	res, err := rpc.JudgeCli.GetCode(ctx, &judge.GetCodeRequest{CodePath: sub.Code})
+	res, err := client.JudgeCli.GetCode(ctx, &judge.GetCodeRequest{CodePath: sub.Code})
 	if err != nil {
 		return
 	}

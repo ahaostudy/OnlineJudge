@@ -1,11 +1,7 @@
 package main
 
-import (
-	"main/internal/service/judge"
-)
+import "main/services/judge"
 
 func main() {
-	if err := judge.Run(); err != nil {
-		panic(err)
-	}
+	judge.Run()
 }

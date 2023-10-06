@@ -8,8 +8,9 @@ import (
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
 
+	nacosclient "main/common/nacos_client"
+	nacosconfig "main/common/nacos_config"
 	"main/kitex_gen/judge/judgeservice"
-	"main/pkg/common"
 	"main/services/judge/client"
 	"main/services/judge/config"
 	"main/services/judge/dal/cache"
@@ -20,12 +21,12 @@ import (
 const DataId = "judge"
 
 func Run() {
-	cli, err := common.NewNamingClient()
+	cli, err := nacosclient.NewNamingClient()
 	if err != nil {
 		panic(err)
 	}
 
-	nacosClient, err := common.NewNacosConfig(DataId, &config.Config)
+	nacosClient, err := nacosconfig.NewNacosConfig(DataId, &config.Config)
 	if err != nil {
 		panic(err)
 	}

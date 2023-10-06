@@ -9,7 +9,7 @@ import (
 	redis "github.com/go-redis/redis/v8"
 	"github.com/streadway/amqp"
 
-	"main/pkg/status"
+	"main/common/status"
 	"main/services/submit/dal/cache"
 	"main/services/submit/dal/db"
 )

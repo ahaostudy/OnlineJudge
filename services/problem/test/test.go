@@ -7,8 +7,8 @@ import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/kitex-contrib/registry-nacos/resolver"
 
+	nacosclient "main/common/nacos_client"
 	"main/kitex_gen/problem/problemservice"
-	"main/pkg/common"
 )
 
 var (
@@ -17,7 +17,7 @@ var (
 )
 
 func InitClient() {
-	cli, err := common.NewNamingClient()
+	cli, err := nacosclient.NewNamingClient()
 	if err != nil {
 		panic(err)
 	}
