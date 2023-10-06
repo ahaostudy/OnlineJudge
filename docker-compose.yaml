@@ -1,61 +1,59 @@
 services:
   gateway:
-    image: oj
-    ports:
-      - 8080:8080
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=gateway
+      - s=g
+
+  judge:
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
+    environment:
+      - s=j
 
   problem:
-    image: oj
-    ports:
-      - 9992:9992
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=problem
+      - s=p
 
   submit:
-    image: oj
-    ports:
-      - 9993:9993
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=submit
+      - s=s
 
   contest:
-    image: oj
-    ports:
-      - 9994:9994
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=contest
+      - s=c
 
   user:
-    image: oj
-    ports:
-      - 9995:9995
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=user
+      - s=u
 
   chatgpt:
-    image: oj
-    ports:
-      - 9996:9996
-    networks:
-      - oj-net
+    image: oj1
+    network_mode: host
+    volumes:
+      - /projects/OnlineJudge/data:/data
     environment:
-      - SERVER=chatgpt
+      - s=c
 
 volumes:
   oj-data:
-
-
-networks:
-  oj-net:

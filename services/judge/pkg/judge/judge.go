@@ -1,6 +1,7 @@
 package judge
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -15,7 +16,7 @@ type TestcaseRunOutput struct {
 	result code.Result
 }
 
-func Judge_(problem *model.Problem, codePath string, langID int) (code.Result, error) {
+func Judge_(ctx context.Context, problem *model.Problem, codePath string, langID int) (code.Result, error) {
 	// 编译代码
 	c := code.NewCodeLimit(codePath, langID, problem.MaxTime, problem.MaxMemory)
 	if res, ok := c.Build(); !ok {
@@ -72,7 +73,7 @@ func Judge_(problem *model.Problem, codePath string, langID int) (code.Result, e
 			continue
 		}
 		// TODO: 添加SPJ（特殊判题）
-		if !CmpOutput(output, o.result.Output) {
+		if !CmpOutput(string(output), o.result.Output) {
 			result.SetStatus(status.StatusWrongAnswer)
 			continue
 		}
@@ -130,7 +131,7 @@ func Judge(problem *model.Problem, codePath string, langID int) (code.Result, er
 			return result, nil
 		}
 		// TODO: 添加SPJ（特殊判题）
-		if !CmpOutput(output, res.Output) {
+		if !CmpOutput(string(output), res.Output) {
 			result.SetStatus(status.StatusWrongAnswer)
 			return result, nil
 		}

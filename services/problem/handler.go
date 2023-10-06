@@ -55,8 +55,8 @@ func (s *ProblemServiceImpl) GetProblem(ctx context.Context, req *problem.GetPro
 			return
 		}
 		resp.Problem.Samples = append(resp.Problem.Samples, &problem.Sample{
-			Input:  input,
-			Output: output,
+			Input:  string(input),
+			Output: string(output),
 		})
 	}
 
@@ -273,7 +273,7 @@ func (s *ProblemServiceImpl) CreateTestcase(ctx context.Context, req *problem.Cr
 		OutputPath: outputPath,
 	}
 	// 写入文件
-	if !testcase.UploadInput(req.GetInput()) || !testcase.UploadOutput(req.GetOutput()) {
+	if !testcase.SaveInput(req.GetInput()) || !testcase.SaveOutput(req.GetOutput()) {
 		return
 	}
 	// 将对象插入数据库
@@ -305,6 +305,18 @@ func (s *ProblemServiceImpl) GetTestcase(ctx context.Context, req *problem.GetTe
 		resp.StatusCode = code.CodeSuccess.Code()
 	}
 
+	// 获取输入输出内容
+	var ok bool
+	resp.Testcase.Input, ok = testcase.GetInput()
+	if !ok {
+		return
+	}
+	resp.Testcase.Output, ok = testcase.GetOutput()
+	if !ok {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }
 
@@ -325,12 +337,8 @@ func (s *ProblemServiceImpl) DeleteTestcase(ctx context.Context, req *problem.De
 
 	// 并发将该样例的输入输出文件删除
 	go func() {
-		if p, ok := testcase.GetLocalInput(); !ok {
-			os.Remove(p)
-		}
-		if p, ok := testcase.GetLocalOutput(); !ok {
-			os.Remove(p)
-		}
+		os.Remove(testcase.GetLocalInput())
+		os.Remove(testcase.GetLocalOutput())
 	}()
 
 	// 删除改样例数据

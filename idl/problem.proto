@@ -46,6 +46,8 @@ message Testcase {
     int64 ProblemID = 2;
     string InputPath = 3;
     string OutputPath = 4;
+    bytes Input = 5;
+    bytes Output = 6;
 }
 
 message Sample {

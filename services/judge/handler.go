@@ -155,6 +155,7 @@ func (s *JudgeServiceImpl) GetCode(ctx context.Context, req *judge.GetCodeReques
 	resp.StatusCode = code.CodeServerBusy.Code()
 
 	// 获取代码内容
+	fmt.Printf("filepath: %v\n", filepath.Join(config.Config.File.CodePath, req.GetCodePath()))
 	body, err := os.ReadFile(filepath.Join(config.Config.File.CodePath, req.GetCodePath()))
 	if errors.Is(err, os.ErrNotExist) {
 		resp.StatusCode = code.CodeRecordNotFound.Code()

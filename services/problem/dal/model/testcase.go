@@ -14,46 +14,42 @@ type Testcase struct {
 	OutputPath string `json:"output_path"`
 }
 
-// GetLocalInput 获取本地的输入文件，实现从从网络获取到本地再返回
-func (t *Testcase) GetLocalInput() (string, bool) {
-	return filepath.Join(config.Config.File.TestcasePath, t.InputPath), true
+// GetLocalInput 获取本地的输入文件
+func (t *Testcase) GetLocalInput() string {
+	return filepath.Join(config.Config.File.TestcasePath, t.InputPath)
 }
 
-// GetLocalOutput 获取本地的输出文件，实现从从网络获取到本地再返回
-func (t *Testcase) GetLocalOutput() (string, bool) {
-	return filepath.Join(config.Config.File.TestcasePath, t.OutputPath), true
+// GetLocalOutput 获取本地的输出文件
+func (t *Testcase) GetLocalOutput() string {
+	return filepath.Join(config.Config.File.TestcasePath, t.OutputPath)
 }
 
 // GetInput 获取输入内容
-func (t *Testcase) GetInput() (string, bool) {
-	inputPath := filepath.Join(config.Config.File.TestcasePath, t.InputPath)
-	bytes, err := os.ReadFile(inputPath)
+func (t *Testcase) GetInput() ([]byte, bool) {
+	bytes, err := os.ReadFile(t.GetLocalInput())
 	if err != nil {
-		return "", false
+		return nil, false
 	}
-	return string(bytes), true
+	return bytes, true
 }
 
 // GetOutput 获取输出内容
-func (t *Testcase) GetOutput() (string, bool) {
-	outPath := filepath.Join(config.Config.File.TestcasePath, t.OutputPath)
-	bytes, err := os.ReadFile(outPath)
+func (t *Testcase) GetOutput() ([]byte, bool) {
+	bytes, err := os.ReadFile(t.GetLocalOutput())
 	if err != nil {
-		return "", false
+		return nil, false
 	}
-	return string(bytes), true
+	return bytes, true
 }
 
-// 将输入内容上传到本地
-func (t *Testcase) UploadInput(input []byte) bool {
-	inputPath := filepath.Join(config.Config.File.TestcasePath, t.InputPath)
-	return save(inputPath, input)
+// SaveInput 将输入内容保存到本地
+func (t *Testcase) SaveInput(input []byte) bool {
+	return save(t.GetLocalInput(), input)
 }
 
-// 将输出内容上传到本地
-func (t *Testcase) UploadOutput(output []byte) bool {
-	outputPath := filepath.Join(config.Config.File.TestcasePath, t.OutputPath)
-	return save(outputPath, output)
+// SaveOutput 将输出内容保存到本地
+func (t *Testcase) SaveOutput(output []byte) bool {
+	return save(t.GetLocalOutput(), output)
 }
 
 func save(path string, body []byte) bool {

@@ -239,6 +239,16 @@ func (x *Testcase) FastRead(buf []byte, _type int8, number int32) (offset int, e
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -269,6 +279,16 @@ func (x *Testcase) fastReadField3(buf []byte, _type int8) (offset int, err error
 
 func (x *Testcase) fastReadField4(buf []byte, _type int8) (offset int, err error) {
 	x.OutputPath, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Testcase) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.Input, offset, err = fastpb.ReadBytes(buf, _type)
+	return offset, err
+}
+
+func (x *Testcase) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.Output, offset, err = fastpb.ReadBytes(buf, _type)
 	return offset, err
 }
 
@@ -1186,6 +1206,8 @@ func (x *Testcase) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
 	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
 	return offset
 }
 
@@ -1218,6 +1240,22 @@ func (x *Testcase) fastWriteField4(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 4, x.GetOutputPath())
+	return offset
+}
+
+func (x *Testcase) fastWriteField5(buf []byte) (offset int) {
+	if len(x.Input) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteBytes(buf[offset:], 5, x.GetInput())
+	return offset
+}
+
+func (x *Testcase) fastWriteField6(buf []byte) (offset int) {
+	if len(x.Output) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteBytes(buf[offset:], 6, x.GetOutput())
 	return offset
 }
 
@@ -1891,6 +1929,8 @@ func (x *Testcase) Size() (n int) {
 	n += x.sizeField2()
 	n += x.sizeField3()
 	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
 	return n
 }
 
@@ -1923,6 +1963,22 @@ func (x *Testcase) sizeField4() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(4, x.GetOutputPath())
+	return n
+}
+
+func (x *Testcase) sizeField5() (n int) {
+	if len(x.Input) == 0 {
+		return n
+	}
+	n += fastpb.SizeBytes(5, x.GetInput())
+	return n
+}
+
+func (x *Testcase) sizeField6() (n int) {
+	if len(x.Output) == 0 {
+		return n
+	}
+	n += fastpb.SizeBytes(6, x.GetOutput())
 	return n
 }
 
@@ -2441,6 +2497,8 @@ var fieldIDToName_Testcase = map[int32]string{
 	2: "ProblemID",
 	3: "InputPath",
 	4: "OutputPath",
+	5: "Input",
+	6: "Output",
 }
 
 var fieldIDToName_Sample = map[int32]string{

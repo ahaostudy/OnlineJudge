@@ -1,20 +1,38 @@
-FROM golang:1.20
+FROM ubuntu:20.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG C.UTF-8
+
+ENV s gateway
+
+VOLUME ["/data"]
+
+RUN sed -i 's@http://archive.ubuntu.com/ubuntu/@http://mirrors.aliyun.com/ubuntu/@g' /etc/apt/sources.list
+RUN apt-get clean && apt-get update
+RUN apt-get install -y wget
+
+RUN apt-get install libseccomp-dev
+RUN apt-get install -y gcc
+RUN apt-get install -y g++
+RUN apt-get install -y openjdk-8-jdk
+RUN apt-get install -y python3.8
+
+RUN wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPROXY https://goproxy.cn
-ENV SERVER gateway
 
 WORKDIR $GOPATH/src/OnlineJudge
-
 COPY . .
 
-RUN go build -o judge ./cmd/judge/main.go
-RUN go build -o problem ./cmd/problem/main.go
-RUN go build -o submit ./cmd/submit/main.go
-RUN go build -o contest ./cmd/contest/main.go
-RUN go build -o user ./cmd/user/main.go
-RUN go build -o chatgpt ./cmd/chatgpt/main.go
-RUN go build -o gateway ./cmd/gateway/main.go
+RUN go build -o j cmd/judge/main.go
+RUN go build -o p cmd/problem/main.go
+RUN go build -o s cmd/submit/main.go
+RUN go build -o u cmd/user/main.go
+RUN go build -o c cmd/chatgpt/main.go
+RUN go build -o g cmd/gateway/main.go
 
 EXPOSE 8080 9991 9992 9993 9994 9995 9996
 
-ENTRYPOINT ./$SERVER
+CMD [ "rm", "-rf", "cache" ]
+ENTRYPOINT ./$s

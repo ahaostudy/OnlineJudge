@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	NacosHost = "127.0.0.1"
+	NacosHost = "192.168.1.75"
 	NacosPort = 8848
 
 )
