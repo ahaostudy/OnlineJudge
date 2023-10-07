@@ -1,9 +1,7 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
-
-ENV s gateway
 
 VOLUME ["/data"]
 
@@ -12,10 +10,11 @@ RUN apt-get clean && apt-get update
 RUN apt-get install -y wget
 
 RUN apt-get install libseccomp-dev
+
 RUN apt-get install -y gcc
 RUN apt-get install -y g++
 RUN apt-get install -y openjdk-8-jdk
-RUN apt-get install -y python3.8
+# RUN apt-get install -y python3.8
 
 RUN wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz
 RUN tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
@@ -24,15 +23,16 @@ ENV GOPROXY https://goproxy.cn
 
 WORKDIR $GOPATH/src/OnlineJudge
 COPY . .
+RUN mkdir -p /usr/lib/judger && cp lib/libjudger.so /usr/lib/judger/libjudger.so
 
-RUN go build -o j cmd/judge/main.go
-RUN go build -o p cmd/problem/main.go
-RUN go build -o s cmd/submit/main.go
-RUN go build -o u cmd/user/main.go
-RUN go build -o c cmd/chatgpt/main.go
-RUN go build -o g cmd/gateway/main.go
+RUN go mod tidy
+RUN go build -o service-judge cmd/judge/main.go
+RUN go build -o service-problem cmd/problem/main.go
+RUN go build -o service-submit cmd/submit/main.go
+RUN go build -o service-user cmd/user/main.go
+RUN go build -o service-chatgpt cmd/chatgpt/main.go
+RUN go build -o service-gateway cmd/gateway/main.go
 
 EXPOSE 8080 9991 9992 9993 9994 9995 9996
 
-CMD [ "rm", "-rf", "cache" ]
-ENTRYPOINT ./$s
+ENTRYPOINT ./$SERVICE

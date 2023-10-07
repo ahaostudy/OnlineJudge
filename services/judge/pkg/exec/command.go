@@ -7,7 +7,6 @@ import (
 	"os/exec"
 	"reflect"
 	"regexp"
-	"strings"
 
 	"main/services/judge/config"
 	"main/services/judge/pkg/compiler"
@@ -41,14 +40,14 @@ func NewDefaultCommand(exe compiler.Executable, inputPath string, outputPath str
 // Exec 执行命令
 func (c *Command) Exec() (*Result, error) {
 	// 获取执行命令
-	command, err := c.Command()
+	args, err := c.CommandArgs()
 	if err != nil {
 		return nil, errs.ErrCodeNotCompiled
 	}
 
 	// 为命令添加sudo权限
-	cmd := exec.Command("sudo", "-S", "sh", "-c", command)
-	cmd.Stdin = strings.NewReader(config.Config.System.SudoPwd + "\n")
+	cmd := exec.Command(config.Config.Sandbox.ExePath, args...)
+	fmt.Printf("[exec] %v\n", cmd.String())
 
 	// 执行命令
 	var stdout bytes.Buffer
@@ -80,8 +79,8 @@ func (c *Command) GetArgs(field string) (value interface{}) {
 	return value
 }
 
-// Command 命令序列化
-func (c *Command) Command() (string, error) {
+// CommandArgs 参数序列
+func (c *Command) CommandArgs() ([]string, error) {
 	// 沙箱参数
 	var args []string
 	// 命令执行参数
@@ -90,11 +89,11 @@ func (c *Command) Command() (string, error) {
 			v := c.GetArgs(s[1 : len(s)-1])
 			return fmt.Sprintf(`%v`, v)
 		})
-		args = append(args, fmt.Sprintf(`--args="%s"`, arg))
+		args = append(args, fmt.Sprintf(`--args=%s`, arg))
 	}
 	// 命令执行环境
 	for _, e := range c.exe.Env() {
-		args = append(args, fmt.Sprintf(`--env="%s"`, e))
+		args = append(args, fmt.Sprintf(`--env=%s`, e))
 	}
 	// 添加其它参数
 	c.exe.SetKwargs(map[string]interface{}{
@@ -119,5 +118,5 @@ func (c *Command) Command() (string, error) {
 	})
 
 	// 返回沙箱执行命令
-	return exec.Command(config.Config.Sandbox.ExePath, args...).String(), nil
+	return args, nil
 }
