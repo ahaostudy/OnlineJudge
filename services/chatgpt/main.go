@@ -28,7 +28,7 @@ func Run() {
 		panic(err)
 	}
 
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", config.Config.Host, config.Config.Port))
 	if err != nil {
 		panic(err)
 	}

@@ -1,9 +1,66 @@
 services:
+  mysql:
+    image: mysql:latest
+    ports:
+      - 9981:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: onlinejudge
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql/init:/docker-entrypoint-initdb.d
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+        "--skip-character-set-client-handshake"
+      ]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --silent localhost:3306 >/dev/null || exit 1"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:latest
+    ports:
+      - 9982:6379
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 9983:5672
+      - 9984:15672
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "node_health_check"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
   gateway:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-gateway
 
@@ -11,7 +68,8 @@ services:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-judge
 
@@ -19,17 +77,33 @@ services:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-problem
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   submit:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-submit
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   # contest:
   #   image: onlinejudge
@@ -38,22 +112,31 @@ services:
   #     - ./data:/data
   #   environment:
   #     - SERVICE=service-contest
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
   user:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-user
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   chatgpt:
     image: onlinejudge
     network_mode: host
     volumes:
-      - ./data:/data
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
     environment:
       - SERVICE=service-chatgpt
-
-volumes:
-  oj-data:

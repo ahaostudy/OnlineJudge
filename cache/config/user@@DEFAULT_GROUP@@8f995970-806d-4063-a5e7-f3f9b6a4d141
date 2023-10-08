@@ -1,0 +1,33 @@
+name: user
+version: v1
+host: 127.0.0.1
+port: 9995
+
+auth:
+  # sha256
+  salt: 2023/08/31
+  # snowflake
+  node: 1
+
+email:
+  addr: smtp.163.com:25
+  host: smtp.163.com
+  from: "OnlineJudge <ahao_study@163.com>"
+  email: ahao_study@163.com
+  auth: DGRZGRZLEVSDTGWK
+  expire: 300
+
+mysql:
+  host: 192.168.1.75
+  port: 3306
+  dbname: oj
+  username: root
+  password: dream
+  charset: utf8mb4
+
+redis:
+  addr: 192.168.1.75:6379
+  password: dream
+  lockKey: lock
+  ttl: 86400
+  shortTtl: 300

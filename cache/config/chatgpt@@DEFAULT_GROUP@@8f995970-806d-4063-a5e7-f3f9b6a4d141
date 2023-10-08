@@ -1,0 +1,8 @@
+name: chatgpt
+version: v1
+port: 9996
+
+openai:
+    baseUrl: https://chatai.451024.xyz/
+    apiKey: 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
+    model: gpt-3.5-turbo
