@@ -14,7 +14,6 @@ type Default struct {
 	Sandbox        Sandbox `yaml:"sandbox"`
 	File           File    `yaml:"file"`
 
-	Mysql    Mysql    `yaml:"mysql"`
 	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
 	Redis    Redis    `yaml:"redis"`
 }
@@ -49,16 +48,6 @@ type File struct {
 	TempPath     string `yaml:"tempPath"`
 	CodePath     string `yaml:"codePath"`
 	TestcasePath string `yaml:"testcasePath"`
-}
-
-// Mysql
-type Mysql struct {
-	Dbname   string `yaml:"dbname"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Charset  string `yaml:"charset"`
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
 }
 
 // Rabbitmq

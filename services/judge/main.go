@@ -16,7 +16,6 @@ import (
 	"main/services/judge/client"
 	"main/services/judge/config"
 	"main/services/judge/dal/cache"
-	"main/services/judge/dal/db"
 	"main/services/judge/dal/mq"
 )
 
@@ -36,11 +35,6 @@ func Run() {
 	// 连接rpc服务
 	client.InitClient(cli)
 
-	// 连接数据库
-	if err := db.InitMySQL(); err != nil {
-		panic(err)
-	}
-
 	// 连接缓存
 	if err := cache.InitRedis(); err != nil {
 		panic(err)
@@ -49,7 +43,7 @@ func Run() {
 	// 连接并启动MQ
 	defer mq.Run().Destroy()
 
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", config.Config.Host, config.Config.Port))
 	if err != nil {
 		panic(err)
 	}

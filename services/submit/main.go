@@ -53,7 +53,7 @@ func Run() {
 	// 运行启动任务
 	jobs.RunSubmitJobs()
 
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", config.Config.Host, config.Config.Port))
 	if err != nil {
 		panic(err)
 	}
