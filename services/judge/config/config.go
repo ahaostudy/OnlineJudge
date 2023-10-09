@@ -9,18 +9,12 @@ type Default struct {
 	Port           int     `yaml:"port"`
 	MaxJudgerCount int     `yaml:"maxJudgerCount"`
 	Host           string  `yaml:"host"`
-	System         System  `yaml:"system"`
 	Exe            Exe     `yaml:"exe"`
 	Sandbox        Sandbox `yaml:"sandbox"`
 	File           File    `yaml:"file"`
 
 	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
 	Redis    Redis    `yaml:"redis"`
-}
-
-// System
-type System struct {
-	SudoPwd string `yaml:"sudoPwd"`
 }
 
 // Sandbox

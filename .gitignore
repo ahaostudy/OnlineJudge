@@ -4,7 +4,8 @@
 go.mod
 go.sum
 
-data/*
-!data/.gitkeep
+/data/*
+!/data/.gitkeep
+/cache
+
 nohup.out
-./cache/

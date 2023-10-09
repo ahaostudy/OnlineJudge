@@ -12,7 +12,7 @@ func InitRoute() *gin.Engine {
 	r := gin.Default()
 
 	// TODO: static path
-	r.Static("static", "data/static")
+	r.Static("static", "./data/static")
 
 	api := r.Group("/api/v1")
 	api.Use(cors.Cors())

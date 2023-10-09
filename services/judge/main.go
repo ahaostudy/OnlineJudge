@@ -9,6 +9,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
+	r "github.com/cloudwego/kitex/pkg/registry"
 
 	nacosclient "main/common/nacos_client"
 	nacosconfig "main/common/nacos_config"
@@ -52,6 +53,10 @@ func Run() {
 		new(JudgeServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
+		server.WithRegistryInfo(&r.Info{
+			ServiceName: config.Config.Name,
+			Addr:        addr,
+		}),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),
 		server.WithServiceAddr(addr),
 	)

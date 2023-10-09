@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -33,4 +34,9 @@ func initConfigVar() {
 	NacosPort = viper.GetInt("nacosPort")
 	NamespaceID = viper.GetString("namespaceID")
 	Group = viper.GetString("group")
+
+	fmt.Printf("NacosHost: %v\n", NacosHost)
+	fmt.Printf("NacosPort: %v\n", NacosPort)
+	fmt.Printf("NamespaceID: %v\n", NamespaceID)
+	fmt.Printf("Group: %v\n", Group)
 }

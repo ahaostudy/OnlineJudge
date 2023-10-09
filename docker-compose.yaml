@@ -1,11 +1,30 @@
 services:
+  nacos:
+    image: nacos/nacos-server
+    networks:
+      - oj-net
+    ports:
+      - 28848:8848
+    environment:
+      - MODE=standalone
+    volumes:
+      - ./data/nacos/data:/home/nacos/data
+      - ./data/nacos/logs:/home/nacos/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8848/nacos/"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
   mysql:
     image: mysql:latest
+    networks:
+      - oj-net
     ports:
-      - 9981:3306
+      - 23306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: onlinejudge
+      MYSQL_DATABASE: ahaostudy/onlinejudge:latest
       TZ: Asia/Shanghai
     volumes:
       - ./data/mysql/data:/var/lib/mysql
@@ -29,8 +48,10 @@ services:
 
   redis:
     image: redis:latest
+    networks:
+      - oj-net
     ports:
-      - 9982:6379
+      - 26379:6379
     volumes:
       - ./data/redis:/data
     healthcheck:
@@ -41,9 +62,11 @@ services:
 
   rabbitmq:
     image: rabbitmq:management
+    networks:
+      - oj-net
     ports:
-      - 9983:5672
-      - 9984:15672
+      - 25672:5672
+      - 35672:15672
     volumes:
       - ./data/rabbitmq:/var/lib/rabbitmq
     environment:
@@ -55,88 +78,116 @@ services:
       timeout: 5s
       retries: 3
 
+  init:
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
+    volumes:
+      - ./config:/etc/oj/config
+    command: ["/app/script/init_nacos.sh", "/etc/oj/config/nacos_default_config.zip"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+
   gateway:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
+    ports:
+      - 28080:8080
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-gateway
+    command: ["/app/service-gateway", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
 
   judge:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-judge
+    command: ["/app/service-judge", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      init:
+        condition: service_started 
 
   problem:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-problem
+    command: ["/app/service-problem", "--cp=/etc/oj/config/config.yaml"]
     depends_on:
+      nacos:
+        condition: service_healthy
       mysql:
         condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+      init:
+        condition: service_started 
 
   submit:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-submit
+    command: ["/app/service-submit", "--cp=/etc/oj/config/config.yaml"]
     depends_on:
+      nacos:
+        condition: service_healthy
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-
-  # contest:
-  #   image: onlinejudge
-  #   network_mode: host
-  #   volumes:
-  #     - ./data:/data
-  #   environment:
-  #     - SERVICE=service-contest
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
+      init:
+        condition: service_started 
 
   user:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-user
+    command: ["/app/service-user", "--cp=/etc/oj/config/config.yaml"]
     depends_on:
+      nacos:
+        condition: service_healthy
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+      init:
+        condition: service_started 
 
   chatgpt:
-    image: onlinejudge
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    environment:
-      - SERVICE=service-chatgpt
+    command: ["/app/service-chatgpt", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      init:
+        condition: service_started 
+
+networks:
+  oj-net:
