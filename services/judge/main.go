@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
+	r "github.com/cloudwego/kitex/pkg/registry"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
-	r "github.com/cloudwego/kitex/pkg/registry"
 
 	nacosclient "main/common/nacos_client"
 	nacosconfig "main/common/nacos_config"
@@ -22,6 +23,15 @@ import (
 
 const DataId = "judge"
 
+func InitDir() {
+	if err := os.MkdirAll(config.Config.File.CodePath, os.ModePerm); err != nil {
+		panic(err)
+	}
+	if err := os.MkdirAll(config.Config.File.TempPath, os.ModePerm); err != nil {
+		panic(err)
+	}
+}
+
 func Run() {
 	cli, err := nacosclient.NewNamingClient()
 	if err != nil {
@@ -32,6 +42,9 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
+
+	// 初始化一些目录
+	InitDir()
 
 	// 连接rpc服务
 	client.InitClient(cli)

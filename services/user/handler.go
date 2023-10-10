@@ -76,6 +76,8 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 	resp = new(user.LoginResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
+	fmt.Printf("req: %#v\n", req)
+
 	// 校验参数是否合理
 	if len(req.GetUsername()) == 0 && len(req.GetEmail()) == 0 {
 		resp.StatusCode = code.CodeInvalidParams.Code()
@@ -90,9 +92,7 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 	var err error
 	if len(req.Password) > 0 {
 		// 获取用户信息
-		if len(req.GetUsername()) > 0 {
-			user, err = db.GetUserByUsername(req.GetUsername())
-		}
+		user, err = db.GetUserByUsername(req.GetUsername())
 		if len(req.GetEmail()) > 0 && errors.Is(err, gorm.ErrRecordNotFound) {
 			user, err = db.GetUserByEmail(req.GetEmail())
 		}
@@ -126,11 +126,6 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 			resp.StatusCode = code.CodeInvalidCaptcha.Code()
 			return
 		}
-	}
-
-	if user == nil {
-		resp.StatusCode = code.CodeServerBusy.Code()
-		return
 	}
 
 	// 生成token

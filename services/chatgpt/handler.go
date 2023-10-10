@@ -51,6 +51,7 @@ func (s *ChatGPTServiceImpl) Chat(req *chatgpt.ChatRequest, stream chatgpt.ChatG
 		return nil
 	}
 	defer resp.Body.Close()
+	log.Printf("openai response status: %v\n", resp.Status)
 
 	// 流式读取
 	buf := make([]byte, 4096)

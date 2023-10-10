@@ -98,7 +98,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-gateway", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-gateway", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
@@ -115,7 +115,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-judge", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-judge", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
@@ -133,7 +133,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-problem", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-problem", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
@@ -149,7 +149,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-submit", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-submit", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
@@ -169,7 +169,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-user", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-user", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
@@ -187,7 +187,7 @@ services:
     volumes:
       - ./data:/etc/oj/data
       - ./config:/etc/oj/config
-    command: ["/app/service-chatgpt", "--cp=/etc/oj/config/config.yaml"]
+    command: ["/app/service-chatgpt", "--cp=/etc/oj/config/config.production.yaml"]
     depends_on:
       nacos:
         condition: service_healthy
