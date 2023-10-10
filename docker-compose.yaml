@@ -12,9 +12,9 @@ services:
       - ./data/nacos/logs:/home/nacos/logs
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8848/nacos/"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   mysql:
     image: mysql:latest
@@ -24,7 +24,7 @@ services:
       - 23306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ahaostudy/onlinejudge:latest
+      MYSQL_DATABASE: onlinejudge
       TZ: Asia/Shanghai
     volumes:
       - ./data/mysql/data:/var/lib/mysql
@@ -42,9 +42,9 @@ services:
           "CMD-SHELL",
           "curl --silent localhost:3306 >/dev/null || exit 1"
         ]
-      interval: 5s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   redis:
     image: redis:latest
@@ -56,9 +56,9 @@ services:
       - ./data/redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:management
@@ -74,9 +74,9 @@ services:
       RABBITMQ_DEFAULT_PASS: admin
     healthcheck:
       test: ["CMD", "rabbitmqctl", "node_health_check"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   init:
     image: ahaostudy/onlinejudge:latest
@@ -102,6 +102,11 @@ services:
     depends_on:
       nacos:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   judge:
     image: ahaostudy/onlinejudge:latest
@@ -187,7 +192,17 @@ services:
       nacos:
         condition: service_healthy
       init:
-        condition: service_started 
+        condition: service_started
+  
+  web:
+    image: ahaostudy/oj_web:latest
+    networks:
+      - oj-net
+    ports:
+      - 8000:80
+    depends_on:
+      gateway:
+        condition: service_healthy
 
 networks:
   oj-net:
