@@ -2,8 +2,10 @@ package main
 
 import (
 	nacosclient "main/common/nacos_client"
+	nacosconfig "main/common/nacos_config"
 	"main/gateway/client"
 	"main/gateway/route"
+	"main/gateway/config"
 )
 
 func main() {
@@ -11,6 +13,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	nacosconfig.NewNacosConfig("gateway", &config.Config)
 
 	client.InitClient(cli)
 

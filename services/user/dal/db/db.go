@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 
 	"main/services/user/config"
 	"main/services/user/dal/model"
+	"main/services/user/pkg/sha256"
 )
 
 var DB *gorm.DB
@@ -57,11 +59,29 @@ func InitMySQL() error {
 
 	DB = db
 
-	return migration()
+	if err = migration(); err != nil {
+		return err
+	}
+
+	return initAdmin()
 }
 
 func migration() error {
 	return DB.AutoMigrate(
 		new(model.User),
 	)
+}
+
+func initAdmin() error {
+	_, err := GetUser(1)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = InsertUser(&model.User{
+			ID:       1,
+			Nickname: "admin",
+			Username: "admin",
+			Password: sha256.Encrypt("admin"),
+			Role:     model.ConstRoleOfAdmin,
+		})
+	}
+	return err
 }

@@ -1,4 +1,5 @@
-nacosHost: nacos
+# development
+nacosHost: localhost
 nacosPort: 8848
-namespaceID: onlinejudge-default
+namespaceID: 8f995970-806d-4063-a5e7-f3f9b6a4d141
 group: DEFAULT_GROUP
