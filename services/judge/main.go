@@ -9,6 +9,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	nacosserver "github.com/kitex-contrib/config-nacos/server"
 	"github.com/kitex-contrib/registry-nacos/registry"
+	r "github.com/cloudwego/kitex/pkg/registry"
 
 	nacosclient "main/common/nacos_client"
 	nacosconfig "main/common/nacos_config"
@@ -16,7 +17,6 @@ import (
 	"main/services/judge/client"
 	"main/services/judge/config"
 	"main/services/judge/dal/cache"
-	"main/services/judge/dal/db"
 	"main/services/judge/dal/mq"
 )
 
@@ -36,11 +36,6 @@ func Run() {
 	// 连接rpc服务
 	client.InitClient(cli)
 
-	// 连接数据库
-	if err := db.InitMySQL(); err != nil {
-		panic(err)
-	}
-
 	// 连接缓存
 	if err := cache.InitRedis(); err != nil {
 		panic(err)
@@ -49,7 +44,7 @@ func Run() {
 	// 连接并启动MQ
 	defer mq.Run().Destroy()
 
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", config.Config.Port))
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", config.Config.Host, config.Config.Port))
 	if err != nil {
 		panic(err)
 	}
@@ -58,6 +53,10 @@ func Run() {
 		new(JudgeServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.Config.Name}),
 		server.WithRegistry(registry.NewNacosRegistry(cli)),
+		server.WithRegistryInfo(&r.Info{
+			ServiceName: config.Config.Name,
+			Addr:        addr,
+		}),
 		server.WithSuite(nacosserver.NewSuite(config.Config.Name, nacosClient)),
 		server.WithServiceAddr(addr),
 	)

@@ -1,38 +1,34 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
+ENV GOPATH=/go
 
-ENV s gateway
-
-VOLUME ["/data"]
-
-RUN sed -i 's@http://archive.ubuntu.com/ubuntu/@http://mirrors.aliyun.com/ubuntu/@g' /etc/apt/sources.list
-RUN apt-get clean && apt-get update
-RUN apt-get install -y wget
-
-RUN apt-get install libseccomp-dev
-RUN apt-get install -y gcc
-RUN apt-get install -y g++
-RUN apt-get install -y openjdk-8-jdk
-RUN apt-get install -y python3.8
-
-RUN wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+# ENV GOPROXY https://goproxy.cn
 ENV PATH="/usr/local/go/bin:${PATH}"
-ENV GOPROXY https://goproxy.cn
 
-WORKDIR $GOPATH/src/OnlineJudge
+WORKDIR $GOPATH/app
 COPY . .
 
-RUN go build -o j cmd/judge/main.go
-RUN go build -o p cmd/problem/main.go
-RUN go build -o s cmd/submit/main.go
-RUN go build -o u cmd/user/main.go
-RUN go build -o c cmd/chatgpt/main.go
-RUN go build -o g cmd/gateway/main.go
+VOLUME ["/etc/oj/data", "/etc/oj/config"]
 
-EXPOSE 8080 9991 9992 9993 9994 9995 9996
+# RUN sed -i 's@http://archive.ubuntu.com/ubuntu/@http://mirrors.aliyun.com/ubuntu/@g' /etc/apt/sources.list && \
+RUN apt-get clean && apt-get update && \
+    apt-get install -y curl wget libseccomp-dev gcc g++ openjdk-8-jdk && \
+    wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz && \
+    rm go1.20.linux-amd64.tar.gz
 
-CMD [ "rm", "-rf", "cache" ]
-ENTRYPOINT ./$s
+RUN go mod init main && \
+    go mod tidy && \
+    mkdir build && \
+    go build -o build/service-judge cmd/judge/main.go && \
+    go build -o build/service-problem cmd/problem/main.go && \
+    go build -o build/service-submit cmd/submit/main.go && \
+    go build -o build/service-user cmd/user/main.go && \
+    go build -o build/service-chatgpt cmd/chatgpt/main.go && \
+    go build -o build/service-gateway cmd/gateway/main.go && \
+    mkdir -p /app /usr/lib/judger && \
+    cp -r script build/* /app && \
+    cp lib/libjudger.so /usr/lib/judger/libjudger.so && \
+    rm ./* -rf

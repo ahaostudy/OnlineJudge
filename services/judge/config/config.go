@@ -9,19 +9,12 @@ type Default struct {
 	Port           int     `yaml:"port"`
 	MaxJudgerCount int     `yaml:"maxJudgerCount"`
 	Host           string  `yaml:"host"`
-	System         System  `yaml:"system"`
 	Exe            Exe     `yaml:"exe"`
 	Sandbox        Sandbox `yaml:"sandbox"`
 	File           File    `yaml:"file"`
 
-	Mysql    Mysql    `yaml:"mysql"`
 	Rabbitmq Rabbitmq `yaml:"rabbitmq"`
 	Redis    Redis    `yaml:"redis"`
-}
-
-// System
-type System struct {
-	SudoPwd string `yaml:"sudoPwd"`
 }
 
 // Sandbox
@@ -49,16 +42,6 @@ type File struct {
 	TempPath     string `yaml:"tempPath"`
 	CodePath     string `yaml:"codePath"`
 	TestcasePath string `yaml:"testcasePath"`
-}
-
-// Mysql
-type Mysql struct {
-	Dbname   string `yaml:"dbname"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	Charset  string `yaml:"charset"`
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
 }
 
 // Rabbitmq

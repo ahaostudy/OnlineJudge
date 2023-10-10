@@ -1,59 +1,208 @@
 services:
-  gateway:
-    image: oj1
-    network_mode: host
-    volumes:
-      - /projects/OnlineJudge/data:/data
+  nacos:
+    image: nacos/nacos-server
+    networks:
+      - oj-net
+    ports:
+      - 28848:8848
     environment:
-      - s=g
+      - MODE=standalone
+    volumes:
+      - ./data/nacos/data:/home/nacos/data
+      - ./data/nacos/logs:/home/nacos/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8848/nacos/"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  mysql:
+    image: mysql:latest
+    networks:
+      - oj-net
+    ports:
+      - 23306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: onlinejudge
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./data/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql/init:/docker-entrypoint-initdb.d
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+        "--skip-character-set-client-handshake"
+      ]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --silent localhost:3306 >/dev/null || exit 1"
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    networks:
+      - oj-net
+    ports:
+      - 26379:6379
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:management
+    networks:
+      - oj-net
+    ports:
+      - 25672:5672
+      - 35672:15672
+    volumes:
+      - ./data/rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "node_health_check"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  init:
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
+    volumes:
+      - ./config:/etc/oj/config
+    command: ["/app/script/init_nacos.sh", "/etc/oj/config/nacos_default_config.zip"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+
+  gateway:
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
+    ports:
+      - 28080:8080
+    volumes:
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-gateway", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   judge:
-    image: oj1
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=j
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-judge", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      init:
+        condition: service_started 
 
   problem:
-    image: oj1
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=p
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-problem", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      init:
+        condition: service_started 
 
   submit:
-    image: oj1
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=s
-
-  contest:
-    image: oj1
-    network_mode: host
-    volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=c
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-submit", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      init:
+        condition: service_started 
 
   user:
-    image: oj1
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=u
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-user", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      init:
+        condition: service_started 
 
   chatgpt:
-    image: oj1
-    network_mode: host
+    image: ahaostudy/onlinejudge:latest
+    networks:
+      - oj-net
     volumes:
-      - /projects/OnlineJudge/data:/data
-    environment:
-      - s=c
+      - ./data:/etc/oj/data
+      - ./config:/etc/oj/config
+    command: ["/app/service-chatgpt", "--cp=/etc/oj/config/config.yaml"]
+    depends_on:
+      nacos:
+        condition: service_healthy
+      init:
+        condition: service_started
+  
+  web:
+    image: ahaostudy/oj_web:latest
+    networks:
+      - oj-net
+    ports:
+      - 8000:80
+    depends_on:
+      gateway:
+        condition: service_healthy
 
-volumes:
-  oj-data:
+networks:
+  oj-net:

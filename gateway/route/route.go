@@ -10,12 +10,16 @@ import (
 
 func InitRoute() *gin.Engine {
 	r := gin.Default()
+	r.Use(cors.Cors())
 
 	// TODO: static path
-	r.Static("static", "data/static")
+	r.Static("static", "./data/static")
+
+	r.GET("/ping", func(ctx *gin.Context) {
+		ctx.JSON(200, "pong")
+	})
 
 	api := r.Group("/api/v1")
-	api.Use(cors.Cors())
 
 	RegisterUserRouter(api.Group("/user"))
 	RegisterProblemRouter(api.Group("/problem"))

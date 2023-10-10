@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+.idea
+
+/cache
+/data
+/config
+/output
+
+go.mod
+go.sum
+
+nohup.out
