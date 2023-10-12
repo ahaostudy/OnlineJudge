@@ -23,7 +23,7 @@ func (c *GCC) Build(codePath string) (msg string, err error) {
 	c.code = codePath
 	c.bin = filepath.Join(config.Config.File.TempPath, uuid.New().String())
 
-	cmd := exec.Command(config.Config.Exe.Gcc, codePath, "-Wall", "-std=c11", "-o", c.bin)
+	cmd := exec.Command(config.Config.Exe.Gcc, codePath, "-std=c11", "-o", c.bin)
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr

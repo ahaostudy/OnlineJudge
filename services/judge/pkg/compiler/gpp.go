@@ -23,7 +23,7 @@ func (c *GPP) Build(codePath string) (msg string, err error) {
 	c.code = codePath
 	c.bin = filepath.Join(config.Config.File.TempPath, uuid.New().String())
 
-	cmd := exec.Command(config.Config.Exe.Gpp, "-Wall", "-std=c++11", codePath, "-o", c.bin)
+	cmd := exec.Command(config.Config.Exe.Gpp, "-std=c++11", codePath, "-o", c.bin)
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
