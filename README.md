@@ -23,7 +23,7 @@
 - Seccomp
 - GCC、G++、JDK ...
 
-#### 安装 Seccomp
+#### Seccomp
 
 ```shell
 sudo apt-get install libseccomp-dev
@@ -41,6 +41,16 @@ sudo apt-get install openjdk-8-jdk
 
 
 ## 项目启动
+
+### 容器启动
+
+先拉取项目到本地，使用docker-compose启动即可。
+
+```shell
+docker-compose up -d
+```
+
+### 本地启动
 
 #### 更新配置文件
 
