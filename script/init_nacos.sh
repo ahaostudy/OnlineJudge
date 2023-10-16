@@ -17,3 +17,4 @@ curl --location \
     --request POST "http://$NACOS_HOST:$NACOS_PORT/nacos/v1/cs/configs?import=true&namespace=$NAMESPACE" \
     --form "policy=OVERWRITE" \
     --form "file=@$CONFIG_PATH"
+

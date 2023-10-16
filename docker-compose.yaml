@@ -79,15 +79,15 @@ services:
       retries: 5
 
   init:
-    image: ahaostudy/onlinejudge:latest
-    networks:
-      - oj-net
-    volumes:
-      - ./config:/etc/oj/config
-    command: ["/app/script/init_nacos.sh", "/etc/oj/config/nacos_default_config.zip"]
-    depends_on:
-      nacos:
-        condition: service_healthy
+   image: ahaostudy/onlinejudge:latest
+   networks:
+     - oj-net
+   volumes:
+     - ./config:/etc/oj/config
+   command: ["/app/script/init_nacos.sh", "/etc/oj/config/nacos_default_config.zip"]
+   depends_on:
+     nacos:
+       condition: service_healthy
 
   gateway:
     image: ahaostudy/onlinejudge:latest
