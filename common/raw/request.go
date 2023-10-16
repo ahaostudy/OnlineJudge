@@ -17,6 +17,13 @@ func (r *Raw) Set(key string, value any) {
 	(*r)[key] = value
 }
 
+func (r *Raw) Del(key string) {
+	if r == nil {
+		return
+	}
+	delete(*r, key)
+}
+
 func (r *Raw) Get(key string) (any, bool) {
 	if r == nil {
 		return nil, false

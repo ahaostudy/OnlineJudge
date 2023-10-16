@@ -28,6 +28,7 @@ func InitRoute() *gin.Engine {
 	RegisterProblemRouter(api.Group("/problem"))
 	RegisterSubmitRouter(api.Group("/submit"))
 	RegisterContestRouter(api.Group("/contest"))
+	RegisterNoteRouter(api.Group("/note"))
 
 	api.Use(jwt.Auth())
 	api.POST("/chat", chatgpt.Chat)
@@ -36,7 +37,7 @@ func InitRoute() *gin.Engine {
 }
 
 func initStatic() {
-	if err :=os.MkdirAll(config.Config.Static.Path, os.ModePerm); err != nil {
+	if err := os.MkdirAll(config.Config.Static.Path, os.ModePerm); err != nil {
 		panic(err)
 	}
 }

@@ -14,7 +14,7 @@ type Builder struct {
 // 将in对象的所有字段解析到out对象，out必须为指针类型。
 // 其中字段类型要求为“相近”，如int和float都是数字类型，为相近类型。
 // 遇到不可转换、多余、缺失字段时会跳过而不会返回错误。
-// 不支持切片、数组等复杂类型的字段转换，会跳过。
+// 不支持切片、数组、指针等复杂类型的字段转换，会跳过。
 // Build完会返回Builder对象，支持链式调用。
 func (b *Builder) Build(in, out interface{}) *Builder {
 	if in == nil {
@@ -103,7 +103,7 @@ func isNumericKind(kind reflect.Kind) bool {
 // 判断是否为复杂结构
 func isComplexStructures(kind reflect.Kind) bool {
 	switch kind {
-	case reflect.Array, reflect.Slice, reflect.Map, reflect.Chan, reflect.Func, reflect.Interface:
+	case reflect.Array, reflect.Slice, reflect.Map, reflect.Chan, reflect.Func, reflect.Interface, reflect.Ptr:
 		return true
 	}
 	return false
