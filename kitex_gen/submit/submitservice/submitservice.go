@@ -32,6 +32,11 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetAcceptedStatus": kitex.NewMethodInfo(getAcceptedStatusHandler, newGetAcceptedStatusArgs, newGetAcceptedStatusResult, false),
 		"GetLatestSubmits":  kitex.NewMethodInfo(getLatestSubmitsHandler, newGetLatestSubmitsArgs, newGetLatestSubmitsResult, false),
 		"DeleteSubmit":      kitex.NewMethodInfo(deleteSubmitHandler, newDeleteSubmitArgs, newDeleteSubmitResult, false),
+		"GetNote":           kitex.NewMethodInfo(getNoteHandler, newGetNoteArgs, newGetNoteResult, false),
+		"GetNoteList":       kitex.NewMethodInfo(getNoteListHandler, newGetNoteListArgs, newGetNoteListResult, false),
+		"CreateNote":        kitex.NewMethodInfo(createNoteHandler, newCreateNoteArgs, newCreateNoteResult, false),
+		"DeleteNote":        kitex.NewMethodInfo(deleteNoteHandler, newDeleteNoteArgs, newDeleteNoteResult, false),
+		"UpdateNote":        kitex.NewMethodInfo(updateNoteHandler, newUpdateNoteArgs, newUpdateNoteResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "submit",
@@ -1731,6 +1736,771 @@ func (p *DeleteSubmitResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.GetNoteRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).GetNote(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetNoteArgs:
+		success, err := handler.(submit.SubmitService).GetNote(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetNoteResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetNoteArgs() interface{} {
+	return &GetNoteArgs{}
+}
+
+func newGetNoteResult() interface{} {
+	return &GetNoteResult{}
+}
+
+type GetNoteArgs struct {
+	Req *submit.GetNoteRequest
+}
+
+func (p *GetNoteArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.GetNoteRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetNoteArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetNoteArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetNoteArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetNoteArgs) Unmarshal(in []byte) error {
+	msg := new(submit.GetNoteRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetNoteArgs_Req_DEFAULT *submit.GetNoteRequest
+
+func (p *GetNoteArgs) GetReq() *submit.GetNoteRequest {
+	if !p.IsSetReq() {
+		return GetNoteArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetNoteArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetNoteArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetNoteResult struct {
+	Success *submit.GetNoteResponse
+}
+
+var GetNoteResult_Success_DEFAULT *submit.GetNoteResponse
+
+func (p *GetNoteResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.GetNoteResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetNoteResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetNoteResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetNoteResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetNoteResult) Unmarshal(in []byte) error {
+	msg := new(submit.GetNoteResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetNoteResult) GetSuccess() *submit.GetNoteResponse {
+	if !p.IsSetSuccess() {
+		return GetNoteResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetNoteResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.GetNoteResponse)
+}
+
+func (p *GetNoteResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetNoteResult) GetResult() interface{} {
+	return p.Success
+}
+
+func getNoteListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.GetNoteListRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).GetNoteList(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetNoteListArgs:
+		success, err := handler.(submit.SubmitService).GetNoteList(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetNoteListResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetNoteListArgs() interface{} {
+	return &GetNoteListArgs{}
+}
+
+func newGetNoteListResult() interface{} {
+	return &GetNoteListResult{}
+}
+
+type GetNoteListArgs struct {
+	Req *submit.GetNoteListRequest
+}
+
+func (p *GetNoteListArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.GetNoteListRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetNoteListArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetNoteListArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetNoteListArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetNoteListArgs) Unmarshal(in []byte) error {
+	msg := new(submit.GetNoteListRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetNoteListArgs_Req_DEFAULT *submit.GetNoteListRequest
+
+func (p *GetNoteListArgs) GetReq() *submit.GetNoteListRequest {
+	if !p.IsSetReq() {
+		return GetNoteListArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetNoteListArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetNoteListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetNoteListResult struct {
+	Success *submit.GetNoteListResponse
+}
+
+var GetNoteListResult_Success_DEFAULT *submit.GetNoteListResponse
+
+func (p *GetNoteListResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.GetNoteListResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetNoteListResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetNoteListResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetNoteListResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetNoteListResult) Unmarshal(in []byte) error {
+	msg := new(submit.GetNoteListResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetNoteListResult) GetSuccess() *submit.GetNoteListResponse {
+	if !p.IsSetSuccess() {
+		return GetNoteListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetNoteListResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.GetNoteListResponse)
+}
+
+func (p *GetNoteListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetNoteListResult) GetResult() interface{} {
+	return p.Success
+}
+
+func createNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.CreateNoteRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).CreateNote(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *CreateNoteArgs:
+		success, err := handler.(submit.SubmitService).CreateNote(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*CreateNoteResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newCreateNoteArgs() interface{} {
+	return &CreateNoteArgs{}
+}
+
+func newCreateNoteResult() interface{} {
+	return &CreateNoteResult{}
+}
+
+type CreateNoteArgs struct {
+	Req *submit.CreateNoteRequest
+}
+
+func (p *CreateNoteArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.CreateNoteRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *CreateNoteArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *CreateNoteArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *CreateNoteArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *CreateNoteArgs) Unmarshal(in []byte) error {
+	msg := new(submit.CreateNoteRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var CreateNoteArgs_Req_DEFAULT *submit.CreateNoteRequest
+
+func (p *CreateNoteArgs) GetReq() *submit.CreateNoteRequest {
+	if !p.IsSetReq() {
+		return CreateNoteArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *CreateNoteArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *CreateNoteArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type CreateNoteResult struct {
+	Success *submit.CreateNoteResponse
+}
+
+var CreateNoteResult_Success_DEFAULT *submit.CreateNoteResponse
+
+func (p *CreateNoteResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.CreateNoteResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *CreateNoteResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *CreateNoteResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *CreateNoteResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *CreateNoteResult) Unmarshal(in []byte) error {
+	msg := new(submit.CreateNoteResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *CreateNoteResult) GetSuccess() *submit.CreateNoteResponse {
+	if !p.IsSetSuccess() {
+		return CreateNoteResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *CreateNoteResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.CreateNoteResponse)
+}
+
+func (p *CreateNoteResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *CreateNoteResult) GetResult() interface{} {
+	return p.Success
+}
+
+func deleteNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.DeleteNoteRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).DeleteNote(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *DeleteNoteArgs:
+		success, err := handler.(submit.SubmitService).DeleteNote(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*DeleteNoteResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newDeleteNoteArgs() interface{} {
+	return &DeleteNoteArgs{}
+}
+
+func newDeleteNoteResult() interface{} {
+	return &DeleteNoteResult{}
+}
+
+type DeleteNoteArgs struct {
+	Req *submit.DeleteNoteRequest
+}
+
+func (p *DeleteNoteArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.DeleteNoteRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *DeleteNoteArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *DeleteNoteArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *DeleteNoteArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *DeleteNoteArgs) Unmarshal(in []byte) error {
+	msg := new(submit.DeleteNoteRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var DeleteNoteArgs_Req_DEFAULT *submit.DeleteNoteRequest
+
+func (p *DeleteNoteArgs) GetReq() *submit.DeleteNoteRequest {
+	if !p.IsSetReq() {
+		return DeleteNoteArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *DeleteNoteArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *DeleteNoteArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type DeleteNoteResult struct {
+	Success *submit.DeleteNoteResponse
+}
+
+var DeleteNoteResult_Success_DEFAULT *submit.DeleteNoteResponse
+
+func (p *DeleteNoteResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.DeleteNoteResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *DeleteNoteResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *DeleteNoteResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *DeleteNoteResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *DeleteNoteResult) Unmarshal(in []byte) error {
+	msg := new(submit.DeleteNoteResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *DeleteNoteResult) GetSuccess() *submit.DeleteNoteResponse {
+	if !p.IsSetSuccess() {
+		return DeleteNoteResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *DeleteNoteResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.DeleteNoteResponse)
+}
+
+func (p *DeleteNoteResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *DeleteNoteResult) GetResult() interface{} {
+	return p.Success
+}
+
+func updateNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.UpdateNoteRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).UpdateNote(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *UpdateNoteArgs:
+		success, err := handler.(submit.SubmitService).UpdateNote(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*UpdateNoteResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newUpdateNoteArgs() interface{} {
+	return &UpdateNoteArgs{}
+}
+
+func newUpdateNoteResult() interface{} {
+	return &UpdateNoteResult{}
+}
+
+type UpdateNoteArgs struct {
+	Req *submit.UpdateNoteRequest
+}
+
+func (p *UpdateNoteArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.UpdateNoteRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *UpdateNoteArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *UpdateNoteArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *UpdateNoteArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *UpdateNoteArgs) Unmarshal(in []byte) error {
+	msg := new(submit.UpdateNoteRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var UpdateNoteArgs_Req_DEFAULT *submit.UpdateNoteRequest
+
+func (p *UpdateNoteArgs) GetReq() *submit.UpdateNoteRequest {
+	if !p.IsSetReq() {
+		return UpdateNoteArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *UpdateNoteArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *UpdateNoteArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type UpdateNoteResult struct {
+	Success *submit.UpdateNoteResponse
+}
+
+var UpdateNoteResult_Success_DEFAULT *submit.UpdateNoteResponse
+
+func (p *UpdateNoteResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.UpdateNoteResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *UpdateNoteResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *UpdateNoteResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *UpdateNoteResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *UpdateNoteResult) Unmarshal(in []byte) error {
+	msg := new(submit.UpdateNoteResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *UpdateNoteResult) GetSuccess() *submit.UpdateNoteResponse {
+	if !p.IsSetSuccess() {
+		return UpdateNoteResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *UpdateNoteResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.UpdateNoteResponse)
+}
+
+func (p *UpdateNoteResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UpdateNoteResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -1846,6 +2616,56 @@ func (p *kClient) DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequ
 	_args.Req = Req
 	var _result DeleteSubmitResult
 	if err = p.c.Call(ctx, "DeleteSubmit", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetNote(ctx context.Context, Req *submit.GetNoteRequest) (r *submit.GetNoteResponse, err error) {
+	var _args GetNoteArgs
+	_args.Req = Req
+	var _result GetNoteResult
+	if err = p.c.Call(ctx, "GetNote", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetNoteList(ctx context.Context, Req *submit.GetNoteListRequest) (r *submit.GetNoteListResponse, err error) {
+	var _args GetNoteListArgs
+	_args.Req = Req
+	var _result GetNoteListResult
+	if err = p.c.Call(ctx, "GetNoteList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreateNote(ctx context.Context, Req *submit.CreateNoteRequest) (r *submit.CreateNoteResponse, err error) {
+	var _args CreateNoteArgs
+	_args.Req = Req
+	var _result CreateNoteResult
+	if err = p.c.Call(ctx, "CreateNote", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) DeleteNote(ctx context.Context, Req *submit.DeleteNoteRequest) (r *submit.DeleteNoteResponse, err error) {
+	var _args DeleteNoteArgs
+	_args.Req = Req
+	var _result DeleteNoteResult
+	if err = p.c.Call(ctx, "DeleteNote", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateNote(ctx context.Context, Req *submit.UpdateNoteRequest) (r *submit.UpdateNoteResponse, err error) {
+	var _args UpdateNoteArgs
+	_args.Req = Req
+	var _result UpdateNoteResult
+	if err = p.c.Call(ctx, "UpdateNote", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

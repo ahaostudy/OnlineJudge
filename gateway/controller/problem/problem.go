@@ -12,7 +12,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-var (
+
+
+const (
 	defaultPage  = 1
 	defaultCount = 20
 )
@@ -68,7 +70,7 @@ type (
 	UpdateProblemResponse struct {
 		ctl.Response
 	}
-	
+
 	GetTestcaseResponse struct {
 		ctl.Response
 		Testcase *model.Testcase `json:"testcase"`
@@ -145,8 +147,8 @@ func GetProblemList(c *gin.Context) {
 
 	// 获取题目列表
 	result, err := client.ProblemCli.GetProblemList(c.Request.Context(), &problem.GetProblemListRequest{
-		Page:  int64(page),
-		Count: int64(count),
+		Page:   int64(page),
+		Count:  int64(count),
 		UserID: c.GetInt64("user_id"),
 	})
 	if err != nil {

@@ -63,5 +63,6 @@ func InitMySQL() error {
 func migration() error {
 	return DB.AutoMigrate(
 		new(model.Submit),
+		new(model.Note),
 	)
 }

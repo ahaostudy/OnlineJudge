@@ -134,6 +134,16 @@ func (x *Submit) FastRead(buf []byte, _type int8, number int32) (offset int, err
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 10:
+		offset, err = x.fastReadField10(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 11:
+		offset, err = x.fastReadField11(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -188,6 +198,116 @@ func (x *Submit) fastReadField8(buf []byte, _type int8) (offset int, err error) 
 }
 
 func (x *Submit) fastReadField9(buf []byte, _type int8) (offset int, err error) {
+	x.NoteID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Submit) fastReadField10(buf []byte, _type int8) (offset int, err error) {
+	x.CreatedAt, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Submit) fastReadField11(buf []byte, _type int8) (offset int, err error) {
+	var v Note
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Note = &v
+	return offset, nil
+}
+
+func (x *Note) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 7:
+		offset, err = x.fastReadField7(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 8:
+		offset, err = x.fastReadField8(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_Note[number], err)
+}
+
+func (x *Note) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Title, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Content, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.ProblemID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.SubmitID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField7(buf []byte, _type int8) (offset int, err error) {
+	x.IsPublic, offset, err = fastpb.ReadBool(buf, _type)
+	return offset, err
+}
+
+func (x *Note) fastReadField8(buf []byte, _type int8) (offset int, err error) {
 	x.CreatedAt, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
@@ -1059,6 +1179,391 @@ func (x *DeleteSubmitResponse) fastReadField1(buf []byte, _type int8) (offset in
 	return offset, err
 }
 
+func (x *GetNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetNoteRequest[number], err)
+}
+
+func (x *GetNoteRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetNoteResponse[number], err)
+}
+
+func (x *GetNoteResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	var v Note
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Note = &v
+	return offset, nil
+}
+
+func (x *GetNoteListRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetNoteListRequest[number], err)
+}
+
+func (x *GetNoteListRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Page, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Count, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListRequest) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.ProblemID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListRequest) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.SubmitID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListRequest) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.IsPublic, offset, err = fastpb.ReadBool(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetNoteListResponse[number], err)
+}
+
+func (x *GetNoteListResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetNoteListResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	var v Note
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.NoteList = append(x.NoteList, &v)
+	return offset, nil
+}
+
+func (x *CreateNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CreateNoteRequest[number], err)
+}
+
+func (x *CreateNoteRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	var v Note
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Note = &v
+	return offset, nil
+}
+
+func (x *CreateNoteRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *CreateNoteResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_CreateNoteResponse[number], err)
+}
+
+func (x *CreateNoteResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *DeleteNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_DeleteNoteRequest[number], err)
+}
+
+func (x *DeleteNoteRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *DeleteNoteRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *DeleteNoteResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_DeleteNoteResponse[number], err)
+}
+
+func (x *DeleteNoteResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *UpdateNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_UpdateNoteRequest[number], err)
+}
+
+func (x *UpdateNoteRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *UpdateNoteRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Note, offset, err = fastpb.ReadBytes(buf, _type)
+	return offset, err
+}
+
+func (x *UpdateNoteRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *UpdateNoteResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_UpdateNoteResponse[number], err)
+}
+
+func (x *UpdateNoteResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
 func (x *JudgeResult) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -1133,6 +1638,8 @@ func (x *Submit) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField7(buf[offset:])
 	offset += x.fastWriteField8(buf[offset:])
 	offset += x.fastWriteField9(buf[offset:])
+	offset += x.fastWriteField10(buf[offset:])
+	offset += x.fastWriteField11(buf[offset:])
 	return offset
 }
 
@@ -1201,10 +1708,105 @@ func (x *Submit) fastWriteField8(buf []byte) (offset int) {
 }
 
 func (x *Submit) fastWriteField9(buf []byte) (offset int) {
+	if x.NoteID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 9, x.GetNoteID())
+	return offset
+}
+
+func (x *Submit) fastWriteField10(buf []byte) (offset int) {
 	if x.CreatedAt == 0 {
 		return offset
 	}
-	offset += fastpb.WriteInt64(buf[offset:], 9, x.GetCreatedAt())
+	offset += fastpb.WriteInt64(buf[offset:], 10, x.GetCreatedAt())
+	return offset
+}
+
+func (x *Submit) fastWriteField11(buf []byte) (offset int) {
+	if x.Note == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 11, x.GetNote())
+	return offset
+}
+
+func (x *Note) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
+	offset += x.fastWriteField7(buf[offset:])
+	offset += x.fastWriteField8(buf[offset:])
+	return offset
+}
+
+func (x *Note) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *Note) fastWriteField2(buf []byte) (offset int) {
+	if x.Title == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetTitle())
+	return offset
+}
+
+func (x *Note) fastWriteField3(buf []byte) (offset int) {
+	if x.Content == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetContent())
+	return offset
+}
+
+func (x *Note) fastWriteField4(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 4, x.GetUserID())
+	return offset
+}
+
+func (x *Note) fastWriteField5(buf []byte) (offset int) {
+	if x.ProblemID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 5, x.GetProblemID())
+	return offset
+}
+
+func (x *Note) fastWriteField6(buf []byte) (offset int) {
+	if x.SubmitID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 6, x.GetSubmitID())
+	return offset
+}
+
+func (x *Note) fastWriteField7(buf []byte) (offset int) {
+	if !x.IsPublic {
+		return offset
+	}
+	offset += fastpb.WriteBool(buf[offset:], 7, x.GetIsPublic())
+	return offset
+}
+
+func (x *Note) fastWriteField8(buf []byte) (offset int) {
+	if x.CreatedAt == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 8, x.GetCreatedAt())
 	return offset
 }
 
@@ -1803,6 +2405,276 @@ func (x *DeleteSubmitResponse) fastWriteField1(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *GetNoteRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetNoteRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *GetNoteRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetUserID())
+	return offset
+}
+
+func (x *GetNoteResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetNoteResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetNoteResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Note == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 2, x.GetNote())
+	return offset
+}
+
+func (x *GetNoteListRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Page == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetPage())
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.Count == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetCount())
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetUserID())
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField4(buf []byte) (offset int) {
+	if x.ProblemID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 4, x.GetProblemID())
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField5(buf []byte) (offset int) {
+	if x.SubmitID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 5, x.GetSubmitID())
+	return offset
+}
+
+func (x *GetNoteListRequest) fastWriteField6(buf []byte) (offset int) {
+	if !x.IsPublic {
+		return offset
+	}
+	offset += fastpb.WriteBool(buf[offset:], 6, x.GetIsPublic())
+	return offset
+}
+
+func (x *GetNoteListResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetNoteListResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetNoteListResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.NoteList == nil {
+		return offset
+	}
+	for i := range x.GetNoteList() {
+		offset += fastpb.WriteMessage(buf[offset:], 2, x.GetNoteList()[i])
+	}
+	return offset
+}
+
+func (x *CreateNoteRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *CreateNoteRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Note == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 1, x.GetNote())
+	return offset
+}
+
+func (x *CreateNoteRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetUserID())
+	return offset
+}
+
+func (x *CreateNoteResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *CreateNoteResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *DeleteNoteRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *DeleteNoteRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *DeleteNoteRequest) fastWriteField2(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetUserID())
+	return offset
+}
+
+func (x *DeleteNoteResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *DeleteNoteResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *UpdateNoteRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	return offset
+}
+
+func (x *UpdateNoteRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *UpdateNoteRequest) fastWriteField2(buf []byte) (offset int) {
+	if len(x.Note) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteBytes(buf[offset:], 2, x.GetNote())
+	return offset
+}
+
+func (x *UpdateNoteRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetUserID())
+	return offset
+}
+
+func (x *UpdateNoteResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *UpdateNoteResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
 func (x *JudgeResult) Size() (n int) {
 	if x == nil {
 		return n
@@ -1877,6 +2749,8 @@ func (x *Submit) Size() (n int) {
 	n += x.sizeField7()
 	n += x.sizeField8()
 	n += x.sizeField9()
+	n += x.sizeField10()
+	n += x.sizeField11()
 	return n
 }
 
@@ -1945,10 +2819,105 @@ func (x *Submit) sizeField8() (n int) {
 }
 
 func (x *Submit) sizeField9() (n int) {
+	if x.NoteID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(9, x.GetNoteID())
+	return n
+}
+
+func (x *Submit) sizeField10() (n int) {
 	if x.CreatedAt == 0 {
 		return n
 	}
-	n += fastpb.SizeInt64(9, x.GetCreatedAt())
+	n += fastpb.SizeInt64(10, x.GetCreatedAt())
+	return n
+}
+
+func (x *Submit) sizeField11() (n int) {
+	if x.Note == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(11, x.GetNote())
+	return n
+}
+
+func (x *Note) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
+	n += x.sizeField7()
+	n += x.sizeField8()
+	return n
+}
+
+func (x *Note) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *Note) sizeField2() (n int) {
+	if x.Title == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetTitle())
+	return n
+}
+
+func (x *Note) sizeField3() (n int) {
+	if x.Content == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetContent())
+	return n
+}
+
+func (x *Note) sizeField4() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(4, x.GetUserID())
+	return n
+}
+
+func (x *Note) sizeField5() (n int) {
+	if x.ProblemID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(5, x.GetProblemID())
+	return n
+}
+
+func (x *Note) sizeField6() (n int) {
+	if x.SubmitID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(6, x.GetSubmitID())
+	return n
+}
+
+func (x *Note) sizeField7() (n int) {
+	if !x.IsPublic {
+		return n
+	}
+	n += fastpb.SizeBool(7, x.GetIsPublic())
+	return n
+}
+
+func (x *Note) sizeField8() (n int) {
+	if x.CreatedAt == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(8, x.GetCreatedAt())
 	return n
 }
 
@@ -2547,6 +3516,276 @@ func (x *DeleteSubmitResponse) sizeField1() (n int) {
 	return n
 }
 
+func (x *GetNoteRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetNoteRequest) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *GetNoteRequest) sizeField2() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetUserID())
+	return n
+}
+
+func (x *GetNoteResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetNoteResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetNoteResponse) sizeField2() (n int) {
+	if x.Note == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(2, x.GetNote())
+	return n
+}
+
+func (x *GetNoteListRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField1() (n int) {
+	if x.Page == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetPage())
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField2() (n int) {
+	if x.Count == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetCount())
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField3() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(3, x.GetUserID())
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField4() (n int) {
+	if x.ProblemID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(4, x.GetProblemID())
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField5() (n int) {
+	if x.SubmitID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(5, x.GetSubmitID())
+	return n
+}
+
+func (x *GetNoteListRequest) sizeField6() (n int) {
+	if !x.IsPublic {
+		return n
+	}
+	n += fastpb.SizeBool(6, x.GetIsPublic())
+	return n
+}
+
+func (x *GetNoteListResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetNoteListResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetNoteListResponse) sizeField2() (n int) {
+	if x.NoteList == nil {
+		return n
+	}
+	for i := range x.GetNoteList() {
+		n += fastpb.SizeMessage(2, x.GetNoteList()[i])
+	}
+	return n
+}
+
+func (x *CreateNoteRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *CreateNoteRequest) sizeField1() (n int) {
+	if x.Note == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(1, x.GetNote())
+	return n
+}
+
+func (x *CreateNoteRequest) sizeField2() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetUserID())
+	return n
+}
+
+func (x *CreateNoteResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *CreateNoteResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *DeleteNoteRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *DeleteNoteRequest) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *DeleteNoteRequest) sizeField2() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetUserID())
+	return n
+}
+
+func (x *DeleteNoteResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *DeleteNoteResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *UpdateNoteRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	return n
+}
+
+func (x *UpdateNoteRequest) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *UpdateNoteRequest) sizeField2() (n int) {
+	if len(x.Note) == 0 {
+		return n
+	}
+	n += fastpb.SizeBytes(2, x.GetNote())
+	return n
+}
+
+func (x *UpdateNoteRequest) sizeField3() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(3, x.GetUserID())
+	return n
+}
+
+func (x *UpdateNoteResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *UpdateNoteResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
 var fieldIDToName_JudgeResult = map[int32]string{
 	1: "Time",
 	2: "Memory",
@@ -2557,15 +3796,28 @@ var fieldIDToName_JudgeResult = map[int32]string{
 }
 
 var fieldIDToName_Submit = map[int32]string{
+	1:  "ID",
+	2:  "UserID",
+	3:  "ProblemID",
+	4:  "Code",
+	5:  "LangID",
+	6:  "Status",
+	7:  "Time",
+	8:  "Memory",
+	9:  "NoteID",
+	10: "CreatedAt",
+	11: "Note",
+}
+
+var fieldIDToName_Note = map[int32]string{
 	1: "ID",
-	2: "UserID",
-	3: "ProblemID",
-	4: "Code",
-	5: "LangID",
-	6: "Status",
-	7: "Time",
-	8: "Memory",
-	9: "CreatedAt",
+	2: "Title",
+	3: "Content",
+	4: "UserID",
+	5: "ProblemID",
+	6: "SubmitID",
+	7: "IsPublic",
+	8: "CreatedAt",
 }
 
 var fieldIDToName_DebugReqeust = map[int32]string{
@@ -2679,5 +3931,57 @@ var fieldIDToName_DeleteSubmitRequest = map[int32]string{
 }
 
 var fieldIDToName_DeleteSubmitResponse = map[int32]string{
+	1: "StatusCode",
+}
+
+var fieldIDToName_GetNoteRequest = map[int32]string{
+	1: "ID",
+	2: "UserID",
+}
+
+var fieldIDToName_GetNoteResponse = map[int32]string{
+	1: "StatusCode",
+	2: "Note",
+}
+
+var fieldIDToName_GetNoteListRequest = map[int32]string{
+	1: "Page",
+	2: "Count",
+	3: "UserID",
+	4: "ProblemID",
+	5: "SubmitID",
+	6: "IsPublic",
+}
+
+var fieldIDToName_GetNoteListResponse = map[int32]string{
+	1: "StatusCode",
+	2: "NoteList",
+}
+
+var fieldIDToName_CreateNoteRequest = map[int32]string{
+	1: "Note",
+	2: "UserID",
+}
+
+var fieldIDToName_CreateNoteResponse = map[int32]string{
+	1: "StatusCode",
+}
+
+var fieldIDToName_DeleteNoteRequest = map[int32]string{
+	1: "ID",
+	2: "UserID",
+}
+
+var fieldIDToName_DeleteNoteResponse = map[int32]string{
+	1: "StatusCode",
+}
+
+var fieldIDToName_UpdateNoteRequest = map[int32]string{
+	1: "ID",
+	2: "Note",
+	3: "UserID",
+}
+
+var fieldIDToName_UpdateNoteResponse = map[int32]string{
 	1: "StatusCode",
 }
