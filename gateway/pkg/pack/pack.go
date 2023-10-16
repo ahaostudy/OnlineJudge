@@ -101,6 +101,13 @@ func BuildSubmit(s *model.Submit) (*submit.Submit, error) {
 		return nil, err
 	}
 	t.CreatedAt = s.CreatedAt.UnixMilli()
+	if s.Note != nil {
+		note, err := BuildNote(s.Note)
+		if err != nil {
+			return nil, err
+		}
+		t.Note = note
+	}
 	return t, nil
 }
 
@@ -110,6 +117,13 @@ func UnBuildSubmit(s *submit.Submit) (*model.Submit, error) {
 		return nil, err
 	}
 	t.CreatedAt = time.UnixMilli(s.GetCreatedAt())
+	if s.Note != nil {
+		note, err := UnBuildNote(s.Note)
+		if err != nil {
+			return nil, err
+		}
+		t.Note = note
+	}
 	return t, nil
 }
 
@@ -204,4 +218,34 @@ func UnBuildContestList(contests []*contest.Contest) ([]*model.Contest, error) {
 		contestList = append(contestList, contest)
 	}
 	return contestList, nil
+}
+
+func BuildNote(n *model.Note) (*submit.Note, error) {
+	t := new(submit.Note)
+	if err := new(pack.Builder).Build(n, t).Error(); err != nil {
+		return nil, err
+	}
+	t.CreatedAt = n.CreatedAt.UnixMilli()
+	return t, nil
+}
+
+func UnBuildNote(n *submit.Note) (*model.Note, error) {
+	t := new(model.Note)
+	if err := new(pack.Builder).Build(n, t).Error(); err != nil {
+		return nil, err
+	}
+	t.CreatedAt = time.UnixMilli(n.GetCreatedAt())
+	return t, nil
+}
+
+func UnBuildNoteList(notes []*submit.Note) ([]*model.Note, error) {
+	var noteList []*model.Note
+	for _, n := range notes {
+		t, err := UnBuildNote(n)
+		if err != nil {
+			return nil, err
+		}
+		noteList = append(noteList, t)
+	}
+	return noteList, nil
 }

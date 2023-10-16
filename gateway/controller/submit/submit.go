@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const defaultLatestCount int64 = 10
+const defaultLatestCount = 10
 
 type (
 	GetSubmitResponse struct {

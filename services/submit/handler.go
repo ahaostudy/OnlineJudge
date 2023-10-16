@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"main/common/code"
+	"main/common/raw"
 	"main/common/status"
 	"main/kitex_gen/contest"
 	"main/kitex_gen/judge"
@@ -20,6 +21,7 @@ import (
 	"main/services/submit/dal/db"
 	"main/services/submit/dal/model"
 	"main/services/submit/pack"
+	"main/services/submit/pkg/md"
 )
 
 // SubmitServiceImpl implements the last service interface defined in the IDL.
@@ -267,6 +269,18 @@ func (s *SubmitServiceImpl) GetSubmit(ctx context.Context, req *submit.GetSubmit
 		return
 	}
 
+	// 判断是否存在笔记并获取笔记内容
+	if sub.NoteID != 0 {
+		note, err := db.GetNote(sub.NoteID)
+		if err != nil {
+			return
+		}
+		resp.Submit.Note, err = pack.BuildNote(note)
+		if err != nil {
+			return
+		}
+	}
+
 	// 获取提交的代码内容
 	res, err := client.JudgeCli.GetCode(ctx, &judge.GetCodeRequest{CodePath: sub.Code})
 	if err != nil {
@@ -375,6 +389,141 @@ func (s *SubmitServiceImpl) DeleteSubmit(ctx context.Context, req *submit.Delete
 	// 删除一条记录
 	err = db.DeleteSubmit(req.GetID())
 	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// GetNote implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) GetNote(ctx context.Context, req *submit.GetNoteRequest) (resp *submit.GetNoteResponse, _ error) {
+	resp = new(submit.GetNoteResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	note, err := db.GetNote(req.GetID())
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		resp.StatusCode = code.CodeRecordNotFound.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+
+	if !note.IsPublic && note.UserID != req.GetUserID() {
+		resp.StatusCode = code.CodeForbidden.Code()
+		return
+	}
+
+	resp.Note, err = pack.BuildNote(note)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// GetNoteList implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) GetNoteList(ctx context.Context, req *submit.GetNoteListRequest) (resp *submit.GetNoteListResponse, _ error) {
+	resp = new(submit.GetNoteListResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	page, count := int(req.GetPage()), int(req.GetCount())
+	noteList, err := db.GetNoteList(req.GetUserID(), req.GetProblemID(), req.GetSubmitID(), req.GetIsPublic(), (page-1)*count, count)
+	if err != nil {
+		return
+	}
+
+	// 提取markdown的内容作为文章简述
+	for _, note := range noteList {
+		note.Content = md.ExtractTextFromMarkdown(note.Content, 120)
+	}
+
+	resp.NoteList, err = pack.BuildNoteList(noteList)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// CreateNote implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) CreateNote(ctx context.Context, req *submit.CreateNoteRequest) (resp *submit.CreateNoteResponse, _ error) {
+	resp = new(submit.CreateNoteResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	note, err := pack.UnBuildNote(req.GetNote())
+	if err != nil {
+		return
+	}
+	note.UserID = req.GetUserID()
+	note.CreatedAt = time.Time{}
+
+
+	err = db.InsertNote(note)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// DeleteNote implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) DeleteNote(ctx context.Context, req *submit.DeleteNoteRequest) (resp *submit.DeleteNoteResponse, _ error) {
+	resp = new(submit.DeleteNoteResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	note, err := db.GetNote(req.GetID())
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		resp.StatusCode = code.CodeRecordNotFound.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+
+	if note.UserID != req.GetUserID() {
+		resp.StatusCode = code.CodeForbidden.Code()
+		return
+	}
+
+	if err := db.DeleteNote(req.GetID()); err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// UpdateNote implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) UpdateNote(ctx context.Context, req *submit.UpdateNoteRequest) (resp *submit.UpdateNoteResponse, _ error) {
+	resp = new(submit.UpdateNoteResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	note, err := db.GetNote(req.GetID())
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		resp.StatusCode = code.CodeRecordNotFound.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+
+	if note.UserID != req.GetUserID() {
+		resp.StatusCode = code.CodeForbidden.Code()
+		return
+	}
+
+	r := new(raw.Raw)
+	if err := r.ReadRawData(req.GetNote()); err != nil {
+		return
+	}
+	r.Del("id")
+
+	if err := db.UpdateNote(req.GetID(), r.Map()); err != nil {
 		return
 	}
 

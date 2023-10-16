@@ -16,6 +16,12 @@ service SubmitService {
     rpc GetAcceptedStatus(GetAcceptedStatusRequest) returns (GetAcceptedStatusResponse) {}
     rpc GetLatestSubmits(GetLatestSubmitsRequest) returns (GetLatestSubmitsResponse) {}
     rpc DeleteSubmit(DeleteSubmitRequest) returns (DeleteSubmitResponse) {}
+
+    rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {}
+    rpc GetNoteList(GetNoteListRequest) returns (GetNoteListResponse) {}
+    rpc CreateNote(CreateNoteRequest) returns (CreateNoteResponse) {}
+    rpc DeleteNote(DeleteNoteRequest) returns (DeleteNoteResponse) {}
+    rpc UpdateNote(UpdateNoteRequest) returns (UpdateNoteResponse) {}
 }
 
 message JudgeResult {
@@ -36,7 +42,21 @@ message Submit {
     int64 Status = 6;
     int64 Time = 7;
     int64 Memory = 8;
-    int64 CreatedAt = 9;
+    int64 NoteID = 9;
+    int64 CreatedAt = 10;
+
+    Note Note = 11;
+}
+
+message Note {
+    int64 ID = 1;
+    string Title = 2;
+    string Content = 3;
+    int64 UserID = 4;
+    int64 ProblemID = 5;
+    int64 SubmitID = 6;
+    bool IsPublic = 7;
+    int64 CreatedAt = 8;
 }
 
 message DebugReqeust {
@@ -151,5 +171,57 @@ message DeleteSubmitRequest {
 }
 
 message DeleteSubmitResponse {
+    int64 StatusCode = 1;
+}
+
+message GetNoteRequest {
+    int64 ID = 1;
+    int64 UserID = 2;
+}
+
+message GetNoteResponse {
+    int64 StatusCode = 1;
+    Note Note = 2;
+}
+
+message GetNoteListRequest {
+    int64 Page = 1;
+    int64 Count = 2;
+    int64 UserID = 3;
+    int64 ProblemID = 4;
+    int64 SubmitID = 5;
+    bool IsPublic = 6;
+}
+
+message GetNoteListResponse {
+    int64 StatusCode = 1;
+    repeated Note NoteList = 2;
+}
+
+message CreateNoteRequest {
+    Note Note = 1;
+    int64 UserID = 2;
+}
+
+message CreateNoteResponse {
+    int64 StatusCode = 1;
+}
+
+message DeleteNoteRequest {
+    int64 ID = 1;
+    int64 UserID = 2;
+}
+
+message DeleteNoteResponse {
+    int64 StatusCode = 1;
+}
+
+message UpdateNoteRequest {
+    int64 ID = 1;
+    bytes Note = 2;
+    int64 UserID = 3;
+}
+
+message UpdateNoteResponse {
     int64 StatusCode = 1;
 }

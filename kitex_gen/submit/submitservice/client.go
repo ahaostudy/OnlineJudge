@@ -22,6 +22,11 @@ type Client interface {
 	GetAcceptedStatus(ctx context.Context, Req *submit.GetAcceptedStatusRequest, callOptions ...callopt.Option) (r *submit.GetAcceptedStatusResponse, err error)
 	GetLatestSubmits(ctx context.Context, Req *submit.GetLatestSubmitsRequest, callOptions ...callopt.Option) (r *submit.GetLatestSubmitsResponse, err error)
 	DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequest, callOptions ...callopt.Option) (r *submit.DeleteSubmitResponse, err error)
+	GetNote(ctx context.Context, Req *submit.GetNoteRequest, callOptions ...callopt.Option) (r *submit.GetNoteResponse, err error)
+	GetNoteList(ctx context.Context, Req *submit.GetNoteListRequest, callOptions ...callopt.Option) (r *submit.GetNoteListResponse, err error)
+	CreateNote(ctx context.Context, Req *submit.CreateNoteRequest, callOptions ...callopt.Option) (r *submit.CreateNoteResponse, err error)
+	DeleteNote(ctx context.Context, Req *submit.DeleteNoteRequest, callOptions ...callopt.Option) (r *submit.DeleteNoteResponse, err error)
+	UpdateNote(ctx context.Context, Req *submit.UpdateNoteRequest, callOptions ...callopt.Option) (r *submit.UpdateNoteResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -106,4 +111,29 @@ func (p *kSubmitServiceClient) GetLatestSubmits(ctx context.Context, Req *submit
 func (p *kSubmitServiceClient) DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequest, callOptions ...callopt.Option) (r *submit.DeleteSubmitResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteSubmit(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) GetNote(ctx context.Context, Req *submit.GetNoteRequest, callOptions ...callopt.Option) (r *submit.GetNoteResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetNote(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) GetNoteList(ctx context.Context, Req *submit.GetNoteListRequest, callOptions ...callopt.Option) (r *submit.GetNoteListResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetNoteList(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) CreateNote(ctx context.Context, Req *submit.CreateNoteRequest, callOptions ...callopt.Option) (r *submit.CreateNoteResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CreateNote(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) DeleteNote(ctx context.Context, Req *submit.DeleteNoteRequest, callOptions ...callopt.Option) (r *submit.DeleteNoteResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteNote(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) UpdateNote(ctx context.Context, Req *submit.UpdateNoteRequest, callOptions ...callopt.Option) (r *submit.UpdateNoteResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateNote(ctx, Req)
 }

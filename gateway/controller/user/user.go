@@ -138,7 +138,7 @@ func GetUser(c *gin.Context) {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
-	if id == 0 {
+	if id == -1 {
 		id = c.GetInt64("user_id")
 	}
 
