@@ -396,6 +396,25 @@ func (s *SubmitServiceImpl) DeleteSubmit(ctx context.Context, req *submit.Delete
 	return
 }
 
+// GetSubmitCalendar implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) GetSubmitCalendar(ctx context.Context, req *submit.GetSubmitCalendarRequest) (resp *submit.GetSubmitCalendarResponse, _ error) {
+	resp = new(submit.GetSubmitCalendarResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	data, err := db.GetSubmitCalendar(req.GetUserID())
+	if err != nil {
+		return
+	}
+
+	resp.SubmitCalendar = make(map[string]int64)
+	for _, d := range data {
+		resp.SubmitCalendar[d.Date] = d.Count
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
 // GetNote implements the SubmitServiceImpl interface.
 func (s *SubmitServiceImpl) GetNote(ctx context.Context, req *submit.GetNoteRequest) (resp *submit.GetNoteResponse, _ error) {
 	resp = new(submit.GetNoteResponse)
@@ -460,7 +479,6 @@ func (s *SubmitServiceImpl) CreateNote(ctx context.Context, req *submit.CreateNo
 	}
 	note.UserID = req.GetUserID()
 	note.CreatedAt = time.Time{}
-
 
 	err = db.InsertNote(note)
 	if err != nil {

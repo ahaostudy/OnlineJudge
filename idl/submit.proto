@@ -16,6 +16,7 @@ service SubmitService {
     rpc GetAcceptedStatus(GetAcceptedStatusRequest) returns (GetAcceptedStatusResponse) {}
     rpc GetLatestSubmits(GetLatestSubmitsRequest) returns (GetLatestSubmitsResponse) {}
     rpc DeleteSubmit(DeleteSubmitRequest) returns (DeleteSubmitResponse) {}
+    rpc GetSubmitCalendar(GetSubmitCalendarRequest) returns (GetSubmitCalendarResponse) {}
 
     rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {}
     rpc GetNoteList(GetNoteListRequest) returns (GetNoteListResponse) {}
@@ -172,6 +173,15 @@ message DeleteSubmitRequest {
 
 message DeleteSubmitResponse {
     int64 StatusCode = 1;
+}
+
+message GetSubmitCalendarRequest {
+    int64 UserID = 1;
+}
+
+message GetSubmitCalendarResponse {
+    int64 StatusCode = 1;
+    map<string, int64> SubmitCalendar = 2;
 }
 
 message GetNoteRequest {

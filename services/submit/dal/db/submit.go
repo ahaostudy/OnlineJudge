@@ -85,6 +85,16 @@ func GetUserLastSubmits(userID int64, count int) ([]*model.Submit, error) {
 	return submits, err
 }
 
+// GetSubmitCalendar 获取用户提交日历
+func GetSubmitCalendar(userID int64) (data []struct {
+	Date  string
+	Count int64
+}, err error) {
+	// 按日期统计提交次数
+	err = DB.Model(new(model.Submit)).Select("DATE_FORMAT(created_at,'%Y%m%d') as date, COUNT(id) as count").Where("user_id = ?", userID).Group("date").Find(&data).Error
+	return
+}
+
 // InsertSubmit 插入一条提交记录
 func InsertSubmit(submit *model.Submit) error {
 	return DB.Create(submit).Error

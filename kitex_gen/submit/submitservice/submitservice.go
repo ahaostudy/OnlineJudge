@@ -32,6 +32,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"GetAcceptedStatus": kitex.NewMethodInfo(getAcceptedStatusHandler, newGetAcceptedStatusArgs, newGetAcceptedStatusResult, false),
 		"GetLatestSubmits":  kitex.NewMethodInfo(getLatestSubmitsHandler, newGetLatestSubmitsArgs, newGetLatestSubmitsResult, false),
 		"DeleteSubmit":      kitex.NewMethodInfo(deleteSubmitHandler, newDeleteSubmitArgs, newDeleteSubmitResult, false),
+		"GetSubmitCalendar": kitex.NewMethodInfo(getSubmitCalendarHandler, newGetSubmitCalendarArgs, newGetSubmitCalendarResult, false),
 		"GetNote":           kitex.NewMethodInfo(getNoteHandler, newGetNoteArgs, newGetNoteResult, false),
 		"GetNoteList":       kitex.NewMethodInfo(getNoteListHandler, newGetNoteListArgs, newGetNoteListResult, false),
 		"CreateNote":        kitex.NewMethodInfo(createNoteHandler, newCreateNoteArgs, newCreateNoteResult, false),
@@ -1736,6 +1737,159 @@ func (p *DeleteSubmitResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getSubmitCalendarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.GetSubmitCalendarRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).GetSubmitCalendar(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetSubmitCalendarArgs:
+		success, err := handler.(submit.SubmitService).GetSubmitCalendar(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetSubmitCalendarResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetSubmitCalendarArgs() interface{} {
+	return &GetSubmitCalendarArgs{}
+}
+
+func newGetSubmitCalendarResult() interface{} {
+	return &GetSubmitCalendarResult{}
+}
+
+type GetSubmitCalendarArgs struct {
+	Req *submit.GetSubmitCalendarRequest
+}
+
+func (p *GetSubmitCalendarArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.GetSubmitCalendarRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetSubmitCalendarArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetSubmitCalendarArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetSubmitCalendarArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetSubmitCalendarArgs) Unmarshal(in []byte) error {
+	msg := new(submit.GetSubmitCalendarRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetSubmitCalendarArgs_Req_DEFAULT *submit.GetSubmitCalendarRequest
+
+func (p *GetSubmitCalendarArgs) GetReq() *submit.GetSubmitCalendarRequest {
+	if !p.IsSetReq() {
+		return GetSubmitCalendarArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetSubmitCalendarArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetSubmitCalendarArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetSubmitCalendarResult struct {
+	Success *submit.GetSubmitCalendarResponse
+}
+
+var GetSubmitCalendarResult_Success_DEFAULT *submit.GetSubmitCalendarResponse
+
+func (p *GetSubmitCalendarResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.GetSubmitCalendarResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetSubmitCalendarResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetSubmitCalendarResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetSubmitCalendarResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetSubmitCalendarResult) Unmarshal(in []byte) error {
+	msg := new(submit.GetSubmitCalendarResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetSubmitCalendarResult) GetSuccess() *submit.GetSubmitCalendarResponse {
+	if !p.IsSetSuccess() {
+		return GetSubmitCalendarResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetSubmitCalendarResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.GetSubmitCalendarResponse)
+}
+
+func (p *GetSubmitCalendarResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetSubmitCalendarResult) GetResult() interface{} {
+	return p.Success
+}
+
 func getNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
@@ -2616,6 +2770,16 @@ func (p *kClient) DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequ
 	_args.Req = Req
 	var _result DeleteSubmitResult
 	if err = p.c.Call(ctx, "DeleteSubmit", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetSubmitCalendar(ctx context.Context, Req *submit.GetSubmitCalendarRequest) (r *submit.GetSubmitCalendarResponse, err error) {
+	var _args GetSubmitCalendarArgs
+	_args.Req = Req
+	var _result GetSubmitCalendarResult
+	if err = p.c.Call(ctx, "GetSubmitCalendar", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

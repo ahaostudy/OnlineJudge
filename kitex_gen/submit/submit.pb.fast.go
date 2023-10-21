@@ -1179,6 +1179,83 @@ func (x *DeleteSubmitResponse) fastReadField1(buf []byte, _type int8) (offset in
 	return offset, err
 }
 
+func (x *GetSubmitCalendarRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitCalendarRequest[number], err)
+}
+
+func (x *GetSubmitCalendarRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitCalendarResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitCalendarResponse[number], err)
+}
+
+func (x *GetSubmitCalendarResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitCalendarResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	if x.SubmitCalendar == nil {
+		x.SubmitCalendar = make(map[string]int64)
+	}
+	var key string
+	var value int64
+	offset, err = fastpb.ReadMapEntry(buf, _type,
+		func(buf []byte, _type int8) (offset int, err error) {
+			key, offset, err = fastpb.ReadString(buf, _type)
+			return offset, err
+		},
+		func(buf []byte, _type int8) (offset int, err error) {
+			value, offset, err = fastpb.ReadInt64(buf, _type)
+			return offset, err
+		})
+	if err != nil {
+		return offset, err
+	}
+	x.SubmitCalendar[key] = value
+	return offset, nil
+}
+
 func (x *GetNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
@@ -2405,6 +2482,55 @@ func (x *DeleteSubmitResponse) fastWriteField1(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *GetSubmitCalendarRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitCalendarRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserID())
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.SubmitCalendar == nil {
+		return offset
+	}
+	for k, v := range x.GetSubmitCalendar() {
+		offset += fastpb.WriteMapEntry(buf[offset:], 2,
+			func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+				offset := 0
+				offset += fastpb.WriteString(buf[offset:], numTagOrKey, k)
+				offset += fastpb.WriteInt64(buf[offset:], numIdxOrVal, v)
+				return offset
+			})
+	}
+	return offset
+}
+
 func (x *GetNoteRequest) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -3516,6 +3642,55 @@ func (x *DeleteSubmitResponse) sizeField1() (n int) {
 	return n
 }
 
+func (x *GetSubmitCalendarRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetSubmitCalendarRequest) sizeField1() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetUserID())
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) sizeField2() (n int) {
+	if x.SubmitCalendar == nil {
+		return n
+	}
+	for k, v := range x.GetSubmitCalendar() {
+		n += fastpb.SizeMapEntry(2,
+			func(numTagOrKey, numIdxOrVal int32) int {
+				n := 0
+				n += fastpb.SizeString(numTagOrKey, k)
+				n += fastpb.SizeInt64(numIdxOrVal, v)
+				return n
+			})
+	}
+	return n
+}
+
 func (x *GetNoteRequest) Size() (n int) {
 	if x == nil {
 		return n
@@ -3932,6 +4107,15 @@ var fieldIDToName_DeleteSubmitRequest = map[int32]string{
 
 var fieldIDToName_DeleteSubmitResponse = map[int32]string{
 	1: "StatusCode",
+}
+
+var fieldIDToName_GetSubmitCalendarRequest = map[int32]string{
+	1: "UserID",
+}
+
+var fieldIDToName_GetSubmitCalendarResponse = map[int32]string{
+	1: "StatusCode",
+	2: "SubmitCalendar",
 }
 
 var fieldIDToName_GetNoteRequest = map[int32]string{

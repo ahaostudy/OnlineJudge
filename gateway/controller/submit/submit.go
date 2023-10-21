@@ -74,6 +74,15 @@ type (
 		ctl.Response
 		Result *model.JudgeResult `json:"result"`
 	}
+
+	GetSubmitCalendarRequest struct {
+		UserID int64 `form:"user_id"`
+	}
+
+	GetSubmitCalendarResponse struct {
+		ctl.Response
+		Data map[string]int64 `json:"data"`
+	}
 )
 
 func GetSubmit(c *gin.Context) {
@@ -313,5 +322,29 @@ func Debug(c *gin.Context) {
 	}
 
 	res.Success()
+	c.JSON(http.StatusOK, res)
+}
+
+func GetSubmitCalendar(c *gin.Context) {
+	req := new(GetSubmitCalendarRequest)
+	res := new(GetSubmitCalendarResponse)
+
+	// 解析参数
+	if err := c.ShouldBindQuery(req); err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+
+	// 获取用户提交日历
+	result, err := client.SubmitCli.GetSubmitCalendar(c.Request.Context(), &submit.GetSubmitCalendarRequest{
+		UserID: req.UserID,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	res.Data = result.GetSubmitCalendar()
+	res.CodeOf(code.Code(result.StatusCode))
 	c.JSON(http.StatusOK, res)
 }
