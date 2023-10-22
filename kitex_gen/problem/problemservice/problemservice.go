@@ -21,17 +21,18 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "ProblemService"
 	handlerType := (*problem.ProblemService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"GetProblem":            kitex.NewMethodInfo(getProblemHandler, newGetProblemArgs, newGetProblemResult, false),
-		"GetProblemList":        kitex.NewMethodInfo(getProblemListHandler, newGetProblemListArgs, newGetProblemListResult, false),
-		"GetProblemCount":       kitex.NewMethodInfo(getProblemCountHandler, newGetProblemCountArgs, newGetProblemCountResult, false),
-		"GetContestProblem":     kitex.NewMethodInfo(getContestProblemHandler, newGetContestProblemArgs, newGetContestProblemResult, false),
-		"GetContestProblemList": kitex.NewMethodInfo(getContestProblemListHandler, newGetContestProblemListArgs, newGetContestProblemListResult, false),
-		"CreateProblem":         kitex.NewMethodInfo(createProblemHandler, newCreateProblemArgs, newCreateProblemResult, false),
-		"DeleteProblem":         kitex.NewMethodInfo(deleteProblemHandler, newDeleteProblemArgs, newDeleteProblemResult, false),
-		"UpdateProblem":         kitex.NewMethodInfo(updateProblemHandler, newUpdateProblemArgs, newUpdateProblemResult, false),
-		"CreateTestcase":        kitex.NewMethodInfo(createTestcaseHandler, newCreateTestcaseArgs, newCreateTestcaseResult, false),
-		"GetTestcase":           kitex.NewMethodInfo(getTestcaseHandler, newGetTestcaseArgs, newGetTestcaseResult, false),
-		"DeleteTestcase":        kitex.NewMethodInfo(deleteTestcaseHandler, newDeleteTestcaseArgs, newDeleteTestcaseResult, false),
+		"GetProblem":             kitex.NewMethodInfo(getProblemHandler, newGetProblemArgs, newGetProblemResult, false),
+		"GetProblemList":         kitex.NewMethodInfo(getProblemListHandler, newGetProblemListArgs, newGetProblemListResult, false),
+		"GetProblemCount":        kitex.NewMethodInfo(getProblemCountHandler, newGetProblemCountArgs, newGetProblemCountResult, false),
+		"GetProblemListByIDList": kitex.NewMethodInfo(getProblemListByIDListHandler, newGetProblemListByIDListArgs, newGetProblemListByIDListResult, false),
+		"GetContestProblem":      kitex.NewMethodInfo(getContestProblemHandler, newGetContestProblemArgs, newGetContestProblemResult, false),
+		"GetContestProblemList":  kitex.NewMethodInfo(getContestProblemListHandler, newGetContestProblemListArgs, newGetContestProblemListResult, false),
+		"CreateProblem":          kitex.NewMethodInfo(createProblemHandler, newCreateProblemArgs, newCreateProblemResult, false),
+		"DeleteProblem":          kitex.NewMethodInfo(deleteProblemHandler, newDeleteProblemArgs, newDeleteProblemResult, false),
+		"UpdateProblem":          kitex.NewMethodInfo(updateProblemHandler, newUpdateProblemArgs, newUpdateProblemResult, false),
+		"CreateTestcase":         kitex.NewMethodInfo(createTestcaseHandler, newCreateTestcaseArgs, newCreateTestcaseResult, false),
+		"GetTestcase":            kitex.NewMethodInfo(getTestcaseHandler, newGetTestcaseArgs, newGetTestcaseResult, false),
+		"DeleteTestcase":         kitex.NewMethodInfo(deleteTestcaseHandler, newDeleteTestcaseArgs, newDeleteTestcaseResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "problem",
@@ -504,6 +505,159 @@ func (p *GetProblemCountResult) IsSetSuccess() bool {
 }
 
 func (p *GetProblemCountResult) GetResult() interface{} {
+	return p.Success
+}
+
+func getProblemListByIDListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(problem.GetProblemListByIDListRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(problem.ProblemService).GetProblemListByIDList(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetProblemListByIDListArgs:
+		success, err := handler.(problem.ProblemService).GetProblemListByIDList(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetProblemListByIDListResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetProblemListByIDListArgs() interface{} {
+	return &GetProblemListByIDListArgs{}
+}
+
+func newGetProblemListByIDListResult() interface{} {
+	return &GetProblemListByIDListResult{}
+}
+
+type GetProblemListByIDListArgs struct {
+	Req *problem.GetProblemListByIDListRequest
+}
+
+func (p *GetProblemListByIDListArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(problem.GetProblemListByIDListRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetProblemListByIDListArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetProblemListByIDListArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetProblemListByIDListArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetProblemListByIDListArgs) Unmarshal(in []byte) error {
+	msg := new(problem.GetProblemListByIDListRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetProblemListByIDListArgs_Req_DEFAULT *problem.GetProblemListByIDListRequest
+
+func (p *GetProblemListByIDListArgs) GetReq() *problem.GetProblemListByIDListRequest {
+	if !p.IsSetReq() {
+		return GetProblemListByIDListArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetProblemListByIDListArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetProblemListByIDListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetProblemListByIDListResult struct {
+	Success *problem.GetProblemListByIDListResponse
+}
+
+var GetProblemListByIDListResult_Success_DEFAULT *problem.GetProblemListByIDListResponse
+
+func (p *GetProblemListByIDListResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(problem.GetProblemListByIDListResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetProblemListByIDListResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetProblemListByIDListResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetProblemListByIDListResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetProblemListByIDListResult) Unmarshal(in []byte) error {
+	msg := new(problem.GetProblemListByIDListResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetProblemListByIDListResult) GetSuccess() *problem.GetProblemListByIDListResponse {
+	if !p.IsSetSuccess() {
+		return GetProblemListByIDListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetProblemListByIDListResult) SetSuccess(x interface{}) {
+	p.Success = x.(*problem.GetProblemListByIDListResponse)
+}
+
+func (p *GetProblemListByIDListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetProblemListByIDListResult) GetResult() interface{} {
 	return p.Success
 }
 
@@ -1766,6 +1920,16 @@ func (p *kClient) GetProblemCount(ctx context.Context, Req *problem.GetProblemCo
 	_args.Req = Req
 	var _result GetProblemCountResult
 	if err = p.c.Call(ctx, "GetProblemCount", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetProblemListByIDList(ctx context.Context, Req *problem.GetProblemListByIDListRequest) (r *problem.GetProblemListByIDListResponse, err error) {
+	var _args GetProblemListByIDListArgs
+	_args.Req = Req
+	var _result GetProblemListByIDListResult
+	if err = p.c.Call(ctx, "GetProblemListByIDList", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

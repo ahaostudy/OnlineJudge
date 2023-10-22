@@ -47,6 +47,7 @@ message Submit {
     int64 CreatedAt = 10;
 
     Note Note = 11;
+    Problem Problem = 12;
 }
 
 message Note {
@@ -58,6 +59,11 @@ message Note {
     int64 SubmitID = 6;
     bool IsPublic = 7;
     int64 CreatedAt = 8;
+}
+
+message Problem {
+    int64 ID = 1;
+    string Title = 2;
 }
 
 message DebugReqeust {

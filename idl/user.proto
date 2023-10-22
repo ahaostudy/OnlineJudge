@@ -94,6 +94,7 @@ message IsAdminResponse {
 
 message GetUserRequest {
     int64 ID = 1;
+    string Username = 2;
 }
 
 message GetUserResponse {

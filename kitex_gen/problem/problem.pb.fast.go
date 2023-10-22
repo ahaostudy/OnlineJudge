@@ -477,6 +477,80 @@ func (x *GetProblemListResponse) fastReadField2(buf []byte, _type int8) (offset 
 	return offset, nil
 }
 
+func (x *GetProblemListByIDListRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetProblemListByIDListRequest[number], err)
+}
+
+func (x *GetProblemListByIDListRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	offset, err = fastpb.ReadList(buf, _type,
+		func(buf []byte, _type int8) (n int, err error) {
+			var v int64
+			v, offset, err = fastpb.ReadInt64(buf, _type)
+			if err != nil {
+				return offset, err
+			}
+			x.ProblemIDList = append(x.ProblemIDList, v)
+			return offset, err
+		})
+	return offset, err
+}
+
+func (x *GetProblemListByIDListResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetProblemListByIDListResponse[number], err)
+}
+
+func (x *GetProblemListByIDListResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetProblemListByIDListResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	var v Problem
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.ProblemList = append(x.ProblemList, &v)
+	return offset, nil
+}
+
 func (x *GetProblemCountRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	default:
@@ -1386,6 +1460,54 @@ func (x *GetProblemListResponse) fastWriteField2(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *GetProblemListByIDListRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetProblemListByIDListRequest) fastWriteField1(buf []byte) (offset int) {
+	if len(x.ProblemIDList) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteListPacked(buf[offset:], 1, len(x.GetProblemIDList()),
+		func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+			offset := 0
+			offset += fastpb.WriteInt64(buf[offset:], numTagOrKey, x.GetProblemIDList()[numIdxOrVal])
+			return offset
+		})
+	return offset
+}
+
+func (x *GetProblemListByIDListResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetProblemListByIDListResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetProblemListByIDListResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.ProblemList == nil {
+		return offset
+	}
+	for i := range x.GetProblemList() {
+		offset += fastpb.WriteMessage(buf[offset:], 2, x.GetProblemList()[i])
+	}
+	return offset
+}
+
 func (x *GetProblemCountRequest) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -2109,6 +2231,54 @@ func (x *GetProblemListResponse) sizeField2() (n int) {
 	return n
 }
 
+func (x *GetProblemListByIDListRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetProblemListByIDListRequest) sizeField1() (n int) {
+	if len(x.ProblemIDList) == 0 {
+		return n
+	}
+	n += fastpb.SizeListPacked(1, len(x.GetProblemIDList()),
+		func(numTagOrKey, numIdxOrVal int32) int {
+			n := 0
+			n += fastpb.SizeInt64(numTagOrKey, x.GetProblemIDList()[numIdxOrVal])
+			return n
+		})
+	return n
+}
+
+func (x *GetProblemListByIDListResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetProblemListByIDListResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetProblemListByIDListResponse) sizeField2() (n int) {
+	if x.ProblemList == nil {
+		return n
+	}
+	for i := range x.GetProblemList() {
+		n += fastpb.SizeMessage(2, x.GetProblemList()[i])
+	}
+	return n
+}
+
 func (x *GetProblemCountRequest) Size() (n int) {
 	if x == nil {
 		return n
@@ -2522,6 +2692,15 @@ var fieldIDToName_GetProblemListRequest = map[int32]string{
 }
 
 var fieldIDToName_GetProblemListResponse = map[int32]string{
+	1: "StatusCode",
+	2: "ProblemList",
+}
+
+var fieldIDToName_GetProblemListByIDListRequest = map[int32]string{
+	1: "ProblemIDList",
+}
+
+var fieldIDToName_GetProblemListByIDListResponse = map[int32]string{
 	1: "StatusCode",
 	2: "ProblemList",
 }

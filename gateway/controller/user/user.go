@@ -26,7 +26,7 @@ type (
 		Token  string `json:"token"`
 		UserID int64  `json:"user_id"`
 	}
-	
+
 	RegisterRequest struct {
 		Email    string `json:"email" binding:"required"`
 		Captcha  string `json:"captcha"`
@@ -144,7 +144,8 @@ func GetUser(c *gin.Context) {
 
 	// 获取提交
 	result, err := client.UserCli.GetUser(c.Request.Context(), &user.GetUserRequest{
-		ID: id,
+		ID:       id,
+		Username: c.Query("username"),
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -164,7 +165,6 @@ func GetUser(c *gin.Context) {
 	res.Success()
 	c.JSON(http.StatusOK, res)
 }
-
 
 // CreateUser 创建账号（管理员操作，暂不进行邮箱验证）
 func CreateUser(c *gin.Context) {

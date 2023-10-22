@@ -40,7 +40,8 @@ type (
 	}
 
 	GetLatestSubmitsRequest struct {
-		Count int64 `form:"count"`
+		UserID int64 `form:"user_id"`
+		Count  int64 `form:"count"`
 	}
 
 	GetLatestSubmitsResponse struct {
@@ -162,13 +163,16 @@ func GetLatestSubmits(c *gin.Context) {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
+	if req.UserID == 0 {
+		req.UserID = c.GetInt64("user_id")
+	}
 	if req.Count == 0 {
 		req.Count = defaultLatestCount
 	}
 
 	// 获取提交数据
 	result, err := client.SubmitCli.GetLatestSubmits(c.Request.Context(), &submit.GetLatestSubmitsRequest{
-		UserID: c.GetInt64("user_id"),
+		UserID: req.UserID,
 		Count:  req.Count,
 	})
 	if err != nil {
@@ -185,6 +189,12 @@ func GetLatestSubmits(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
+	}
+	for i := range res.SubmitList {
+		res.SubmitList[i].Problem = &model.Problem{
+			ID:    result.GetSubmitList()[i].GetProblem().GetID(),
+			Title: result.GetSubmitList()[i].GetProblem().GetTitle(),
+		}
 	}
 
 	res.Success()
@@ -262,8 +272,6 @@ func Submit(c *gin.Context) {
 	res.Response = res.CodeOf(code.Code(statusCode))
 	c.JSON(http.StatusOK, res)
 }
-
-type ()
 
 func DeleteSubmit(c *gin.Context) {
 	res := new(DeleteSubmitResponse)

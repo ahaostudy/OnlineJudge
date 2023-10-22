@@ -367,6 +367,37 @@ func (s *SubmitServiceImpl) GetLatestSubmits(ctx context.Context, req *submit.Ge
 		return
 	}
 
+	// 获取题目信息
+	var ids []int64
+	for _, sub := range submits {
+		ids = append(ids, sub.ProblemID)
+	}
+	result, err := client.ProblemCli.GetProblemListByIDList(ctx, &problem.GetProblemListByIDListRequest{
+		ProblemIDList: ids,
+	})
+	if err != nil {
+		return
+	}
+	if result.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = result.StatusCode
+		return
+	}
+
+	// 将题目列表写入map
+	m := map[int64]*submit.Problem{}
+	for _, p := range result.GetProblemList() {
+		m[p.ID] = &submit.Problem{
+			ID: p.ID,
+			Title: p.Title,
+		}
+	}
+
+	// 从题目列表的map写入到提交列表中
+	for i := range resp.SubmitList {
+		pid := resp.SubmitList[i].ProblemID
+		resp.SubmitList[i].Problem = m[pid]
+	}
+
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

@@ -292,7 +292,13 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *user.GetUserRequest)
 	resp = new(user.GetUserResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
-	u, err := db.GetUser(req.GetID())
+	var u *model.User
+	var err error
+	if req.GetID() != 0 {
+		u, err = db.GetUser(req.GetID())
+	} else {
+		u, err = db.GetUserByUsername(req.GetUsername())
+	}
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		resp.StatusCode = code.CodeUserNotExist.Code()
 		return

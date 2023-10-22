@@ -144,6 +144,11 @@ func (x *Submit) FastRead(buf []byte, _type int8, number int32) (offset int, err
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 12:
+		offset, err = x.fastReadField12(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -214,6 +219,16 @@ func (x *Submit) fastReadField11(buf []byte, _type int8) (offset int, err error)
 		return offset, err
 	}
 	x.Note = &v
+	return offset, nil
+}
+
+func (x *Submit) fastReadField12(buf []byte, _type int8) (offset int, err error) {
+	var v Problem
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Problem = &v
 	return offset, nil
 }
 
@@ -309,6 +324,41 @@ func (x *Note) fastReadField7(buf []byte, _type int8) (offset int, err error) {
 
 func (x *Note) fastReadField8(buf []byte, _type int8) (offset int, err error) {
 	x.CreatedAt, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_Problem[number], err)
+}
+
+func (x *Problem) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Title, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -1717,6 +1767,7 @@ func (x *Submit) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField9(buf[offset:])
 	offset += x.fastWriteField10(buf[offset:])
 	offset += x.fastWriteField11(buf[offset:])
+	offset += x.fastWriteField12(buf[offset:])
 	return offset
 }
 
@@ -1808,6 +1859,14 @@ func (x *Submit) fastWriteField11(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *Submit) fastWriteField12(buf []byte) (offset int) {
+	if x.Problem == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 12, x.GetProblem())
+	return offset
+}
+
 func (x *Note) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -1884,6 +1943,31 @@ func (x *Note) fastWriteField8(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteInt64(buf[offset:], 8, x.GetCreatedAt())
+	return offset
+}
+
+func (x *Problem) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *Problem) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *Problem) fastWriteField2(buf []byte) (offset int) {
+	if x.Title == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetTitle())
 	return offset
 }
 
@@ -2877,6 +2961,7 @@ func (x *Submit) Size() (n int) {
 	n += x.sizeField9()
 	n += x.sizeField10()
 	n += x.sizeField11()
+	n += x.sizeField12()
 	return n
 }
 
@@ -2968,6 +3053,14 @@ func (x *Submit) sizeField11() (n int) {
 	return n
 }
 
+func (x *Submit) sizeField12() (n int) {
+	if x.Problem == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(12, x.GetProblem())
+	return n
+}
+
 func (x *Note) Size() (n int) {
 	if x == nil {
 		return n
@@ -3044,6 +3137,31 @@ func (x *Note) sizeField8() (n int) {
 		return n
 	}
 	n += fastpb.SizeInt64(8, x.GetCreatedAt())
+	return n
+}
+
+func (x *Problem) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *Problem) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *Problem) sizeField2() (n int) {
+	if x.Title == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetTitle())
 	return n
 }
 
@@ -3982,6 +4100,7 @@ var fieldIDToName_Submit = map[int32]string{
 	9:  "NoteID",
 	10: "CreatedAt",
 	11: "Note",
+	12: "Problem",
 }
 
 var fieldIDToName_Note = map[int32]string{
@@ -3993,6 +4112,11 @@ var fieldIDToName_Note = map[int32]string{
 	6: "SubmitID",
 	7: "IsPublic",
 	8: "CreatedAt",
+}
+
+var fieldIDToName_Problem = map[int32]string{
+	1: "ID",
+	2: "Title",
 }
 
 var fieldIDToName_DebugReqeust = map[int32]string{

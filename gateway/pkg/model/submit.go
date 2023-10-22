@@ -18,7 +18,8 @@ type Submit struct {
 	NoteID    int64     `gorm:"default:0" json:"note_id"`
 	CreatedAt time.Time `json:"created_at"`
 
-	Note *Note `gorm:"-:migration;<-:false" json:"note"`
+	Note    *Note    `gorm:"-:migration;<-:false" json:"note"`
+	Problem *Problem `gorm:"-:migration;<-:false" json:"problem"`
 }
 
 type SubmitStatus struct {

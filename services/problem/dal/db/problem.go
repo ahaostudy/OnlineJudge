@@ -41,6 +41,12 @@ func GetProblemList() ([]*model.Problem, error) {
 	return problems, err
 }
 
+func GetProblemListIn(ids []int64) ([]*model.Problem, error) {
+	var problems []*model.Problem
+	err := DB.Where("id in (?)", ids).Find(&problems).Error
+	return problems, err
+}
+
 func GetProblemCount() (int64, error) {
 	var count int64
 	err := DB.Model(new(model.Problem)).Count(&count).Error
