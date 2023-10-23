@@ -21,13 +21,15 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Register":   kitex.NewMethodInfo(registerHandler, newRegisterArgs, newRegisterResult, false),
-		"Login":      kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
-		"CreateUser": kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
-		"UpdateUser": kitex.NewMethodInfo(updateUserHandler, newUpdateUserArgs, newUpdateUserResult, false),
-		"GetCaptcha": kitex.NewMethodInfo(getCaptchaHandler, newGetCaptchaArgs, newGetCaptchaResult, false),
-		"IsAdmin":    kitex.NewMethodInfo(isAdminHandler, newIsAdminArgs, newIsAdminResult, false),
-		"GetUser":    kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
+		"Register":       kitex.NewMethodInfo(registerHandler, newRegisterArgs, newRegisterResult, false),
+		"Login":          kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
+		"CreateUser":     kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
+		"UpdateUser":     kitex.NewMethodInfo(updateUserHandler, newUpdateUserArgs, newUpdateUserResult, false),
+		"GetCaptcha":     kitex.NewMethodInfo(getCaptchaHandler, newGetCaptchaArgs, newGetCaptchaResult, false),
+		"IsAdmin":        kitex.NewMethodInfo(isAdminHandler, newIsAdminArgs, newIsAdminResult, false),
+		"GetUser":        kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
+		"UploadAvatar":   kitex.NewMethodInfo(uploadAvatarHandler, newUploadAvatarArgs, newUploadAvatarResult, false),
+		"DownloadAvatar": kitex.NewMethodInfo(downloadAvatarHandler, newDownloadAvatarArgs, newDownloadAvatarResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "user",
@@ -1115,6 +1117,312 @@ func (p *GetUserResult) GetResult() interface{} {
 	return p.Success
 }
 
+func uploadAvatarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(user.UploadAvatarRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(user.UserService).UploadAvatar(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *UploadAvatarArgs:
+		success, err := handler.(user.UserService).UploadAvatar(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*UploadAvatarResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newUploadAvatarArgs() interface{} {
+	return &UploadAvatarArgs{}
+}
+
+func newUploadAvatarResult() interface{} {
+	return &UploadAvatarResult{}
+}
+
+type UploadAvatarArgs struct {
+	Req *user.UploadAvatarRequest
+}
+
+func (p *UploadAvatarArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(user.UploadAvatarRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *UploadAvatarArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *UploadAvatarArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *UploadAvatarArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *UploadAvatarArgs) Unmarshal(in []byte) error {
+	msg := new(user.UploadAvatarRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var UploadAvatarArgs_Req_DEFAULT *user.UploadAvatarRequest
+
+func (p *UploadAvatarArgs) GetReq() *user.UploadAvatarRequest {
+	if !p.IsSetReq() {
+		return UploadAvatarArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *UploadAvatarArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *UploadAvatarArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type UploadAvatarResult struct {
+	Success *user.UploadAvatarResponse
+}
+
+var UploadAvatarResult_Success_DEFAULT *user.UploadAvatarResponse
+
+func (p *UploadAvatarResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(user.UploadAvatarResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *UploadAvatarResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *UploadAvatarResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *UploadAvatarResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *UploadAvatarResult) Unmarshal(in []byte) error {
+	msg := new(user.UploadAvatarResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *UploadAvatarResult) GetSuccess() *user.UploadAvatarResponse {
+	if !p.IsSetSuccess() {
+		return UploadAvatarResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *UploadAvatarResult) SetSuccess(x interface{}) {
+	p.Success = x.(*user.UploadAvatarResponse)
+}
+
+func (p *UploadAvatarResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *UploadAvatarResult) GetResult() interface{} {
+	return p.Success
+}
+
+func downloadAvatarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(user.DownloadAvatarRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(user.UserService).DownloadAvatar(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *DownloadAvatarArgs:
+		success, err := handler.(user.UserService).DownloadAvatar(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*DownloadAvatarResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newDownloadAvatarArgs() interface{} {
+	return &DownloadAvatarArgs{}
+}
+
+func newDownloadAvatarResult() interface{} {
+	return &DownloadAvatarResult{}
+}
+
+type DownloadAvatarArgs struct {
+	Req *user.DownloadAvatarRequest
+}
+
+func (p *DownloadAvatarArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(user.DownloadAvatarRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *DownloadAvatarArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *DownloadAvatarArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *DownloadAvatarArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *DownloadAvatarArgs) Unmarshal(in []byte) error {
+	msg := new(user.DownloadAvatarRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var DownloadAvatarArgs_Req_DEFAULT *user.DownloadAvatarRequest
+
+func (p *DownloadAvatarArgs) GetReq() *user.DownloadAvatarRequest {
+	if !p.IsSetReq() {
+		return DownloadAvatarArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *DownloadAvatarArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *DownloadAvatarArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type DownloadAvatarResult struct {
+	Success *user.DownloadAvatarResponse
+}
+
+var DownloadAvatarResult_Success_DEFAULT *user.DownloadAvatarResponse
+
+func (p *DownloadAvatarResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(user.DownloadAvatarResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *DownloadAvatarResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *DownloadAvatarResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *DownloadAvatarResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *DownloadAvatarResult) Unmarshal(in []byte) error {
+	msg := new(user.DownloadAvatarResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *DownloadAvatarResult) GetSuccess() *user.DownloadAvatarResponse {
+	if !p.IsSetSuccess() {
+		return DownloadAvatarResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *DownloadAvatarResult) SetSuccess(x interface{}) {
+	p.Success = x.(*user.DownloadAvatarResponse)
+}
+
+func (p *DownloadAvatarResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *DownloadAvatarResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -1190,6 +1498,26 @@ func (p *kClient) GetUser(ctx context.Context, Req *user.GetUserRequest) (r *use
 	_args.Req = Req
 	var _result GetUserResult
 	if err = p.c.Call(ctx, "GetUser", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadAvatar(ctx context.Context, Req *user.UploadAvatarRequest) (r *user.UploadAvatarResponse, err error) {
+	var _args UploadAvatarArgs
+	_args.Req = Req
+	var _result UploadAvatarResult
+	if err = p.c.Call(ctx, "UploadAvatar", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) DownloadAvatar(ctx context.Context, Req *user.DownloadAvatarRequest) (r *user.DownloadAvatarResponse, err error) {
+	var _args DownloadAvatarArgs
+	_args.Req = Req
+	var _result DownloadAvatarResult
+	if err = p.c.Call(ctx, "DownloadAvatar", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

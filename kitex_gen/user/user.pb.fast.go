@@ -672,6 +672,146 @@ func (x *GetUserResponse) fastReadField2(buf []byte, _type int8) (offset int, er
 	return offset, nil
 }
 
+func (x *UploadAvatarRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_UploadAvatarRequest[number], err)
+}
+
+func (x *UploadAvatarRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *UploadAvatarRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Body, offset, err = fastpb.ReadBytes(buf, _type)
+	return offset, err
+}
+
+func (x *UploadAvatarRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Ext, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *UploadAvatarResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_UploadAvatarResponse[number], err)
+}
+
+func (x *UploadAvatarResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *UploadAvatarResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Avatar, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *DownloadAvatarRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_DownloadAvatarRequest[number], err)
+}
+
+func (x *DownloadAvatarRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.Avatar, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *DownloadAvatarResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_DownloadAvatarResponse[number], err)
+}
+
+func (x *DownloadAvatarResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *DownloadAvatarResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Body, offset, err = fastpb.ReadBytes(buf, _type)
+	return offset, err
+}
+
 func (x *User) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -1161,6 +1301,106 @@ func (x *GetUserResponse) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteMessage(buf[offset:], 2, x.GetUser())
+	return offset
+}
+
+func (x *UploadAvatarRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	return offset
+}
+
+func (x *UploadAvatarRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserID())
+	return offset
+}
+
+func (x *UploadAvatarRequest) fastWriteField2(buf []byte) (offset int) {
+	if len(x.Body) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteBytes(buf[offset:], 2, x.GetBody())
+	return offset
+}
+
+func (x *UploadAvatarRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Ext == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetExt())
+	return offset
+}
+
+func (x *UploadAvatarResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *UploadAvatarResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *UploadAvatarResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.Avatar == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetAvatar())
+	return offset
+}
+
+func (x *DownloadAvatarRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *DownloadAvatarRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.Avatar == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 1, x.GetAvatar())
+	return offset
+}
+
+func (x *DownloadAvatarResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *DownloadAvatarResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *DownloadAvatarResponse) fastWriteField2(buf []byte) (offset int) {
+	if len(x.Body) == 0 {
+		return offset
+	}
+	offset += fastpb.WriteBytes(buf[offset:], 2, x.GetBody())
 	return offset
 }
 
@@ -1656,6 +1896,106 @@ func (x *GetUserResponse) sizeField2() (n int) {
 	return n
 }
 
+func (x *UploadAvatarRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	return n
+}
+
+func (x *UploadAvatarRequest) sizeField1() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetUserID())
+	return n
+}
+
+func (x *UploadAvatarRequest) sizeField2() (n int) {
+	if len(x.Body) == 0 {
+		return n
+	}
+	n += fastpb.SizeBytes(2, x.GetBody())
+	return n
+}
+
+func (x *UploadAvatarRequest) sizeField3() (n int) {
+	if x.Ext == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetExt())
+	return n
+}
+
+func (x *UploadAvatarResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *UploadAvatarResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *UploadAvatarResponse) sizeField2() (n int) {
+	if x.Avatar == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetAvatar())
+	return n
+}
+
+func (x *DownloadAvatarRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *DownloadAvatarRequest) sizeField1() (n int) {
+	if x.Avatar == "" {
+		return n
+	}
+	n += fastpb.SizeString(1, x.GetAvatar())
+	return n
+}
+
+func (x *DownloadAvatarResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *DownloadAvatarResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *DownloadAvatarResponse) sizeField2() (n int) {
+	if len(x.Body) == 0 {
+		return n
+	}
+	n += fastpb.SizeBytes(2, x.GetBody())
+	return n
+}
+
 var fieldIDToName_User = map[int32]string{
 	1: "ID",
 	2: "Nickname",
@@ -1742,4 +2082,24 @@ var fieldIDToName_GetUserRequest = map[int32]string{
 var fieldIDToName_GetUserResponse = map[int32]string{
 	1: "StatusCode",
 	2: "User",
+}
+
+var fieldIDToName_UploadAvatarRequest = map[int32]string{
+	1: "UserID",
+	2: "Body",
+	3: "Ext",
+}
+
+var fieldIDToName_UploadAvatarResponse = map[int32]string{
+	1: "StatusCode",
+	2: "Avatar",
+}
+
+var fieldIDToName_DownloadAvatarRequest = map[int32]string{
+	1: "Avatar",
+}
+
+var fieldIDToName_DownloadAvatarResponse = map[int32]string{
+	1: "StatusCode",
+	2: "Body",
 }
