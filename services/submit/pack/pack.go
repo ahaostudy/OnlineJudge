@@ -5,6 +5,7 @@ import (
 
 	"main/common/pack"
 	"main/kitex_gen/judge"
+	"main/kitex_gen/problem"
 	"main/kitex_gen/submit"
 	"main/services/submit/dal/model"
 )
@@ -103,4 +104,12 @@ func UnBuildNoteList(notes []*submit.Note) ([]*model.Note, error) {
 		noteList = append(noteList, t)
 	}
 	return noteList, nil
+}
+
+func BuildProblem(p *problem.Problem) (*submit.Problem, error) {
+	t := new(submit.Problem)
+	if err := new(pack.Builder).Build(p, t).Error(); err != nil {
+		return nil, err
+	}
+	return t, nil
 }

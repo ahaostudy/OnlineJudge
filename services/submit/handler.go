@@ -22,6 +22,7 @@ import (
 	"main/services/submit/dal/model"
 	"main/services/submit/pack"
 	"main/services/submit/pkg/md"
+	"main/services/submit/pkg/set"
 )
 
 // SubmitServiceImpl implements the last service interface defined in the IDL.
@@ -386,9 +387,9 @@ func (s *SubmitServiceImpl) GetLatestSubmits(ctx context.Context, req *submit.Ge
 	// 将题目列表写入map
 	m := map[int64]*submit.Problem{}
 	for _, p := range result.GetProblemList() {
-		m[p.ID] = &submit.Problem{
-			ID: p.ID,
-			Title: p.Title,
+		m[p.ID], err = pack.BuildProblem(p)
+		if err != nil {
+			return
 		}
 	}
 
@@ -397,6 +398,10 @@ func (s *SubmitServiceImpl) GetLatestSubmits(ctx context.Context, req *submit.Ge
 		pid := resp.SubmitList[i].ProblemID
 		resp.SubmitList[i].Problem = m[pid]
 	}
+
+	s.GetSubmitStatistics(ctx, &submit.GetSubmitStatisticsRequest{
+		UserID: req.GetUserID(),
+	})
 
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
@@ -446,6 +451,79 @@ func (s *SubmitServiceImpl) GetSubmitCalendar(ctx context.Context, req *submit.G
 	return
 }
 
+// GetSubmitStatistics implements the SubmitServiceImpl interface.
+func (s *SubmitServiceImpl) GetSubmitStatistics(ctx context.Context, req *submit.GetSubmitStatisticsRequest) (resp *submit.GetSubmitStatisticsResponse, _ error) {
+	resp = new(submit.GetSubmitStatisticsResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 获取提交记录
+	submits, err := db.GetSubmitListByUser(req.GetUserID())
+	if err != nil {
+		return
+	}
+
+	// 获取题目信息
+	var ids []int64
+	for _, sub := range submits {
+		ids = append(ids, sub.ProblemID)
+	}
+	result, err := client.ProblemCli.GetProblemListByIDList(ctx, &problem.GetProblemListByIDListRequest{
+		ProblemIDList: ids,
+	})
+	if err != nil {
+		return
+	}
+	if result.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = result.StatusCode
+		return
+	}
+
+	// 将题目列表写入map
+	m := map[int64]*problem.Problem{}
+	for _, p := range result.GetProblemList() {
+		m[p.ID] = p
+	}
+
+	// 统计提交数据
+	resp.LangCounts = make(map[int64]int64)
+
+	sloves := make(set.Set[int64])
+	easys := make(set.Set[int64])
+	middles := make(set.Set[int64])
+	hards := make(set.Set[int64])
+	langs := make(map[int64]set.Set[int64])
+
+	for _, sub := range submits {
+		p := m[sub.ProblemID]
+		resp.SubmitCount++
+		if sub.Status == int64(status.StatusAccepted) {
+			sloves.Insert(sub.ProblemID)
+			if _, ok := langs[sub.LangID]; !ok {
+				langs[sub.LangID] = make(set.Set[int64])
+			}
+			langs[sub.LangID].Insert(sub.ProblemID)
+			if p.GetDifficulty() == 0 {
+				easys.Insert(sub.ProblemID)
+			} else if p.GetDifficulty() == 1 {
+				middles.Insert(sub.ProblemID)
+			} else {
+				hards.Insert(sub.ProblemID)
+			}
+		}
+	}
+
+	resp.SloveCount = int64(sloves.Size())
+	resp.EasyCount = int64(easys.Size())
+	resp.MiddleCount = int64(middles.Size())
+	resp.HardCount = int64(hards.Size())
+	for lang, ps := range langs {
+		resp.LangCounts[lang] = int64(ps.Size())
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
 // GetNote implements the SubmitServiceImpl interface.
 func (s *SubmitServiceImpl) GetNote(ctx context.Context, req *submit.GetNoteRequest) (resp *submit.GetNoteResponse, _ error) {
 	resp = new(submit.GetNoteResponse)
@@ -487,7 +565,7 @@ func (s *SubmitServiceImpl) GetNoteList(ctx context.Context, req *submit.GetNote
 
 	// 提取markdown的内容作为文章简述
 	for _, note := range noteList {
-		note.Content = md.ExtractTextFromMarkdown(note.Content, 120)
+		note.Content = md.ExtractTextFromMarkdown(note.Content, 200)
 	}
 
 	resp.NoteList, err = pack.BuildNoteList(noteList)

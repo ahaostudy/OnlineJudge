@@ -46,6 +46,10 @@ func (b *Builder) Build(in, out interface{}) *Builder {
 		inField := inType.Field(i)
 		inFieldValue := inValue.Field(i)
 
+		if inField.Name[0] < 'A' || inField.Name[0] > 'Z' {
+			continue
+		}
+
 		// 复杂结构直接跳过
 		if isComplexStructures(inField.Type.Kind()) {
 			continue

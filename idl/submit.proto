@@ -17,6 +17,7 @@ service SubmitService {
     rpc GetLatestSubmits(GetLatestSubmitsRequest) returns (GetLatestSubmitsResponse) {}
     rpc DeleteSubmit(DeleteSubmitRequest) returns (DeleteSubmitResponse) {}
     rpc GetSubmitCalendar(GetSubmitCalendarRequest) returns (GetSubmitCalendarResponse) {}
+    rpc GetSubmitStatistics(GetSubmitStatisticsRequest) returns (GetSubmitStatisticsResponse) {}
 
     rpc GetNote(GetNoteRequest) returns (GetNoteResponse) {}
     rpc GetNoteList(GetNoteListRequest) returns (GetNoteListResponse) {}
@@ -64,6 +65,17 @@ message Note {
 message Problem {
     int64 ID = 1;
     string Title = 2;
+    string Description = 3;
+    int32 Difficulty = 4;
+    string InputDesc = 5;
+    string OutputDesc = 6;
+    string DataRange = 7;
+    string Tips = 8;
+    int32 MaxTime = 9;
+    int32 MaxMemory = 10;
+    string Source = 11;
+    int64 AuthorID = 12;
+    int64 ContestID = 13;
 }
 
 message DebugReqeust {
@@ -188,6 +200,20 @@ message GetSubmitCalendarRequest {
 message GetSubmitCalendarResponse {
     int64 StatusCode = 1;
     map<string, int64> SubmitCalendar = 2;
+}
+
+message GetSubmitStatisticsRequest {
+    int64 UserID = 1;
+}
+
+message GetSubmitStatisticsResponse {
+    int64 StatusCode = 1;
+    int64 SloveCount = 2;
+    int64 SubmitCount = 3;
+    int64 EasyCount = 4;
+    int64 MiddleCount = 5;
+    int64 HardCount = 6;
+    map<int64, int64> LangCounts = 7;
 }
 
 message GetNoteRequest {

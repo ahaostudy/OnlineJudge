@@ -21,23 +21,24 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "SubmitService"
 	handlerType := (*submit.SubmitService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Debug":             kitex.NewMethodInfo(debugHandler, newDebugArgs, newDebugResult, false),
-		"Submit":            kitex.NewMethodInfo(submitHandler, newSubmitArgs, newSubmitResult, false),
-		"SubmitContest":     kitex.NewMethodInfo(submitContestHandler, newSubmitContestArgs, newSubmitContestResult, false),
-		"GetSubmitResult":   kitex.NewMethodInfo(getSubmitResultHandler, newGetSubmitResultArgs, newGetSubmitResultResult, false),
-		"GetSubmitList":     kitex.NewMethodInfo(getSubmitListHandler, newGetSubmitListArgs, newGetSubmitListResult, false),
-		"GetSubmit":         kitex.NewMethodInfo(getSubmitHandler, newGetSubmitArgs, newGetSubmitResult, false),
-		"GetSubmitStatus":   kitex.NewMethodInfo(getSubmitStatusHandler, newGetSubmitStatusArgs, newGetSubmitStatusResult, false),
-		"IsAccepted":        kitex.NewMethodInfo(isAcceptedHandler, newIsAcceptedArgs, newIsAcceptedResult, false),
-		"GetAcceptedStatus": kitex.NewMethodInfo(getAcceptedStatusHandler, newGetAcceptedStatusArgs, newGetAcceptedStatusResult, false),
-		"GetLatestSubmits":  kitex.NewMethodInfo(getLatestSubmitsHandler, newGetLatestSubmitsArgs, newGetLatestSubmitsResult, false),
-		"DeleteSubmit":      kitex.NewMethodInfo(deleteSubmitHandler, newDeleteSubmitArgs, newDeleteSubmitResult, false),
-		"GetSubmitCalendar": kitex.NewMethodInfo(getSubmitCalendarHandler, newGetSubmitCalendarArgs, newGetSubmitCalendarResult, false),
-		"GetNote":           kitex.NewMethodInfo(getNoteHandler, newGetNoteArgs, newGetNoteResult, false),
-		"GetNoteList":       kitex.NewMethodInfo(getNoteListHandler, newGetNoteListArgs, newGetNoteListResult, false),
-		"CreateNote":        kitex.NewMethodInfo(createNoteHandler, newCreateNoteArgs, newCreateNoteResult, false),
-		"DeleteNote":        kitex.NewMethodInfo(deleteNoteHandler, newDeleteNoteArgs, newDeleteNoteResult, false),
-		"UpdateNote":        kitex.NewMethodInfo(updateNoteHandler, newUpdateNoteArgs, newUpdateNoteResult, false),
+		"Debug":               kitex.NewMethodInfo(debugHandler, newDebugArgs, newDebugResult, false),
+		"Submit":              kitex.NewMethodInfo(submitHandler, newSubmitArgs, newSubmitResult, false),
+		"SubmitContest":       kitex.NewMethodInfo(submitContestHandler, newSubmitContestArgs, newSubmitContestResult, false),
+		"GetSubmitResult":     kitex.NewMethodInfo(getSubmitResultHandler, newGetSubmitResultArgs, newGetSubmitResultResult, false),
+		"GetSubmitList":       kitex.NewMethodInfo(getSubmitListHandler, newGetSubmitListArgs, newGetSubmitListResult, false),
+		"GetSubmit":           kitex.NewMethodInfo(getSubmitHandler, newGetSubmitArgs, newGetSubmitResult, false),
+		"GetSubmitStatus":     kitex.NewMethodInfo(getSubmitStatusHandler, newGetSubmitStatusArgs, newGetSubmitStatusResult, false),
+		"IsAccepted":          kitex.NewMethodInfo(isAcceptedHandler, newIsAcceptedArgs, newIsAcceptedResult, false),
+		"GetAcceptedStatus":   kitex.NewMethodInfo(getAcceptedStatusHandler, newGetAcceptedStatusArgs, newGetAcceptedStatusResult, false),
+		"GetLatestSubmits":    kitex.NewMethodInfo(getLatestSubmitsHandler, newGetLatestSubmitsArgs, newGetLatestSubmitsResult, false),
+		"DeleteSubmit":        kitex.NewMethodInfo(deleteSubmitHandler, newDeleteSubmitArgs, newDeleteSubmitResult, false),
+		"GetSubmitCalendar":   kitex.NewMethodInfo(getSubmitCalendarHandler, newGetSubmitCalendarArgs, newGetSubmitCalendarResult, false),
+		"GetSubmitStatistics": kitex.NewMethodInfo(getSubmitStatisticsHandler, newGetSubmitStatisticsArgs, newGetSubmitStatisticsResult, false),
+		"GetNote":             kitex.NewMethodInfo(getNoteHandler, newGetNoteArgs, newGetNoteResult, false),
+		"GetNoteList":         kitex.NewMethodInfo(getNoteListHandler, newGetNoteListArgs, newGetNoteListResult, false),
+		"CreateNote":          kitex.NewMethodInfo(createNoteHandler, newCreateNoteArgs, newCreateNoteResult, false),
+		"DeleteNote":          kitex.NewMethodInfo(deleteNoteHandler, newDeleteNoteArgs, newDeleteNoteResult, false),
+		"UpdateNote":          kitex.NewMethodInfo(updateNoteHandler, newUpdateNoteArgs, newUpdateNoteResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "submit",
@@ -1890,6 +1891,159 @@ func (p *GetSubmitCalendarResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getSubmitStatisticsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(submit.GetSubmitStatisticsRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(submit.SubmitService).GetSubmitStatistics(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetSubmitStatisticsArgs:
+		success, err := handler.(submit.SubmitService).GetSubmitStatistics(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetSubmitStatisticsResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetSubmitStatisticsArgs() interface{} {
+	return &GetSubmitStatisticsArgs{}
+}
+
+func newGetSubmitStatisticsResult() interface{} {
+	return &GetSubmitStatisticsResult{}
+}
+
+type GetSubmitStatisticsArgs struct {
+	Req *submit.GetSubmitStatisticsRequest
+}
+
+func (p *GetSubmitStatisticsArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(submit.GetSubmitStatisticsRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetSubmitStatisticsArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetSubmitStatisticsArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetSubmitStatisticsArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetSubmitStatisticsArgs) Unmarshal(in []byte) error {
+	msg := new(submit.GetSubmitStatisticsRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetSubmitStatisticsArgs_Req_DEFAULT *submit.GetSubmitStatisticsRequest
+
+func (p *GetSubmitStatisticsArgs) GetReq() *submit.GetSubmitStatisticsRequest {
+	if !p.IsSetReq() {
+		return GetSubmitStatisticsArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetSubmitStatisticsArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetSubmitStatisticsArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetSubmitStatisticsResult struct {
+	Success *submit.GetSubmitStatisticsResponse
+}
+
+var GetSubmitStatisticsResult_Success_DEFAULT *submit.GetSubmitStatisticsResponse
+
+func (p *GetSubmitStatisticsResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(submit.GetSubmitStatisticsResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetSubmitStatisticsResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetSubmitStatisticsResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetSubmitStatisticsResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetSubmitStatisticsResult) Unmarshal(in []byte) error {
+	msg := new(submit.GetSubmitStatisticsResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetSubmitStatisticsResult) GetSuccess() *submit.GetSubmitStatisticsResponse {
+	if !p.IsSetSuccess() {
+		return GetSubmitStatisticsResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetSubmitStatisticsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*submit.GetSubmitStatisticsResponse)
+}
+
+func (p *GetSubmitStatisticsResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetSubmitStatisticsResult) GetResult() interface{} {
+	return p.Success
+}
+
 func getNoteHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
@@ -2780,6 +2934,16 @@ func (p *kClient) GetSubmitCalendar(ctx context.Context, Req *submit.GetSubmitCa
 	_args.Req = Req
 	var _result GetSubmitCalendarResult
 	if err = p.c.Call(ctx, "GetSubmitCalendar", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetSubmitStatistics(ctx context.Context, Req *submit.GetSubmitStatisticsRequest) (r *submit.GetSubmitStatisticsResponse, err error) {
+	var _args GetSubmitStatisticsArgs
+	_args.Req = Req
+	var _result GetSubmitStatisticsResult
+	if err = p.c.Call(ctx, "GetSubmitStatistics", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
