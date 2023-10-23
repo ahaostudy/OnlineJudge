@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -22,6 +24,7 @@ import (
 	"main/services/user/pkg/snowflake"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -292,7 +295,13 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *user.GetUserRequest)
 	resp = new(user.GetUserResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
 
-	u, err := db.GetUser(req.GetID())
+	var u *model.User
+	var err error
+	if req.GetID() != 0 {
+		u, err = db.GetUser(req.GetID())
+	} else {
+		u, err = db.GetUserByUsername(req.GetUsername())
+	}
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		resp.StatusCode = code.CodeUserNotExist.Code()
 		return
@@ -323,4 +332,61 @@ func CheckCaptcha(ctx context.Context, email, captche string) (bool, bool) {
 	go cache.Del(key)
 
 	return cpt == captche, true
+}
+
+// UploadAvatar implements the UserServiceImpl interface.
+func (s *UserServiceImpl) UploadAvatar(ctx context.Context, req *user.UploadAvatarRequest) (resp *user.UploadAvatarResponse, _ error) {
+	resp = new(user.UploadAvatarResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 将原头像删除（如果存在的话）
+	u, err := db.GetUser(req.GetUserID())
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		resp.StatusCode = code.CodeUserNotExist.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+	if u.Avatar != "" {
+		_ = os.Remove(filepath.Join(config.Config.Static.Path, u.Avatar))
+	}
+
+	// 保存新的头像
+	fileName := uuid.New().String() + req.GetExt()
+	os.MkdirAll(config.Config.Static.Path, 0755)
+	if err := os.WriteFile(filepath.Join(config.Config.Static.Path, fileName), req.GetBody(), 0644); err != nil {
+		return
+	}
+
+	// 更新数据库
+	if err := db.UpdateUser(req.GetUserID(), map[string]any{
+		"avatar": fileName,
+	}); err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// DownloadAvatar implements the UserServiceImpl interface.
+func (s *UserServiceImpl) DownloadAvatar(ctx context.Context, req *user.DownloadAvatarRequest) (resp *user.DownloadAvatarResponse, _ error) {
+	resp = new(user.DownloadAvatarResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+	path := filepath.Join(config.Config.Static.Path, req.GetAvatar())
+
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		resp.StatusCode = code.CodeRecordNotFound.Code()
+		return
+	}
+
+	body, err := os.ReadFile(path)
+	if err != nil {
+		return
+	}
+
+	resp.Body = body
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
 }

@@ -30,9 +30,9 @@ type (
 	GetNoteListRequest struct {
 		Page      int64 `form:"page"`
 		Count     int64 `form:"count"`
-		UserID    int64 `json:"user_id"`
-		ProblemID int64 `json:"problem_id"`
-		SubmitID  int64 `json:"submit_id"`
+		UserID    int64 `form:"user_id"`
+		ProblemID int64 `form:"problem_id"`
+		SubmitID  int64 `form:"submit_id"`
 	}
 
 	GetNoteListResponse struct {

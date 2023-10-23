@@ -14,6 +14,7 @@ type Client interface {
 	GetProblem(ctx context.Context, Req *problem.GetProblemRequest, callOptions ...callopt.Option) (r *problem.GetProblemResponse, err error)
 	GetProblemList(ctx context.Context, Req *problem.GetProblemListRequest, callOptions ...callopt.Option) (r *problem.GetProblemListResponse, err error)
 	GetProblemCount(ctx context.Context, Req *problem.GetProblemCountRequest, callOptions ...callopt.Option) (r *problem.GetProblemCountResponse, err error)
+	GetProblemListByIDList(ctx context.Context, Req *problem.GetProblemListByIDListRequest, callOptions ...callopt.Option) (r *problem.GetProblemListByIDListResponse, err error)
 	GetContestProblem(ctx context.Context, Req *problem.GetContestProblemRequest, callOptions ...callopt.Option) (r *problem.GetContestProblemResponse, err error)
 	GetContestProblemList(ctx context.Context, Req *problem.GetContestProblemListRequest, callOptions ...callopt.Option) (r *problem.GetContestProblemListResponse, err error)
 	CreateProblem(ctx context.Context, Req *problem.CreateProblemRequest, callOptions ...callopt.Option) (r *problem.CreateProblemResponse, err error)
@@ -66,6 +67,11 @@ func (p *kProblemServiceClient) GetProblemList(ctx context.Context, Req *problem
 func (p *kProblemServiceClient) GetProblemCount(ctx context.Context, Req *problem.GetProblemCountRequest, callOptions ...callopt.Option) (r *problem.GetProblemCountResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProblemCount(ctx, Req)
+}
+
+func (p *kProblemServiceClient) GetProblemListByIDList(ctx context.Context, Req *problem.GetProblemListByIDListRequest, callOptions ...callopt.Option) (r *problem.GetProblemListByIDListResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetProblemListByIDList(ctx, Req)
 }
 
 func (p *kProblemServiceClient) GetContestProblem(ctx context.Context, Req *problem.GetContestProblemRequest, callOptions ...callopt.Option) (r *problem.GetContestProblemResponse, err error) {

@@ -8,7 +8,10 @@ import (
 	"main/gateway/pkg/pack"
 	"main/kitex_gen/submit"
 	"net/http"
+	"sort"
 	"strconv"
+
+	build "main/common/pack"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,7 +43,8 @@ type (
 	}
 
 	GetLatestSubmitsRequest struct {
-		Count int64 `form:"count"`
+		UserID int64 `form:"user_id"`
+		Count  int64 `form:"count"`
 	}
 
 	GetLatestSubmitsResponse struct {
@@ -73,6 +77,32 @@ type (
 	DebugResponse struct {
 		ctl.Response
 		Result *model.JudgeResult `json:"result"`
+	}
+
+	GetSubmitCalendarRequest struct {
+		UserID int64 `form:"user_id"`
+	}
+
+	GetSubmitCalendarResponse struct {
+		ctl.Response
+		Data map[string]int64 `json:"data"`
+	}
+
+	GetSubmitStatisticsRequest struct {
+		UserID int64 `form:"user_id"`
+	}
+
+	GetSubmitStatisticsResponse struct {
+		ctl.Response
+		SloveCount  int64 `json:"slove_count"`
+		SubmitCount int64 `json:"submit_count"`
+		EasyCount   int64 `json:"easy_count"`
+		MiddleCount int64 `json:"middle_count"`
+		HardCount   int64 `json:"hard_count"`
+		LangCounts  []struct {
+			ID int64 `json:"id"`
+			Count  int64 `json:"count"`
+		} `json:"lang_counts"`
 	}
 )
 
@@ -153,13 +183,16 @@ func GetLatestSubmits(c *gin.Context) {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
 		return
 	}
+	if req.UserID == 0 {
+		req.UserID = c.GetInt64("user_id")
+	}
 	if req.Count == 0 {
 		req.Count = defaultLatestCount
 	}
 
 	// 获取提交数据
 	result, err := client.SubmitCli.GetLatestSubmits(c.Request.Context(), &submit.GetLatestSubmitsRequest{
-		UserID: c.GetInt64("user_id"),
+		UserID: req.UserID,
 		Count:  req.Count,
 	})
 	if err != nil {
@@ -176,6 +209,15 @@ func GetLatestSubmits(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
+	}
+	builder := new(build.Builder)
+	for i := range res.SubmitList {
+		res.SubmitList[i].Problem = new(model.Problem)
+		builder.Build(*result.SubmitList[i].GetProblem(), res.SubmitList[i].Problem)
+		if builder.Error() != nil {
+			c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+			return
+		}
 	}
 
 	res.Success()
@@ -254,8 +296,6 @@ func Submit(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-type ()
-
 func DeleteSubmit(c *gin.Context) {
 	res := new(DeleteSubmitResponse)
 
@@ -313,5 +353,68 @@ func Debug(c *gin.Context) {
 	}
 
 	res.Success()
+	c.JSON(http.StatusOK, res)
+}
+
+func GetSubmitCalendar(c *gin.Context) {
+	req := new(GetSubmitCalendarRequest)
+	res := new(GetSubmitCalendarResponse)
+
+	// 解析参数
+	if err := c.ShouldBindQuery(req); err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+
+	// 获取用户提交日历
+	result, err := client.SubmitCli.GetSubmitCalendar(c.Request.Context(), &submit.GetSubmitCalendarRequest{
+		UserID: req.UserID,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	res.Data = result.GetSubmitCalendar()
+	res.CodeOf(code.Code(result.StatusCode))
+	c.JSON(http.StatusOK, res)
+}
+
+func GetSubmitStatistics(c *gin.Context) {
+	req := new(GetSubmitStatisticsRequest)
+	res := new(GetSubmitStatisticsResponse)
+
+	if err := c.ShouldBindQuery(req); err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+
+	result, err := client.SubmitCli.GetSubmitStatistics(c.Request.Context(), &submit.GetSubmitStatisticsRequest{
+		UserID: req.UserID,
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+	if result.StatusCode != code.CodeSuccess.Code() {
+		c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
+		return
+	}
+
+	res.SubmitCount = result.GetSubmitCount()
+	res.SloveCount = result.GetSloveCount()
+	res.EasyCount = result.GetEasyCount()
+	res.MiddleCount = result.GetMiddleCount()
+	res.HardCount = result.GetHardCount()
+	for k, v := range result.GetLangCounts() {
+		res.LangCounts = append(res.LangCounts, struct{ID int64 "json:\"id\""; Count int64 "json:\"count\""}{
+			ID: k,
+			Count: v,
+		})
+	}
+	sort.Slice(res.LangCounts, func(i, j int) bool {
+		return res.LangCounts[i].Count > res.LangCounts[j].Count
+	})
+	res.CodeOf(code.Code(result.StatusCode))
 	c.JSON(http.StatusOK, res)
 }

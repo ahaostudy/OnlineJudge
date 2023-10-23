@@ -845,7 +845,8 @@ type GetUserRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ID int64 `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	ID       int64  `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	Username string `protobuf:"bytes,2,opt,name=Username,proto3" json:"Username,omitempty"`
 }
 
 func (x *GetUserRequest) Reset() {
@@ -885,6 +886,13 @@ func (x *GetUserRequest) GetID() int64 {
 		return x.ID
 	}
 	return 0
+}
+
+func (x *GetUserRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
 }
 
 type GetUserResponse struct {
@@ -938,6 +946,226 @@ func (x *GetUserResponse) GetStatusCode() int64 {
 func (x *GetUserResponse) GetUser() *User {
 	if x != nil {
 		return x.User
+	}
+	return nil
+}
+
+type UploadAvatarRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserID int64  `protobuf:"varint,1,opt,name=UserID,proto3" json:"UserID,omitempty"`
+	Body   []byte `protobuf:"bytes,2,opt,name=Body,proto3" json:"Body,omitempty"`
+	Ext    string `protobuf:"bytes,3,opt,name=ext,proto3" json:"ext,omitempty"`
+}
+
+func (x *UploadAvatarRequest) Reset() {
+	*x = UploadAvatarRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UploadAvatarRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadAvatarRequest) ProtoMessage() {}
+
+func (x *UploadAvatarRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadAvatarRequest.ProtoReflect.Descriptor instead.
+func (*UploadAvatarRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UploadAvatarRequest) GetUserID() int64 {
+	if x != nil {
+		return x.UserID
+	}
+	return 0
+}
+
+func (x *UploadAvatarRequest) GetBody() []byte {
+	if x != nil {
+		return x.Body
+	}
+	return nil
+}
+
+func (x *UploadAvatarRequest) GetExt() string {
+	if x != nil {
+		return x.Ext
+	}
+	return ""
+}
+
+type UploadAvatarResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StatusCode int64  `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"StatusCode,omitempty"`
+	Avatar     string `protobuf:"bytes,2,opt,name=Avatar,proto3" json:"Avatar,omitempty"`
+}
+
+func (x *UploadAvatarResponse) Reset() {
+	*x = UploadAvatarResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UploadAvatarResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadAvatarResponse) ProtoMessage() {}
+
+func (x *UploadAvatarResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadAvatarResponse.ProtoReflect.Descriptor instead.
+func (*UploadAvatarResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *UploadAvatarResponse) GetStatusCode() int64 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
+func (x *UploadAvatarResponse) GetAvatar() string {
+	if x != nil {
+		return x.Avatar
+	}
+	return ""
+}
+
+type DownloadAvatarRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Avatar string `protobuf:"bytes,1,opt,name=Avatar,proto3" json:"Avatar,omitempty"`
+}
+
+func (x *DownloadAvatarRequest) Reset() {
+	*x = DownloadAvatarRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DownloadAvatarRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadAvatarRequest) ProtoMessage() {}
+
+func (x *DownloadAvatarRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadAvatarRequest.ProtoReflect.Descriptor instead.
+func (*DownloadAvatarRequest) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *DownloadAvatarRequest) GetAvatar() string {
+	if x != nil {
+		return x.Avatar
+	}
+	return ""
+}
+
+type DownloadAvatarResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StatusCode int64  `protobuf:"varint,1,opt,name=StatusCode,proto3" json:"StatusCode,omitempty"`
+	Body       []byte `protobuf:"bytes,2,opt,name=Body,proto3" json:"Body,omitempty"`
+}
+
+func (x *DownloadAvatarResponse) Reset() {
+	*x = DownloadAvatarResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_user_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DownloadAvatarResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DownloadAvatarResponse) ProtoMessage() {}
+
+func (x *DownloadAvatarResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_user_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DownloadAvatarResponse.ProtoReflect.Descriptor instead.
+func (*DownloadAvatarResponse) Descriptor() ([]byte, []int) {
+	return file_user_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *DownloadAvatarResponse) GetStatusCode() int64 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
+func (x *DownloadAvatarResponse) GetBody() []byte {
+	if x != nil {
+		return x.Body
 	}
 	return nil
 }
@@ -1024,14 +1252,34 @@ var file_user_proto_rawDesc = []byte{
 	0x43, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x53, 0x74, 0x61, 0x74,
 	0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x49, 0x73, 0x41, 0x64, 0x6d, 0x69,
 	0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x49, 0x73, 0x41, 0x64, 0x6d, 0x69, 0x6e,
-	0x22, 0x20, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x22, 0x3c, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
-	0x49, 0x44, 0x22, 0x51, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43,
-	0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75,
-	0x73, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x1e, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52,
-	0x04, 0x55, 0x73, 0x65, 0x72, 0x32, 0xbb, 0x03, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65,
+	0x49, 0x44, 0x12, 0x1a, 0x0a, 0x08, 0x55, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x55, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x51,
+	0x0a, 0x0f, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64,
+	0x65, 0x12, 0x1e, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0a, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x04, 0x55, 0x73, 0x65,
+	0x72, 0x22, 0x53, 0x0a, 0x13, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x61, 0x74, 0x61,
+	0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x55, 0x73, 0x65, 0x72,
+	0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49, 0x44,
+	0x12, 0x12, 0x0a, 0x04, 0x42, 0x6f, 0x64, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04,
+	0x42, 0x6f, 0x64, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x65, 0x78, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x03, 0x65, 0x78, 0x74, 0x22, 0x4e, 0x0a, 0x14, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64,
+	0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e,
+	0x0a, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x16,
+	0x0a, 0x06, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
+	0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x22, 0x2f, 0x0a, 0x15, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f,
+	0x61, 0x64, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x16, 0x0a, 0x06, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x22, 0x4c, 0x0a, 0x16, 0x44, 0x6f, 0x77, 0x6e, 0x6c,
+	0x6f, 0x61, 0x64, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x43, 0x6f, 0x64,
+	0x65, 0x12, 0x12, 0x0a, 0x04, 0x42, 0x6f, 0x64, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52,
+	0x04, 0x42, 0x6f, 0x64, 0x79, 0x32, 0xd3, 0x04, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65,
 	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3b, 0x0a, 0x08, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
 	0x72, 0x12, 0x15, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65,
 	0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e,
@@ -1059,9 +1307,18 @@ var file_user_proto_rawDesc = []byte{
 	0x55, 0x73, 0x65, 0x72, 0x12, 0x14, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x47, 0x65, 0x74, 0x55,
 	0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x75, 0x73, 0x65,
 	0x72, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x22, 0x00, 0x42, 0x1a, 0x5a, 0x18, 0x6d, 0x61, 0x69, 0x6e, 0x2f, 0x6b, 0x69, 0x74, 0x65,
-	0x78, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x3b, 0x75, 0x73, 0x65, 0x72, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x22, 0x00, 0x12, 0x47, 0x0a, 0x0c, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x61,
+	0x74, 0x61, 0x72, 0x12, 0x19, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61,
+	0x64, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a,
+	0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x70, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x61, 0x74,
+	0x61, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x4d, 0x0a, 0x0e,
+	0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x12, 0x1b,
+	0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76,
+	0x61, 0x74, 0x61, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x75, 0x73,
+	0x65, 0x72, 0x2e, 0x44, 0x6f, 0x77, 0x6e, 0x6c, 0x6f, 0x61, 0x64, 0x41, 0x76, 0x61, 0x74, 0x61,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x1a, 0x5a, 0x18, 0x6d,
+	0x61, 0x69, 0x6e, 0x2f, 0x6b, 0x69, 0x74, 0x65, 0x78, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x75, 0x73,
+	0x65, 0x72, 0x3b, 0x75, 0x73, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1076,23 +1333,27 @@ func file_user_proto_rawDescGZIP() []byte {
 	return file_user_proto_rawDescData
 }
 
-var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_user_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_user_proto_goTypes = []interface{}{
-	(*User)(nil),               // 0: user.User
-	(*RegisterRequest)(nil),    // 1: user.RegisterRequest
-	(*RegisterResponse)(nil),   // 2: user.RegisterResponse
-	(*LoginRequest)(nil),       // 3: user.LoginRequest
-	(*LoginResponse)(nil),      // 4: user.LoginResponse
-	(*CreateUserRequest)(nil),  // 5: user.CreateUserRequest
-	(*CreateUserResponse)(nil), // 6: user.CreateUserResponse
-	(*UpdateUserRequest)(nil),  // 7: user.UpdateUserRequest
-	(*UpdateUserResponse)(nil), // 8: user.UpdateUserResponse
-	(*GetCaptchaRequest)(nil),  // 9: user.GetCaptchaRequest
-	(*GetCaptchaResponse)(nil), // 10: user.GetCaptchaResponse
-	(*IsAdminRequest)(nil),     // 11: user.IsAdminRequest
-	(*IsAdminResponse)(nil),    // 12: user.IsAdminResponse
-	(*GetUserRequest)(nil),     // 13: user.GetUserRequest
-	(*GetUserResponse)(nil),    // 14: user.GetUserResponse
+	(*User)(nil),                   // 0: user.User
+	(*RegisterRequest)(nil),        // 1: user.RegisterRequest
+	(*RegisterResponse)(nil),       // 2: user.RegisterResponse
+	(*LoginRequest)(nil),           // 3: user.LoginRequest
+	(*LoginResponse)(nil),          // 4: user.LoginResponse
+	(*CreateUserRequest)(nil),      // 5: user.CreateUserRequest
+	(*CreateUserResponse)(nil),     // 6: user.CreateUserResponse
+	(*UpdateUserRequest)(nil),      // 7: user.UpdateUserRequest
+	(*UpdateUserResponse)(nil),     // 8: user.UpdateUserResponse
+	(*GetCaptchaRequest)(nil),      // 9: user.GetCaptchaRequest
+	(*GetCaptchaResponse)(nil),     // 10: user.GetCaptchaResponse
+	(*IsAdminRequest)(nil),         // 11: user.IsAdminRequest
+	(*IsAdminResponse)(nil),        // 12: user.IsAdminResponse
+	(*GetUserRequest)(nil),         // 13: user.GetUserRequest
+	(*GetUserResponse)(nil),        // 14: user.GetUserResponse
+	(*UploadAvatarRequest)(nil),    // 15: user.UploadAvatarRequest
+	(*UploadAvatarResponse)(nil),   // 16: user.UploadAvatarResponse
+	(*DownloadAvatarRequest)(nil),  // 17: user.DownloadAvatarRequest
+	(*DownloadAvatarResponse)(nil), // 18: user.DownloadAvatarResponse
 }
 var file_user_proto_depIdxs = []int32{
 	0,  // 0: user.GetUserResponse.User:type_name -> user.User
@@ -1103,15 +1364,19 @@ var file_user_proto_depIdxs = []int32{
 	9,  // 5: user.UserService.GetCaptcha:input_type -> user.GetCaptchaRequest
 	11, // 6: user.UserService.IsAdmin:input_type -> user.IsAdminRequest
 	13, // 7: user.UserService.GetUser:input_type -> user.GetUserRequest
-	2,  // 8: user.UserService.Register:output_type -> user.RegisterResponse
-	4,  // 9: user.UserService.Login:output_type -> user.LoginResponse
-	6,  // 10: user.UserService.CreateUser:output_type -> user.CreateUserResponse
-	8,  // 11: user.UserService.UpdateUser:output_type -> user.UpdateUserResponse
-	10, // 12: user.UserService.GetCaptcha:output_type -> user.GetCaptchaResponse
-	12, // 13: user.UserService.IsAdmin:output_type -> user.IsAdminResponse
-	14, // 14: user.UserService.GetUser:output_type -> user.GetUserResponse
-	8,  // [8:15] is the sub-list for method output_type
-	1,  // [1:8] is the sub-list for method input_type
+	15, // 8: user.UserService.UploadAvatar:input_type -> user.UploadAvatarRequest
+	17, // 9: user.UserService.DownloadAvatar:input_type -> user.DownloadAvatarRequest
+	2,  // 10: user.UserService.Register:output_type -> user.RegisterResponse
+	4,  // 11: user.UserService.Login:output_type -> user.LoginResponse
+	6,  // 12: user.UserService.CreateUser:output_type -> user.CreateUserResponse
+	8,  // 13: user.UserService.UpdateUser:output_type -> user.UpdateUserResponse
+	10, // 14: user.UserService.GetCaptcha:output_type -> user.GetCaptchaResponse
+	12, // 15: user.UserService.IsAdmin:output_type -> user.IsAdminResponse
+	14, // 16: user.UserService.GetUser:output_type -> user.GetUserResponse
+	16, // 17: user.UserService.UploadAvatar:output_type -> user.UploadAvatarResponse
+	18, // 18: user.UserService.DownloadAvatar:output_type -> user.DownloadAvatarResponse
+	10, // [10:19] is the sub-list for method output_type
+	1,  // [1:10] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
 	1,  // [1:1] is the sub-list for extension extendee
 	0,  // [0:1] is the sub-list for field type_name
@@ -1303,6 +1568,54 @@ func file_user_proto_init() {
 				return nil
 			}
 		}
+		file_user_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UploadAvatarRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UploadAvatarResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DownloadAvatarRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_user_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DownloadAvatarResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -1310,7 +1623,7 @@ func file_user_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_user_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -1336,4 +1649,6 @@ type UserService interface {
 	GetCaptcha(ctx context.Context, req *GetCaptchaRequest) (res *GetCaptchaResponse, err error)
 	IsAdmin(ctx context.Context, req *IsAdminRequest) (res *IsAdminResponse, err error)
 	GetUser(ctx context.Context, req *GetUserRequest) (res *GetUserResponse, err error)
+	UploadAvatar(ctx context.Context, req *UploadAvatarRequest) (res *UploadAvatarResponse, err error)
+	DownloadAvatar(ctx context.Context, req *DownloadAvatarRequest) (res *DownloadAvatarResponse, err error)
 }
