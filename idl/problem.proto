@@ -8,6 +8,7 @@ service ProblemService {
     rpc GetProblem(GetProblemRequest) returns (GetProblemResponse) {}
     rpc GetProblemList(GetProblemListRequest) returns (GetProblemListResponse) {}
     rpc GetProblemCount(GetProblemCountRequest) returns (GetProblemCountResponse) {}
+    rpc GetProblemListByIDList(GetProblemListByIDListRequest) returns (GetProblemListByIDListResponse) {}
     rpc GetContestProblem(GetContestProblemRequest) returns (GetContestProblemResponse) {}
     rpc GetContestProblemList(GetContestProblemListRequest) returns (GetContestProblemListResponse) {}
     rpc CreateProblem(CreateProblemRequest) returns (CreateProblemResponse) {}
@@ -74,6 +75,15 @@ message GetProblemListRequest {
 }
 
 message GetProblemListResponse {
+    int64 StatusCode = 1;
+    repeated Problem ProblemList = 2;
+}
+
+message GetProblemListByIDListRequest {
+    repeated int64 ProblemIDList = 1;
+}
+
+message GetProblemListByIDListResponse {
     int64 StatusCode = 1;
     repeated Problem ProblemList = 2;
 }

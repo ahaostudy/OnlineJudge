@@ -12,6 +12,8 @@ service UserService {
     rpc GetCaptcha(GetCaptchaRequest) returns (GetCaptchaResponse) {}
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse) {}
     rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+    rpc UploadAvatar(UploadAvatarRequest) returns (UploadAvatarResponse) {}
+    rpc DownloadAvatar(DownloadAvatarRequest) returns (DownloadAvatarResponse) {}
 }
 
 message User {
@@ -94,9 +96,30 @@ message IsAdminResponse {
 
 message GetUserRequest {
     int64 ID = 1;
+    string Username = 2;
 }
 
 message GetUserResponse {
     int64 StatusCode = 1;
     User User = 2;
+}
+
+message UploadAvatarRequest {
+    int64 UserID = 1;
+    bytes Body = 2;
+    string ext = 3;
+}
+
+message UploadAvatarResponse {
+    int64 StatusCode = 1;
+    string Avatar = 2;
+}
+
+message DownloadAvatarRequest {
+    string Avatar = 1;
+}
+
+message DownloadAvatarResponse {
+    int64 StatusCode = 1;
+    bytes Body = 2;
 }

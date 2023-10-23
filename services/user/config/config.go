@@ -7,10 +7,15 @@ type Default struct {
 	Version string `yaml:"version"`
 	Host    string `yaml:"host"`
 	Port    int    `yaml:"port"`
+	Static  Static `yaml:"static"`
 	Auth    Auth   `yaml:"auth"`
 	Email   Email  `yaml:"email"`
 	Mysql   Mysql  `yaml:"mysql"`
 	Redis   Redis  `yaml:"redis"`
+}
+
+type Static struct {
+	Path string `yaml:"path"`
 }
 
 // Auth

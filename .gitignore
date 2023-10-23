@@ -7,5 +7,7 @@ go.sum
 /data/*
 !/data/.gitkeep
 /cache
+/log
 
 nohup.out
+pids.txt

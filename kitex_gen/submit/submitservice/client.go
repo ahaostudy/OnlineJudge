@@ -22,6 +22,8 @@ type Client interface {
 	GetAcceptedStatus(ctx context.Context, Req *submit.GetAcceptedStatusRequest, callOptions ...callopt.Option) (r *submit.GetAcceptedStatusResponse, err error)
 	GetLatestSubmits(ctx context.Context, Req *submit.GetLatestSubmitsRequest, callOptions ...callopt.Option) (r *submit.GetLatestSubmitsResponse, err error)
 	DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequest, callOptions ...callopt.Option) (r *submit.DeleteSubmitResponse, err error)
+	GetSubmitCalendar(ctx context.Context, Req *submit.GetSubmitCalendarRequest, callOptions ...callopt.Option) (r *submit.GetSubmitCalendarResponse, err error)
+	GetSubmitStatistics(ctx context.Context, Req *submit.GetSubmitStatisticsRequest, callOptions ...callopt.Option) (r *submit.GetSubmitStatisticsResponse, err error)
 	GetNote(ctx context.Context, Req *submit.GetNoteRequest, callOptions ...callopt.Option) (r *submit.GetNoteResponse, err error)
 	GetNoteList(ctx context.Context, Req *submit.GetNoteListRequest, callOptions ...callopt.Option) (r *submit.GetNoteListResponse, err error)
 	CreateNote(ctx context.Context, Req *submit.CreateNoteRequest, callOptions ...callopt.Option) (r *submit.CreateNoteResponse, err error)
@@ -111,6 +113,16 @@ func (p *kSubmitServiceClient) GetLatestSubmits(ctx context.Context, Req *submit
 func (p *kSubmitServiceClient) DeleteSubmit(ctx context.Context, Req *submit.DeleteSubmitRequest, callOptions ...callopt.Option) (r *submit.DeleteSubmitResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteSubmit(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) GetSubmitCalendar(ctx context.Context, Req *submit.GetSubmitCalendarRequest, callOptions ...callopt.Option) (r *submit.GetSubmitCalendarResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetSubmitCalendar(ctx, Req)
+}
+
+func (p *kSubmitServiceClient) GetSubmitStatistics(ctx context.Context, Req *submit.GetSubmitStatisticsRequest, callOptions ...callopt.Option) (r *submit.GetSubmitStatisticsResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetSubmitStatistics(ctx, Req)
 }
 
 func (p *kSubmitServiceClient) GetNote(ctx context.Context, Req *submit.GetNoteRequest, callOptions ...callopt.Option) (r *submit.GetNoteResponse, err error) {

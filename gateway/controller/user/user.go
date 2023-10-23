@@ -7,7 +7,9 @@ import (
 	"main/gateway/pkg/model"
 	"main/gateway/pkg/pack"
 	"main/kitex_gen/user"
+	"mime"
 	"net/http"
+	"path/filepath"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +28,7 @@ type (
 		Token  string `json:"token"`
 		UserID int64  `json:"user_id"`
 	}
-	
+
 	RegisterRequest struct {
 		Email    string `json:"email" binding:"required"`
 		Captcha  string `json:"captcha"`
@@ -62,6 +64,10 @@ type (
 	}
 
 	GetCaptchaResponse struct {
+		ctl.Response
+	}
+
+	UpdateAvatarResponse struct {
 		ctl.Response
 	}
 )
@@ -144,7 +150,8 @@ func GetUser(c *gin.Context) {
 
 	// 获取提交
 	result, err := client.UserCli.GetUser(c.Request.Context(), &user.GetUserRequest{
-		ID: id,
+		ID:       id,
+		Username: c.Query("username"),
 	})
 	if err != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
@@ -164,7 +171,6 @@ func GetUser(c *gin.Context) {
 	res.Success()
 	c.JSON(http.StatusOK, res)
 }
-
 
 // CreateUser 创建账号（管理员操作，暂不进行邮箱验证）
 func CreateUser(c *gin.Context) {
@@ -241,4 +247,56 @@ func GetCaptcha(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.GetStatusCode())))
+}
+
+func GetAvatar(c *gin.Context) {
+	result, err := client.UserCli.DownloadAvatar(c.Request.Context(), &user.DownloadAvatarRequest{
+		Avatar: c.Param("avatar"),
+	})
+	if err != nil || result.StatusCode != code.CodeSuccess.Code() {
+		c.AbortWithStatus(http.StatusNotFound)
+		return
+	}
+
+	contentType := mime.TypeByExtension(filepath.Ext(c.Param("avatar")))
+	if contentType == "" {
+		contentType = "application/octet-stream"
+	}
+
+	c.Data(http.StatusOK, contentType, result.GetBody())
+}
+
+func UpdateAvatar(c *gin.Context) {
+	res := new(UpdateAvatarResponse)
+
+	// 解析参数
+	file, err := c.FormFile("avatar")
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+	fileReader, err := file.Open()
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+	body := make([]byte, file.Size)
+	_, err = fileReader.Read(body)
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeInvalidParams))
+		return
+	}
+
+	// 上传和更新头像
+	result, err := client.UserCli.UploadAvatar(c.Request.Context(), &user.UploadAvatarRequest{
+		UserID: c.GetInt64("user_id"),
+		Body:   body,
+		Ext:    filepath.Ext(file.Filename),
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
 }

@@ -9,6 +9,8 @@ import (
 
 func RegisterSubmitRouter(r *gin.RouterGroup) {
 	r.GET("/latest", jwt.Parse(), submit.GetLatestSubmits)
+	r.GET("/calendar", submit.GetSubmitCalendar)
+	r.GET("/statistics", submit.GetSubmitStatistics)
 
 	r.Use(jwt.Auth())
 

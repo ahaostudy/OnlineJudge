@@ -106,6 +106,25 @@ func (s *ProblemServiceImpl) GetProblemList(ctx context.Context, req *problem.Ge
 	return
 }
 
+// GetProblemListByIDList implements the ProblemServiceImpl interface.
+func (s *ProblemServiceImpl) GetProblemListByIDList(ctx context.Context, req *problem.GetProblemListByIDListRequest) (resp *problem.GetProblemListByIDListResponse, err error) {
+	resp = new(problem.GetProblemListByIDListResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	problemList, err := db.GetProblemListIn(req.GetProblemIDList())
+	if err != nil {
+		return
+	}
+
+	resp.ProblemList, err = pack.BuildProblems(problemList)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
 // GetProblemCount implements the ProblemServiceImpl interface.
 func (s *ProblemServiceImpl) GetProblemCount(ctx context.Context, req *problem.GetProblemCountRequest) (resp *problem.GetProblemCountResponse, _ error) {
 	resp = new(problem.GetProblemCountResponse)

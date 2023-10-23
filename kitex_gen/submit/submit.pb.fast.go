@@ -144,6 +144,11 @@ func (x *Submit) FastRead(buf []byte, _type int8, number int32) (offset int, err
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 12:
+		offset, err = x.fastReadField12(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -214,6 +219,16 @@ func (x *Submit) fastReadField11(buf []byte, _type int8) (offset int, err error)
 		return offset, err
 	}
 	x.Note = &v
+	return offset, nil
+}
+
+func (x *Submit) fastReadField12(buf []byte, _type int8) (offset int, err error) {
+	var v Problem
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Problem = &v
 	return offset, nil
 }
 
@@ -309,6 +324,151 @@ func (x *Note) fastReadField7(buf []byte, _type int8) (offset int, err error) {
 
 func (x *Note) fastReadField8(buf []byte, _type int8) (offset int, err error) {
 	x.CreatedAt, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 7:
+		offset, err = x.fastReadField7(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 8:
+		offset, err = x.fastReadField8(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 9:
+		offset, err = x.fastReadField9(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 10:
+		offset, err = x.fastReadField10(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 11:
+		offset, err = x.fastReadField11(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 12:
+		offset, err = x.fastReadField12(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 13:
+		offset, err = x.fastReadField13(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_Problem[number], err)
+}
+
+func (x *Problem) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Title, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Description, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Difficulty, offset, err = fastpb.ReadInt32(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.InputDesc, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.OutputDesc, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField7(buf []byte, _type int8) (offset int, err error) {
+	x.DataRange, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField8(buf []byte, _type int8) (offset int, err error) {
+	x.Tips, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField9(buf []byte, _type int8) (offset int, err error) {
+	x.MaxTime, offset, err = fastpb.ReadInt32(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField10(buf []byte, _type int8) (offset int, err error) {
+	x.MaxMemory, offset, err = fastpb.ReadInt32(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField11(buf []byte, _type int8) (offset int, err error) {
+	x.Source, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField12(buf []byte, _type int8) (offset int, err error) {
+	x.AuthorID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *Problem) fastReadField13(buf []byte, _type int8) (offset int, err error) {
+	x.ContestID, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -1179,6 +1339,210 @@ func (x *DeleteSubmitResponse) fastReadField1(buf []byte, _type int8) (offset in
 	return offset, err
 }
 
+func (x *GetSubmitCalendarRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitCalendarRequest[number], err)
+}
+
+func (x *GetSubmitCalendarRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitCalendarResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitCalendarResponse[number], err)
+}
+
+func (x *GetSubmitCalendarResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitCalendarResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	if x.SubmitCalendar == nil {
+		x.SubmitCalendar = make(map[string]int64)
+	}
+	var key string
+	var value int64
+	offset, err = fastpb.ReadMapEntry(buf, _type,
+		func(buf []byte, _type int8) (offset int, err error) {
+			key, offset, err = fastpb.ReadString(buf, _type)
+			return offset, err
+		},
+		func(buf []byte, _type int8) (offset int, err error) {
+			value, offset, err = fastpb.ReadInt64(buf, _type)
+			return offset, err
+		})
+	if err != nil {
+		return offset, err
+	}
+	x.SubmitCalendar[key] = value
+	return offset, nil
+}
+
+func (x *GetSubmitStatisticsRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitStatisticsRequest[number], err)
+}
+
+func (x *GetSubmitStatisticsRequest) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.UserID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 7:
+		offset, err = x.fastReadField7(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_GetSubmitStatisticsResponse[number], err)
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.StatusCode, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.SloveCount, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.SubmitCount, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.EasyCount, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.MiddleCount, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.HardCount, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *GetSubmitStatisticsResponse) fastReadField7(buf []byte, _type int8) (offset int, err error) {
+	if x.LangCounts == nil {
+		x.LangCounts = make(map[int64]int64)
+	}
+	var key int64
+	var value int64
+	offset, err = fastpb.ReadMapEntry(buf, _type,
+		func(buf []byte, _type int8) (offset int, err error) {
+			key, offset, err = fastpb.ReadInt64(buf, _type)
+			return offset, err
+		},
+		func(buf []byte, _type int8) (offset int, err error) {
+			value, offset, err = fastpb.ReadInt64(buf, _type)
+			return offset, err
+		})
+	if err != nil {
+		return offset, err
+	}
+	x.LangCounts[key] = value
+	return offset, nil
+}
+
 func (x *GetNoteRequest) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
@@ -1640,6 +2004,7 @@ func (x *Submit) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField9(buf[offset:])
 	offset += x.fastWriteField10(buf[offset:])
 	offset += x.fastWriteField11(buf[offset:])
+	offset += x.fastWriteField12(buf[offset:])
 	return offset
 }
 
@@ -1731,6 +2096,14 @@ func (x *Submit) fastWriteField11(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *Submit) fastWriteField12(buf []byte) (offset int) {
+	if x.Problem == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 12, x.GetProblem())
+	return offset
+}
+
 func (x *Note) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -1807,6 +2180,130 @@ func (x *Note) fastWriteField8(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteInt64(buf[offset:], 8, x.GetCreatedAt())
+	return offset
+}
+
+func (x *Problem) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
+	offset += x.fastWriteField7(buf[offset:])
+	offset += x.fastWriteField8(buf[offset:])
+	offset += x.fastWriteField9(buf[offset:])
+	offset += x.fastWriteField10(buf[offset:])
+	offset += x.fastWriteField11(buf[offset:])
+	offset += x.fastWriteField12(buf[offset:])
+	offset += x.fastWriteField13(buf[offset:])
+	return offset
+}
+
+func (x *Problem) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *Problem) fastWriteField2(buf []byte) (offset int) {
+	if x.Title == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetTitle())
+	return offset
+}
+
+func (x *Problem) fastWriteField3(buf []byte) (offset int) {
+	if x.Description == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetDescription())
+	return offset
+}
+
+func (x *Problem) fastWriteField4(buf []byte) (offset int) {
+	if x.Difficulty == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 4, x.GetDifficulty())
+	return offset
+}
+
+func (x *Problem) fastWriteField5(buf []byte) (offset int) {
+	if x.InputDesc == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 5, x.GetInputDesc())
+	return offset
+}
+
+func (x *Problem) fastWriteField6(buf []byte) (offset int) {
+	if x.OutputDesc == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 6, x.GetOutputDesc())
+	return offset
+}
+
+func (x *Problem) fastWriteField7(buf []byte) (offset int) {
+	if x.DataRange == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 7, x.GetDataRange())
+	return offset
+}
+
+func (x *Problem) fastWriteField8(buf []byte) (offset int) {
+	if x.Tips == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 8, x.GetTips())
+	return offset
+}
+
+func (x *Problem) fastWriteField9(buf []byte) (offset int) {
+	if x.MaxTime == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 9, x.GetMaxTime())
+	return offset
+}
+
+func (x *Problem) fastWriteField10(buf []byte) (offset int) {
+	if x.MaxMemory == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt32(buf[offset:], 10, x.GetMaxMemory())
+	return offset
+}
+
+func (x *Problem) fastWriteField11(buf []byte) (offset int) {
+	if x.Source == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 11, x.GetSource())
+	return offset
+}
+
+func (x *Problem) fastWriteField12(buf []byte) (offset int) {
+	if x.AuthorID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 12, x.GetAuthorID())
+	return offset
+}
+
+func (x *Problem) fastWriteField13(buf []byte) (offset int) {
+	if x.ContestID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 13, x.GetContestID())
 	return offset
 }
 
@@ -2405,6 +2902,149 @@ func (x *DeleteSubmitResponse) fastWriteField1(buf []byte) (offset int) {
 	return offset
 }
 
+func (x *GetSubmitCalendarRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitCalendarRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserID())
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetSubmitCalendarResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.SubmitCalendar == nil {
+		return offset
+	}
+	for k, v := range x.GetSubmitCalendar() {
+		offset += fastpb.WriteMapEntry(buf[offset:], 2,
+			func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+				offset := 0
+				offset += fastpb.WriteString(buf[offset:], numTagOrKey, k)
+				offset += fastpb.WriteInt64(buf[offset:], numIdxOrVal, v)
+				return offset
+			})
+	}
+	return offset
+}
+
+func (x *GetSubmitStatisticsRequest) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitStatisticsRequest) fastWriteField1(buf []byte) (offset int) {
+	if x.UserID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserID())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
+	offset += x.fastWriteField7(buf[offset:])
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField1(buf []byte) (offset int) {
+	if x.StatusCode == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetStatusCode())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField2(buf []byte) (offset int) {
+	if x.SloveCount == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetSloveCount())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField3(buf []byte) (offset int) {
+	if x.SubmitCount == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetSubmitCount())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField4(buf []byte) (offset int) {
+	if x.EasyCount == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 4, x.GetEasyCount())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField5(buf []byte) (offset int) {
+	if x.MiddleCount == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 5, x.GetMiddleCount())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField6(buf []byte) (offset int) {
+	if x.HardCount == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 6, x.GetHardCount())
+	return offset
+}
+
+func (x *GetSubmitStatisticsResponse) fastWriteField7(buf []byte) (offset int) {
+	if x.LangCounts == nil {
+		return offset
+	}
+	for k, v := range x.GetLangCounts() {
+		offset += fastpb.WriteMapEntry(buf[offset:], 7,
+			func(buf []byte, numTagOrKey, numIdxOrVal int32) int {
+				offset := 0
+				offset += fastpb.WriteInt64(buf[offset:], numTagOrKey, k)
+				offset += fastpb.WriteInt64(buf[offset:], numIdxOrVal, v)
+				return offset
+			})
+	}
+	return offset
+}
+
 func (x *GetNoteRequest) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -2751,6 +3391,7 @@ func (x *Submit) Size() (n int) {
 	n += x.sizeField9()
 	n += x.sizeField10()
 	n += x.sizeField11()
+	n += x.sizeField12()
 	return n
 }
 
@@ -2842,6 +3483,14 @@ func (x *Submit) sizeField11() (n int) {
 	return n
 }
 
+func (x *Submit) sizeField12() (n int) {
+	if x.Problem == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(12, x.GetProblem())
+	return n
+}
+
 func (x *Note) Size() (n int) {
 	if x == nil {
 		return n
@@ -2918,6 +3567,130 @@ func (x *Note) sizeField8() (n int) {
 		return n
 	}
 	n += fastpb.SizeInt64(8, x.GetCreatedAt())
+	return n
+}
+
+func (x *Problem) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
+	n += x.sizeField7()
+	n += x.sizeField8()
+	n += x.sizeField9()
+	n += x.sizeField10()
+	n += x.sizeField11()
+	n += x.sizeField12()
+	n += x.sizeField13()
+	return n
+}
+
+func (x *Problem) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *Problem) sizeField2() (n int) {
+	if x.Title == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetTitle())
+	return n
+}
+
+func (x *Problem) sizeField3() (n int) {
+	if x.Description == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetDescription())
+	return n
+}
+
+func (x *Problem) sizeField4() (n int) {
+	if x.Difficulty == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(4, x.GetDifficulty())
+	return n
+}
+
+func (x *Problem) sizeField5() (n int) {
+	if x.InputDesc == "" {
+		return n
+	}
+	n += fastpb.SizeString(5, x.GetInputDesc())
+	return n
+}
+
+func (x *Problem) sizeField6() (n int) {
+	if x.OutputDesc == "" {
+		return n
+	}
+	n += fastpb.SizeString(6, x.GetOutputDesc())
+	return n
+}
+
+func (x *Problem) sizeField7() (n int) {
+	if x.DataRange == "" {
+		return n
+	}
+	n += fastpb.SizeString(7, x.GetDataRange())
+	return n
+}
+
+func (x *Problem) sizeField8() (n int) {
+	if x.Tips == "" {
+		return n
+	}
+	n += fastpb.SizeString(8, x.GetTips())
+	return n
+}
+
+func (x *Problem) sizeField9() (n int) {
+	if x.MaxTime == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(9, x.GetMaxTime())
+	return n
+}
+
+func (x *Problem) sizeField10() (n int) {
+	if x.MaxMemory == 0 {
+		return n
+	}
+	n += fastpb.SizeInt32(10, x.GetMaxMemory())
+	return n
+}
+
+func (x *Problem) sizeField11() (n int) {
+	if x.Source == "" {
+		return n
+	}
+	n += fastpb.SizeString(11, x.GetSource())
+	return n
+}
+
+func (x *Problem) sizeField12() (n int) {
+	if x.AuthorID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(12, x.GetAuthorID())
+	return n
+}
+
+func (x *Problem) sizeField13() (n int) {
+	if x.ContestID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(13, x.GetContestID())
 	return n
 }
 
@@ -3516,6 +4289,149 @@ func (x *DeleteSubmitResponse) sizeField1() (n int) {
 	return n
 }
 
+func (x *GetSubmitCalendarRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetSubmitCalendarRequest) sizeField1() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetUserID())
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetSubmitCalendarResponse) sizeField2() (n int) {
+	if x.SubmitCalendar == nil {
+		return n
+	}
+	for k, v := range x.GetSubmitCalendar() {
+		n += fastpb.SizeMapEntry(2,
+			func(numTagOrKey, numIdxOrVal int32) int {
+				n := 0
+				n += fastpb.SizeString(numTagOrKey, k)
+				n += fastpb.SizeInt64(numIdxOrVal, v)
+				return n
+			})
+	}
+	return n
+}
+
+func (x *GetSubmitStatisticsRequest) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *GetSubmitStatisticsRequest) sizeField1() (n int) {
+	if x.UserID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetUserID())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
+	n += x.sizeField7()
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField1() (n int) {
+	if x.StatusCode == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetStatusCode())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField2() (n int) {
+	if x.SloveCount == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetSloveCount())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField3() (n int) {
+	if x.SubmitCount == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(3, x.GetSubmitCount())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField4() (n int) {
+	if x.EasyCount == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(4, x.GetEasyCount())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField5() (n int) {
+	if x.MiddleCount == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(5, x.GetMiddleCount())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField6() (n int) {
+	if x.HardCount == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(6, x.GetHardCount())
+	return n
+}
+
+func (x *GetSubmitStatisticsResponse) sizeField7() (n int) {
+	if x.LangCounts == nil {
+		return n
+	}
+	for k, v := range x.GetLangCounts() {
+		n += fastpb.SizeMapEntry(7,
+			func(numTagOrKey, numIdxOrVal int32) int {
+				n := 0
+				n += fastpb.SizeInt64(numTagOrKey, k)
+				n += fastpb.SizeInt64(numIdxOrVal, v)
+				return n
+			})
+	}
+	return n
+}
+
 func (x *GetNoteRequest) Size() (n int) {
 	if x == nil {
 		return n
@@ -3807,6 +4723,7 @@ var fieldIDToName_Submit = map[int32]string{
 	9:  "NoteID",
 	10: "CreatedAt",
 	11: "Note",
+	12: "Problem",
 }
 
 var fieldIDToName_Note = map[int32]string{
@@ -3818,6 +4735,22 @@ var fieldIDToName_Note = map[int32]string{
 	6: "SubmitID",
 	7: "IsPublic",
 	8: "CreatedAt",
+}
+
+var fieldIDToName_Problem = map[int32]string{
+	1:  "ID",
+	2:  "Title",
+	3:  "Description",
+	4:  "Difficulty",
+	5:  "InputDesc",
+	6:  "OutputDesc",
+	7:  "DataRange",
+	8:  "Tips",
+	9:  "MaxTime",
+	10: "MaxMemory",
+	11: "Source",
+	12: "AuthorID",
+	13: "ContestID",
 }
 
 var fieldIDToName_DebugReqeust = map[int32]string{
@@ -3932,6 +4865,29 @@ var fieldIDToName_DeleteSubmitRequest = map[int32]string{
 
 var fieldIDToName_DeleteSubmitResponse = map[int32]string{
 	1: "StatusCode",
+}
+
+var fieldIDToName_GetSubmitCalendarRequest = map[int32]string{
+	1: "UserID",
+}
+
+var fieldIDToName_GetSubmitCalendarResponse = map[int32]string{
+	1: "StatusCode",
+	2: "SubmitCalendar",
+}
+
+var fieldIDToName_GetSubmitStatisticsRequest = map[int32]string{
+	1: "UserID",
+}
+
+var fieldIDToName_GetSubmitStatisticsResponse = map[int32]string{
+	1: "StatusCode",
+	2: "SloveCount",
+	3: "SubmitCount",
+	4: "EasyCount",
+	5: "MiddleCount",
+	6: "HardCount",
+	7: "LangCounts",
 }
 
 var fieldIDToName_GetNoteRequest = map[int32]string{
