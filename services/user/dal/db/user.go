@@ -24,6 +24,13 @@ func GetUserByEmail(email string) (*model.User, error) {
 	return user, err
 }
 
+// GetUserListIn 通过ID列表获取用户列表
+func GeUserListIn(ids []int64) ([]*model.User, error) {
+	var users []*model.User
+	err := DB.Where("id in (?)", ids).Find(&users).Error
+	return users, err
+}
+
 // InsertUser 插入用户信息
 func InsertUser(user *model.User) error {
 	return DB.Create(user).Error

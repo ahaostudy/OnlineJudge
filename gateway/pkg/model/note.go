@@ -11,4 +11,6 @@ type Note struct {
 	SubmitID  int64     `json:"submit_id"`
 	IsPublic  bool      `gorm:"default:true" json:"is_public"`
 	CreatedAt time.Time `json:"created_at"`
+
+	Author *User `gorm:"-:migration;<-:false" json:"author"`
 }

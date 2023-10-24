@@ -18,8 +18,10 @@ type Client interface {
 	GetCaptcha(ctx context.Context, Req *user.GetCaptchaRequest, callOptions ...callopt.Option) (r *user.GetCaptchaResponse, err error)
 	IsAdmin(ctx context.Context, Req *user.IsAdminRequest, callOptions ...callopt.Option) (r *user.IsAdminResponse, err error)
 	GetUser(ctx context.Context, Req *user.GetUserRequest, callOptions ...callopt.Option) (r *user.GetUserResponse, err error)
+	GetUserListByIDList(ctx context.Context, Req *user.GetUserListByIDListRequest, callOptions ...callopt.Option) (r *user.GetUserListByIDListResponse, err error)
 	UploadAvatar(ctx context.Context, Req *user.UploadAvatarRequest, callOptions ...callopt.Option) (r *user.UploadAvatarResponse, err error)
 	DownloadAvatar(ctx context.Context, Req *user.DownloadAvatarRequest, callOptions ...callopt.Option) (r *user.DownloadAvatarResponse, err error)
+	DeleteAvatar(ctx context.Context, Req *user.DeleteAvatarRequest, callOptions ...callopt.Option) (r *user.DeleteAvatarResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -86,6 +88,11 @@ func (p *kUserServiceClient) GetUser(ctx context.Context, Req *user.GetUserReque
 	return p.kClient.GetUser(ctx, Req)
 }
 
+func (p *kUserServiceClient) GetUserListByIDList(ctx context.Context, Req *user.GetUserListByIDListRequest, callOptions ...callopt.Option) (r *user.GetUserListByIDListResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetUserListByIDList(ctx, Req)
+}
+
 func (p *kUserServiceClient) UploadAvatar(ctx context.Context, Req *user.UploadAvatarRequest, callOptions ...callopt.Option) (r *user.UploadAvatarResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UploadAvatar(ctx, Req)
@@ -94,4 +101,9 @@ func (p *kUserServiceClient) UploadAvatar(ctx context.Context, Req *user.UploadA
 func (p *kUserServiceClient) DownloadAvatar(ctx context.Context, Req *user.DownloadAvatarRequest, callOptions ...callopt.Option) (r *user.DownloadAvatarResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DownloadAvatar(ctx, Req)
+}
+
+func (p *kUserServiceClient) DeleteAvatar(ctx context.Context, Req *user.DeleteAvatarRequest, callOptions ...callopt.Option) (r *user.DeleteAvatarResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.DeleteAvatar(ctx, Req)
 }

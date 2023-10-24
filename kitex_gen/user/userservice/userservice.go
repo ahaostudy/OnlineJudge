@@ -21,15 +21,17 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"Register":       kitex.NewMethodInfo(registerHandler, newRegisterArgs, newRegisterResult, false),
-		"Login":          kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
-		"CreateUser":     kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
-		"UpdateUser":     kitex.NewMethodInfo(updateUserHandler, newUpdateUserArgs, newUpdateUserResult, false),
-		"GetCaptcha":     kitex.NewMethodInfo(getCaptchaHandler, newGetCaptchaArgs, newGetCaptchaResult, false),
-		"IsAdmin":        kitex.NewMethodInfo(isAdminHandler, newIsAdminArgs, newIsAdminResult, false),
-		"GetUser":        kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
-		"UploadAvatar":   kitex.NewMethodInfo(uploadAvatarHandler, newUploadAvatarArgs, newUploadAvatarResult, false),
-		"DownloadAvatar": kitex.NewMethodInfo(downloadAvatarHandler, newDownloadAvatarArgs, newDownloadAvatarResult, false),
+		"Register":            kitex.NewMethodInfo(registerHandler, newRegisterArgs, newRegisterResult, false),
+		"Login":               kitex.NewMethodInfo(loginHandler, newLoginArgs, newLoginResult, false),
+		"CreateUser":          kitex.NewMethodInfo(createUserHandler, newCreateUserArgs, newCreateUserResult, false),
+		"UpdateUser":          kitex.NewMethodInfo(updateUserHandler, newUpdateUserArgs, newUpdateUserResult, false),
+		"GetCaptcha":          kitex.NewMethodInfo(getCaptchaHandler, newGetCaptchaArgs, newGetCaptchaResult, false),
+		"IsAdmin":             kitex.NewMethodInfo(isAdminHandler, newIsAdminArgs, newIsAdminResult, false),
+		"GetUser":             kitex.NewMethodInfo(getUserHandler, newGetUserArgs, newGetUserResult, false),
+		"GetUserListByIDList": kitex.NewMethodInfo(getUserListByIDListHandler, newGetUserListByIDListArgs, newGetUserListByIDListResult, false),
+		"UploadAvatar":        kitex.NewMethodInfo(uploadAvatarHandler, newUploadAvatarArgs, newUploadAvatarResult, false),
+		"DownloadAvatar":      kitex.NewMethodInfo(downloadAvatarHandler, newDownloadAvatarArgs, newDownloadAvatarResult, false),
+		"DeleteAvatar":        kitex.NewMethodInfo(deleteAvatarHandler, newDeleteAvatarArgs, newDeleteAvatarResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "user",
@@ -1117,6 +1119,159 @@ func (p *GetUserResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getUserListByIDListHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(user.GetUserListByIDListRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(user.UserService).GetUserListByIDList(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *GetUserListByIDListArgs:
+		success, err := handler.(user.UserService).GetUserListByIDList(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetUserListByIDListResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newGetUserListByIDListArgs() interface{} {
+	return &GetUserListByIDListArgs{}
+}
+
+func newGetUserListByIDListResult() interface{} {
+	return &GetUserListByIDListResult{}
+}
+
+type GetUserListByIDListArgs struct {
+	Req *user.GetUserListByIDListRequest
+}
+
+func (p *GetUserListByIDListArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(user.GetUserListByIDListRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *GetUserListByIDListArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *GetUserListByIDListArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *GetUserListByIDListArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetUserListByIDListArgs) Unmarshal(in []byte) error {
+	msg := new(user.GetUserListByIDListRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetUserListByIDListArgs_Req_DEFAULT *user.GetUserListByIDListRequest
+
+func (p *GetUserListByIDListArgs) GetReq() *user.GetUserListByIDListRequest {
+	if !p.IsSetReq() {
+		return GetUserListByIDListArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetUserListByIDListArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetUserListByIDListArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetUserListByIDListResult struct {
+	Success *user.GetUserListByIDListResponse
+}
+
+var GetUserListByIDListResult_Success_DEFAULT *user.GetUserListByIDListResponse
+
+func (p *GetUserListByIDListResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(user.GetUserListByIDListResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *GetUserListByIDListResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *GetUserListByIDListResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *GetUserListByIDListResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetUserListByIDListResult) Unmarshal(in []byte) error {
+	msg := new(user.GetUserListByIDListResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetUserListByIDListResult) GetSuccess() *user.GetUserListByIDListResponse {
+	if !p.IsSetSuccess() {
+		return GetUserListByIDListResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetUserListByIDListResult) SetSuccess(x interface{}) {
+	p.Success = x.(*user.GetUserListByIDListResponse)
+}
+
+func (p *GetUserListByIDListResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetUserListByIDListResult) GetResult() interface{} {
+	return p.Success
+}
+
 func uploadAvatarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
@@ -1423,6 +1578,159 @@ func (p *DownloadAvatarResult) GetResult() interface{} {
 	return p.Success
 }
 
+func deleteAvatarHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(user.DeleteAvatarRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(user.UserService).DeleteAvatar(ctx, req)
+		if err != nil {
+			return err
+		}
+		if err := st.SendMsg(resp); err != nil {
+			return err
+		}
+	case *DeleteAvatarArgs:
+		success, err := handler.(user.UserService).DeleteAvatar(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*DeleteAvatarResult)
+		realResult.Success = success
+	}
+	return nil
+}
+func newDeleteAvatarArgs() interface{} {
+	return &DeleteAvatarArgs{}
+}
+
+func newDeleteAvatarResult() interface{} {
+	return &DeleteAvatarResult{}
+}
+
+type DeleteAvatarArgs struct {
+	Req *user.DeleteAvatarRequest
+}
+
+func (p *DeleteAvatarArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(user.DeleteAvatarRequest)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *DeleteAvatarArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *DeleteAvatarArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *DeleteAvatarArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *DeleteAvatarArgs) Unmarshal(in []byte) error {
+	msg := new(user.DeleteAvatarRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var DeleteAvatarArgs_Req_DEFAULT *user.DeleteAvatarRequest
+
+func (p *DeleteAvatarArgs) GetReq() *user.DeleteAvatarRequest {
+	if !p.IsSetReq() {
+		return DeleteAvatarArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *DeleteAvatarArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *DeleteAvatarArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type DeleteAvatarResult struct {
+	Success *user.DeleteAvatarResponse
+}
+
+var DeleteAvatarResult_Success_DEFAULT *user.DeleteAvatarResponse
+
+func (p *DeleteAvatarResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(user.DeleteAvatarResponse)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *DeleteAvatarResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *DeleteAvatarResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *DeleteAvatarResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *DeleteAvatarResult) Unmarshal(in []byte) error {
+	msg := new(user.DeleteAvatarResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *DeleteAvatarResult) GetSuccess() *user.DeleteAvatarResponse {
+	if !p.IsSetSuccess() {
+		return DeleteAvatarResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *DeleteAvatarResult) SetSuccess(x interface{}) {
+	p.Success = x.(*user.DeleteAvatarResponse)
+}
+
+func (p *DeleteAvatarResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *DeleteAvatarResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -1503,6 +1811,16 @@ func (p *kClient) GetUser(ctx context.Context, Req *user.GetUserRequest) (r *use
 	return _result.GetSuccess(), nil
 }
 
+func (p *kClient) GetUserListByIDList(ctx context.Context, Req *user.GetUserListByIDListRequest) (r *user.GetUserListByIDListResponse, err error) {
+	var _args GetUserListByIDListArgs
+	_args.Req = Req
+	var _result GetUserListByIDListResult
+	if err = p.c.Call(ctx, "GetUserListByIDList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
 func (p *kClient) UploadAvatar(ctx context.Context, Req *user.UploadAvatarRequest) (r *user.UploadAvatarResponse, err error) {
 	var _args UploadAvatarArgs
 	_args.Req = Req
@@ -1518,6 +1836,16 @@ func (p *kClient) DownloadAvatar(ctx context.Context, Req *user.DownloadAvatarRe
 	_args.Req = Req
 	var _result DownloadAvatarResult
 	if err = p.c.Call(ctx, "DownloadAvatar", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) DeleteAvatar(ctx context.Context, Req *user.DeleteAvatarRequest) (r *user.DeleteAvatarResponse, err error) {
+	var _args DeleteAvatarArgs
+	_args.Req = Req
+	var _result DeleteAvatarResult
+	if err = p.c.Call(ctx, "DeleteAvatar", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

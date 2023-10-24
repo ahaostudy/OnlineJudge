@@ -3,6 +3,7 @@ package note
 import (
 	"fmt"
 	"main/common/code"
+	build "main/common/pack"
 	"main/gateway/client"
 	"main/gateway/controller/ctl"
 	"main/gateway/pkg/model"
@@ -150,6 +151,20 @@ func GetNoteList(c *gin.Context) {
 
 	res.NoteList, err = pack.UnBuildNoteList(result.NoteList)
 	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	// 转换作者的信息
+	builder := new(build.Builder)
+	for i := range result.GetNoteList() {
+		res.NoteList[i].Author = new(model.User)
+		builder.Build(result.GetNoteList()[i].GetAuthor(), res.NoteList[i].Author)
+
+		// 减少响应内容
+		res.NoteList[i].Author.Signature = ""
+	}
+	if builder.Error() != nil {
 		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
 		return
 	}

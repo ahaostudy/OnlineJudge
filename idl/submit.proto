@@ -60,6 +60,8 @@ message Note {
     int64 SubmitID = 6;
     bool IsPublic = 7;
     int64 CreatedAt = 8;
+
+    User Author = 9;
 }
 
 message Problem {
@@ -76,6 +78,17 @@ message Problem {
     string Source = 11;
     int64 AuthorID = 12;
     int64 ContestID = 13;
+}
+
+message User {
+    int64 ID = 1;
+    string Nickname = 2;
+    string Username = 3;
+    string Password = 4;
+    string Email = 5;
+    string Avatar = 6;
+    string Signature = 7;
+    int64 Role = 8;
 }
 
 message DebugReqeust {

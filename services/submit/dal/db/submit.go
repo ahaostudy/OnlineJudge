@@ -91,7 +91,7 @@ func GetSubmitCalendar(userID int64) (data []struct {
 	Count int64
 }, err error) {
 	// 按日期统计提交次数
-	err = DB.Model(new(model.Submit)).Select("DATE_FORMAT(created_at,'%Y%m%d') as date, COUNT(id) as count").Where("user_id = ?", userID).Group("date").Find(&data).Error
+	err = DB.Model(new(model.Submit)).Select("DATE_FORMAT(CONVERT_TZ(created_at, '+00:00', '+08:00'),'%Y%m%d') as date, COUNT(id) as count").Where("user_id = ?", userID).Group("date").Find(&data).Error
 	return
 }
 

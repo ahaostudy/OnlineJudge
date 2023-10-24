@@ -10,12 +10,14 @@ import (
 	"main/kitex_gen/contest/contestservice"
 	"main/kitex_gen/judge/judgeservice"
 	"main/kitex_gen/problem/problemservice"
+	"main/kitex_gen/user/userservice"
 )
 
 var (
 	JudgeCli   judgeservice.Client
 	ContestCli contestservice.Client
 	ProblemCli problemservice.Client
+	UserCli    userservice.Client
 )
 
 func InitClient(cli naming_client.INamingClient) {
@@ -31,6 +33,11 @@ func InitClient(cli naming_client.INamingClient) {
 	)
 	ProblemCli = problemservice.MustNewClient(
 		"problem",
+		client.WithResolver(resolver.NewNacosResolver(cli)),
+		client.WithRPCTimeout(time.Second*3),
+	)
+	UserCli = userservice.MustNewClient(
+		"user",
 		client.WithResolver(resolver.NewNacosResolver(cli)),
 		client.WithRPCTimeout(time.Second*3),
 	)
