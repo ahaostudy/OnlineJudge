@@ -11,7 +11,7 @@ import (
 
 func NewNacosConfig(DataId string, cfg any) (nacos.Client, error) {
 	// 配置中心
-	nacosClient, err := nacos.New(nacos.Options{
+	nacosClient, err := nacos.NewClient(nacos.Options{
 		Address:     config.NacosHost,
 		Port:        uint64(config.NacosPort),
 		NamespaceID: config.NamespaceID,

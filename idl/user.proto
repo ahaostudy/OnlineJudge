@@ -12,8 +12,10 @@ service UserService {
     rpc GetCaptcha(GetCaptchaRequest) returns (GetCaptchaResponse) {}
     rpc IsAdmin(IsAdminRequest) returns (IsAdminResponse) {}
     rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+    rpc GetUserListByIDList(GetUserListByIDListRequest) returns (GetUserListByIDListResponse) {}
     rpc UploadAvatar(UploadAvatarRequest) returns (UploadAvatarResponse) {}
     rpc DownloadAvatar(DownloadAvatarRequest) returns (DownloadAvatarResponse) {}
+    rpc DeleteAvatar(DeleteAvatarRequest) returns (DeleteAvatarResponse) {}
 }
 
 message User {
@@ -104,6 +106,15 @@ message GetUserResponse {
     User User = 2;
 }
 
+message GetUserListByIDListRequest {
+    repeated int64 UserIDList = 1;
+}
+
+message GetUserListByIDListResponse {
+    int64 StatusCode = 1;
+    repeated User UserList = 2;
+}
+
 message UploadAvatarRequest {
     int64 UserID = 1;
     bytes Body = 2;
@@ -122,4 +133,12 @@ message DownloadAvatarRequest {
 message DownloadAvatarResponse {
     int64 StatusCode = 1;
     bytes Body = 2;
+}
+
+message DeleteAvatarRequest {
+    int64 UserID = 1;
+}
+
+message DeleteAvatarResponse {
+    int64 StatusCode = 1;
 }

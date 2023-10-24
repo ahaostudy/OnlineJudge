@@ -334,6 +334,25 @@ func CheckCaptcha(ctx context.Context, email, captche string) (bool, bool) {
 	return cpt == captche, true
 }
 
+// GetUserListByIDList implements the UserServiceImpl interface.
+func (s *UserServiceImpl) GetUserListByIDList(ctx context.Context, req *user.GetUserListByIDListRequest) (resp *user.GetUserListByIDListResponse, _ error) {
+	resp = new(user.GetUserListByIDListResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	problemList, err := db.GeUserListIn(req.GetUserIDList())
+	if err != nil {
+		return
+	}
+
+	resp.UserList, err = pack.BuildUsers(problemList)
+	if err != nil {
+		return
+	}
+
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
 // UploadAvatar implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UploadAvatar(ctx context.Context, req *user.UploadAvatarRequest) (resp *user.UploadAvatarResponse, _ error) {
 	resp = new(user.UploadAvatarResponse)
@@ -387,6 +406,35 @@ func (s *UserServiceImpl) DownloadAvatar(ctx context.Context, req *user.Download
 	}
 
 	resp.Body = body
+	resp.StatusCode = code.CodeSuccess.Code()
+	return
+}
+
+// DeleteAvatar implements the UserServiceImpl interface.
+func (s *UserServiceImpl) DeleteAvatar(ctx context.Context, req *user.DeleteAvatarRequest) (resp *user.DeleteAvatarResponse, _ error) {
+	resp = new(user.DeleteAvatarResponse)
+	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 将原头像删除（如果存在的话）
+	u, err := db.GetUser(req.GetUserID())
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		resp.StatusCode = code.CodeUserNotExist.Code()
+		return
+	}
+	if err != nil {
+		return
+	}
+	if u.Avatar != "" {
+		_ = os.Remove(filepath.Join(config.Config.Static.Path, u.Avatar))
+	}
+
+	// 更新数据库
+	if err := db.UpdateUser(req.GetUserID(), map[string]any{
+		"avatar": "",
+	}); err != nil {
+		return
+	}
+
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }
