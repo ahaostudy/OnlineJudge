@@ -9,12 +9,14 @@ import (
 	"gorm.io/gorm"
 
 	"main/common/code"
+	build "main/common/pack"
 	"main/common/raw"
 	"main/common/status"
 	"main/kitex_gen/contest"
 	"main/kitex_gen/judge"
 	"main/kitex_gen/problem"
 	"main/kitex_gen/submit"
+	"main/kitex_gen/user"
 	"main/services/submit/client"
 	"main/services/submit/config"
 	"main/services/submit/dal/cache"
@@ -573,6 +575,37 @@ func (s *SubmitServiceImpl) GetNoteList(ctx context.Context, req *submit.GetNote
 		return
 	}
 
+	// 获取作者信息
+	var ids []int64
+	for _, note := range noteList {
+		ids = append(ids, note.UserID)
+	}
+	result, err := client.UserCli.GetUserListByIDList(ctx, &user.GetUserListByIDListRequest{
+		UserIDList: ids,
+	})
+	if err != nil {
+		return
+	}
+	if result.StatusCode != code.CodeSuccess.Code() {
+		resp.StatusCode = result.StatusCode
+		return
+	}
+
+	// 将用户列表写入map
+	m := make(map[int64]*submit.User)
+	builder := new(build.Builder)
+	for _, u := range result.GetUserList() {
+		m[u.ID] = new(submit.User)
+		builder.Build(u, m[u.ID])
+	}
+	if builder.Error() != nil {
+		return
+	}
+
+	// 更新作者信息
+	for i := range resp.NoteList {
+		resp.NoteList[i].Author = m[resp.NoteList[i].UserID]
+	}
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
 }

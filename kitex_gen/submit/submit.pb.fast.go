@@ -274,6 +274,11 @@ func (x *Note) FastRead(buf []byte, _type int8, number int32) (offset int, err e
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 9:
+		offset, err = x.fastReadField9(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -325,6 +330,16 @@ func (x *Note) fastReadField7(buf []byte, _type int8) (offset int, err error) {
 func (x *Note) fastReadField8(buf []byte, _type int8) (offset int, err error) {
 	x.CreatedAt, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
+}
+
+func (x *Note) fastReadField9(buf []byte, _type int8) (offset int, err error) {
+	var v User
+	offset, err = fastpb.ReadMessage(buf, _type, &v)
+	if err != nil {
+		return offset, err
+	}
+	x.Author = &v
+	return offset, nil
 }
 
 func (x *Problem) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
@@ -469,6 +484,101 @@ func (x *Problem) fastReadField12(buf []byte, _type int8) (offset int, err error
 
 func (x *Problem) fastReadField13(buf []byte, _type int8) (offset int, err error) {
 	x.ContestID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *User) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 5:
+		offset, err = x.fastReadField5(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 6:
+		offset, err = x.fastReadField6(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 7:
+		offset, err = x.fastReadField7(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	case 8:
+		offset, err = x.fastReadField8(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_User[number], err)
+}
+
+func (x *User) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.ID, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Nickname, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Username, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Password, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField5(buf []byte, _type int8) (offset int, err error) {
+	x.Email, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField6(buf []byte, _type int8) (offset int, err error) {
+	x.Avatar, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField7(buf []byte, _type int8) (offset int, err error) {
+	x.Signature, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField8(buf []byte, _type int8) (offset int, err error) {
+	x.Role, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -2116,6 +2226,7 @@ func (x *Note) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField6(buf[offset:])
 	offset += x.fastWriteField7(buf[offset:])
 	offset += x.fastWriteField8(buf[offset:])
+	offset += x.fastWriteField9(buf[offset:])
 	return offset
 }
 
@@ -2180,6 +2291,14 @@ func (x *Note) fastWriteField8(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteInt64(buf[offset:], 8, x.GetCreatedAt())
+	return offset
+}
+
+func (x *Note) fastWriteField9(buf []byte) (offset int) {
+	if x.Author == nil {
+		return offset
+	}
+	offset += fastpb.WriteMessage(buf[offset:], 9, x.GetAuthor())
 	return offset
 }
 
@@ -2304,6 +2423,85 @@ func (x *Problem) fastWriteField13(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteInt64(buf[offset:], 13, x.GetContestID())
+	return offset
+}
+
+func (x *User) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
+	offset += x.fastWriteField5(buf[offset:])
+	offset += x.fastWriteField6(buf[offset:])
+	offset += x.fastWriteField7(buf[offset:])
+	offset += x.fastWriteField8(buf[offset:])
+	return offset
+}
+
+func (x *User) fastWriteField1(buf []byte) (offset int) {
+	if x.ID == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetID())
+	return offset
+}
+
+func (x *User) fastWriteField2(buf []byte) (offset int) {
+	if x.Nickname == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetNickname())
+	return offset
+}
+
+func (x *User) fastWriteField3(buf []byte) (offset int) {
+	if x.Username == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetUsername())
+	return offset
+}
+
+func (x *User) fastWriteField4(buf []byte) (offset int) {
+	if x.Password == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 4, x.GetPassword())
+	return offset
+}
+
+func (x *User) fastWriteField5(buf []byte) (offset int) {
+	if x.Email == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 5, x.GetEmail())
+	return offset
+}
+
+func (x *User) fastWriteField6(buf []byte) (offset int) {
+	if x.Avatar == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 6, x.GetAvatar())
+	return offset
+}
+
+func (x *User) fastWriteField7(buf []byte) (offset int) {
+	if x.Signature == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 7, x.GetSignature())
+	return offset
+}
+
+func (x *User) fastWriteField8(buf []byte) (offset int) {
+	if x.Role == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 8, x.GetRole())
 	return offset
 }
 
@@ -3503,6 +3701,7 @@ func (x *Note) Size() (n int) {
 	n += x.sizeField6()
 	n += x.sizeField7()
 	n += x.sizeField8()
+	n += x.sizeField9()
 	return n
 }
 
@@ -3567,6 +3766,14 @@ func (x *Note) sizeField8() (n int) {
 		return n
 	}
 	n += fastpb.SizeInt64(8, x.GetCreatedAt())
+	return n
+}
+
+func (x *Note) sizeField9() (n int) {
+	if x.Author == nil {
+		return n
+	}
+	n += fastpb.SizeMessage(9, x.GetAuthor())
 	return n
 }
 
@@ -3691,6 +3898,85 @@ func (x *Problem) sizeField13() (n int) {
 		return n
 	}
 	n += fastpb.SizeInt64(13, x.GetContestID())
+	return n
+}
+
+func (x *User) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	n += x.sizeField2()
+	n += x.sizeField3()
+	n += x.sizeField4()
+	n += x.sizeField5()
+	n += x.sizeField6()
+	n += x.sizeField7()
+	n += x.sizeField8()
+	return n
+}
+
+func (x *User) sizeField1() (n int) {
+	if x.ID == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetID())
+	return n
+}
+
+func (x *User) sizeField2() (n int) {
+	if x.Nickname == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetNickname())
+	return n
+}
+
+func (x *User) sizeField3() (n int) {
+	if x.Username == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetUsername())
+	return n
+}
+
+func (x *User) sizeField4() (n int) {
+	if x.Password == "" {
+		return n
+	}
+	n += fastpb.SizeString(4, x.GetPassword())
+	return n
+}
+
+func (x *User) sizeField5() (n int) {
+	if x.Email == "" {
+		return n
+	}
+	n += fastpb.SizeString(5, x.GetEmail())
+	return n
+}
+
+func (x *User) sizeField6() (n int) {
+	if x.Avatar == "" {
+		return n
+	}
+	n += fastpb.SizeString(6, x.GetAvatar())
+	return n
+}
+
+func (x *User) sizeField7() (n int) {
+	if x.Signature == "" {
+		return n
+	}
+	n += fastpb.SizeString(7, x.GetSignature())
+	return n
+}
+
+func (x *User) sizeField8() (n int) {
+	if x.Role == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(8, x.GetRole())
 	return n
 }
 
@@ -4735,6 +5021,7 @@ var fieldIDToName_Note = map[int32]string{
 	6: "SubmitID",
 	7: "IsPublic",
 	8: "CreatedAt",
+	9: "Author",
 }
 
 var fieldIDToName_Problem = map[int32]string{
@@ -4751,6 +5038,17 @@ var fieldIDToName_Problem = map[int32]string{
 	11: "Source",
 	12: "AuthorID",
 	13: "ContestID",
+}
+
+var fieldIDToName_User = map[int32]string{
+	1: "ID",
+	2: "Nickname",
+	3: "Username",
+	4: "Password",
+	5: "Email",
+	6: "Avatar",
+	7: "Signature",
+	8: "Role",
 }
 
 var fieldIDToName_DebugReqeust = map[int32]string{

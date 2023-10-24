@@ -70,6 +70,10 @@ type (
 	UpdateAvatarResponse struct {
 		ctl.Response
 	}
+
+	DeleteAvatarResponse struct {
+		ctl.Response
+	}
 )
 
 func Login(c *gin.Context) {
@@ -299,4 +303,20 @@ func UpdateAvatar(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res.CodeOf(code.Code(result.StatusCode)))
+}
+
+func DeleteAvatar(c *gin.Context) {
+	res := new(DeleteAvatarResponse)
+
+	// 删除头像
+	result, err := client.UserCli.DeleteAvatar(c.Request.Context(), &user.DeleteAvatarRequest{
+		UserID: c.GetInt64("user_id"),
+	})
+	if err != nil {
+		c.JSON(http.StatusOK, res.CodeOf(code.CodeServerBusy))
+		return
+	}
+
+	res.CodeOf(code.Code(result.StatusCode))
+	c.JSON(http.StatusOK, res)
 }
