@@ -8,10 +8,6 @@ import (
 )
 
 func ExtractTextFromMarkdown(markdown string, count int) string {
-	// 去除最后一段的成绩模版
-	ls := strings.Split(markdown, "***")
-	markdown = strings.Join(ls[:len(ls)-1], "***")
-
 	// 将Markdown转换为HTML
 	html := string(blackfriday.Run([]byte(markdown)))
 
