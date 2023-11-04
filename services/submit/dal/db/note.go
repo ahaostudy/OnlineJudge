@@ -25,7 +25,7 @@ func GetNoteList(userID, problemID, submitID int64, isPublic bool, start, count 
 		ProblemID: problemID,
 		SubmitID:  submitID,
 		IsPublic:  isPublic,
-	}).Offset(start).Limit(count).Find(&notes).Error
+	}).Offset(start).Limit(count).Order("created_at DESC").Find(&notes).Error
 	return notes, err
 }
 
@@ -35,6 +35,9 @@ func InsertNote(note *model.Note) error {
 			return err
 		}
 
+		if note.SubmitID == 0 {
+			return nil
+		}
 		result := tx.Model(new(model.Submit)).Where("id = ? and note_id = 0", note.SubmitID).Update("note_id", note.ID)
 		if result.Error != nil {
 			return result.Error
