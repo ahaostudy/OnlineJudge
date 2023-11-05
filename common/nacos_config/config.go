@@ -32,6 +32,7 @@ func NewNacosConfig(DataId string, cfg any) (nacos.Client, error) {
 				log.Printf("nacos config error: %v\n", err)
 			}
 		},
+		int64(config.NacosPort),
 	)
 
 	return nacosClient, nil

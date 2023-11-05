@@ -8,7 +8,4 @@
 /config
 /output
 
-go.mod
-go.sum
-
 nohup.out

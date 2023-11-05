@@ -1,9 +1,6 @@
 .vscode
 .idea
 
-go.mod
-go.sum
-
 /data/*
 !/data/.gitkeep
 /cache
