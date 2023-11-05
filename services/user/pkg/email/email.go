@@ -3,6 +3,7 @@ package email
 import (
 	"fmt"
 	"net/smtp"
+	"regexp"
 
 	"github.com/jordan-wright/email"
 
@@ -36,4 +37,15 @@ func SendCaptcha(captcha string, toEmails ...string) error {
 		<p style="font-size: 12px; color: #666;">请在5分钟内完成验证，过期失效，请勿告知他人，以防个人信息泄露</p>
 	</div>`, captcha)
 	return Send(subject, html, toEmails...)
+}
+
+func ExtractUsernameFromEmail(email string) (string, bool) {
+	pattern := `([^@]+)@`
+	re := regexp.MustCompile(pattern)
+	match := re.FindStringSubmatch(email)
+	if len(match) == 2 {
+		return match[1], true
+	} else {
+		return "", false
+	}
 }
