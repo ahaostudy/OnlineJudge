@@ -43,15 +43,23 @@ func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterReques
 		return
 	}
 
+	// 提取用户名
+	username, ok := email.ExtractUsernameFromEmail(req.GetEmail())
+	if !ok {
+		resp.StatusCode = code.CodeInvalidParams.Code()
+		return
+	}
+
 	// 创建用户
 	id := snowflake.Generate().Int64()
 	user := model.User{
-		ID:       id,
-		Email:    req.GetEmail(),
-		Nickname: req.GetEmail(),
-		Username: req.GetEmail(),
-		Password: sha256.Encrypt(req.Password),
-		Role:     model.ConstRoleOfUser,
+		ID:        id,
+		Email:     req.GetEmail(),
+		Nickname:  username,
+		Username:  username,
+		Password:  sha256.Encrypt(req.Password),
+		Signature: fmt.Sprintf("# Hi 👋, I'm %s\n", username),
+		Role:      model.ConstRoleOfUser,
 	}
 	err := db.InsertUser(&user)
 	// 判断用户是否已存在 (Error 1062: Duplicate entry)

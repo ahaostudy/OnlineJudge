@@ -2,16 +2,14 @@ package code
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"os"
 	"path/filepath"
-
-	"github.com/google/uuid"
 
 	"main/common/status"
 	"main/services/judge/config"
 	"main/services/judge/pkg/compiler"
 	"main/services/judge/pkg/exec"
-
 )
 
 type Code struct {
@@ -45,7 +43,7 @@ func (c *Code) Build() (result Result, ok bool) {
 	// 编译代码
 	msg, err := c.cpl.Build(c.path)
 	if err != nil {
-		result.Error = msg
+		result.SetError(msg)
 		return
 	}
 
@@ -91,14 +89,14 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	if err != nil {
 		return result, err
 	}
-	result.Time, result.Memory, result.Output = res.CpuTime, res.Memory, string(stdout)
+	result.Time, result.Memory = res.CpuTime, res.Memory
+	result.SetOutput(string(stdout))
 
 	// 系统错误
 	switch res.Result {
 	case exec.RESULT_SUCCESS:
 		// 正常执行
 		result.SetStatus(status.StatusAccepted)
-		return result, nil
 	case exec.RESULT_CPU_TIME_LIMIT_EXCEEDED:
 		// 超出时间限制
 		result.SetStatus(status.StatusTimeLimitExceeded)
@@ -111,14 +109,15 @@ func (c *Code) Run(inputPath string) (Result, error) {
 	case exec.RESULT_RUNTIME_ERROR:
 		// 运行时错误
 		stderr, _ := os.ReadFile(errorPath)
-		result.Error = string(stderr)
+		fmt.Println("----------------stderr: ", stderr)
+		result.SetError(string(stderr))
 		result.SetStatus(status.StatusRuntimeError)
-	}
-
-	// 超出输出长度限制
-	if len(result.Output) >= config.Config.Sandbox.DefaultMaxOutputSize {
-		result.SetStatus(status.StatusOutputLimitExceeded)
-		result.Output = ""
+	default:
+		// 超出输出长度限制
+		if len(result.Output) >= config.Config.Sandbox.DefaultMaxOutputSize {
+			result.SetStatus(status.StatusOutputLimitExceeded)
+			result.SetOutput("")
+		}
 	}
 
 	return result, nil

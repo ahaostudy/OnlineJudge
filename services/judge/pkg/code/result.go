@@ -1,6 +1,10 @@
 package code
 
-import "main/common/status"
+import (
+	"main/common/status"
+	"main/services/judge/config"
+	"main/services/judge/pkg/util"
+)
 
 type Result struct {
 	Time    int64  `json:"time"`
@@ -14,4 +18,12 @@ type Result struct {
 func (r *Result) SetStatus(s int) {
 	r.Status = s
 	r.Message = status.StatusMsg(s)
+}
+
+func (r *Result) SetOutput(output string) {
+	r.Output = util.RemoveDirectoryFromPath(output, config.Config.File.CodePath)
+}
+
+func (r *Result) SetError(error string) {
+	r.Error = util.RemoveDirectoryFromPath(error, config.Config.File.CodePath)
 }
