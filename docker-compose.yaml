@@ -17,7 +17,7 @@ services:
       retries: 5
 
   mysql:
-    image: mysql:latest
+    image: mysql:8.3.0
     networks:
       - oj-net
     ports:
@@ -33,8 +33,7 @@ services:
     command:
       [
         "--character-set-server=utf8mb4",
-        "--collation-server=utf8mb4_unicode_ci",
-        "--skip-character-set-client-handshake"
+        "--collation-server=utf8mb4_unicode_ci"
       ]
     healthcheck:
       test:

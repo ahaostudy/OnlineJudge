@@ -22,6 +22,7 @@ const (
 	CodeContestHasStarted Code = 2014
 	CodeContestNotExist   Code = 2015
 	CodeContestNotOngoing Code = 2016
+	CodeIllegalPassword   Code = 2017
 
 	CodeForbidden Code = 3001
 
@@ -47,6 +48,7 @@ var msg = map[Code]string{
 	CodeContestHasStarted: "比赛已经开始",
 	CodeContestNotExist:   "比赛不存在",
 	CodeContestNotOngoing: "比赛未开始或已结束",
+	CodeIllegalPassword:   "密码不合法",
 
 	CodeForbidden: "权限不足",
 

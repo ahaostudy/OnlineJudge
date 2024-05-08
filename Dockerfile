@@ -25,8 +25,7 @@ RUN apt-get update && \
     rm go1.20.linux-amd64.tar.gz
 
 # Go 依赖和构建
-RUN go mod init main && \
-    go mod tidy && \
+RUN go mod tidy && \
     mkdir build && \
     go build -o build/service-judge cmd/judge/main.go && \
     go build -o build/service-problem cmd/problem/main.go && \
@@ -43,4 +42,3 @@ RUN mkdir -p /app /usr/lib/judger && \
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf ./*
-

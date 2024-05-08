@@ -1,5 +1,5 @@
 # development
-nacosHost: 192.168.1.108
-nacosPort: 8848
-namespaceID: 8f995970-806d-4063-a5e7-f3f9b6a4d141
+nacosHost: 192.168.1.43
+nacosPort: 28848
+namespaceID: onlinejudge-local
 group: DEFAULT_GROUP

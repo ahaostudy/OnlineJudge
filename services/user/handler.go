@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"time"
+	"unicode"
 
 	"main/common/code"
 	"main/common/jwt"
@@ -35,6 +36,12 @@ type UserServiceImpl struct{}
 func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterRequest) (resp *user.RegisterResponse, _ error) {
 	resp = new(user.RegisterResponse)
 	resp.StatusCode = code.CodeServerBusy.Code()
+
+	// 校验密码安全性
+	if !CheckPassword(req.GetPassword()) {
+		resp.StatusCode = code.CodeIllegalPassword.Code()
+		return
+	}
 
 	// 校验验证码
 	valid, ok := CheckCaptcha(ctx, req.GetEmail(), req.GetCaptcha())
@@ -325,6 +332,23 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *user.GetUserRequest)
 
 	resp.StatusCode = code.CodeSuccess.Code()
 	return
+}
+
+// CheckPassword 校验密码安全性
+func CheckPassword(password string) bool {
+	if len(password) < 8 || len(password) >= 128 {
+		return false
+	}
+	hasLetter := false
+	hasNumber := false
+	for _, c := range password {
+		if unicode.IsLetter(c) {
+			hasLetter = true
+		} else if unicode.IsDigit(c) {
+			hasNumber = true
+		}
+	}
+	return hasLetter && hasNumber
 }
 
 // CheckCaptcha 校验验证码

@@ -4,13 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"os/exec"
-	"reflect"
-	"regexp"
-
 	"main/services/judge/config"
 	"main/services/judge/pkg/compiler"
 	"main/services/judge/pkg/errs"
+	"os/exec"
+	"reflect"
+	"regexp"
 )
 
 // Command 沙箱调用命令
@@ -102,6 +101,8 @@ func (c *Command) CommandArgs() ([]string, error) {
 		"output_path": c.OutputPath,
 		"error_path":  c.ErrorPath,
 		"log_path":    config.Config.Sandbox.LogPath,
+		"uid":         0,
+		"gid":         0,
 	})
 	c.exe.AddKwargs(map[string]interface{}{
 		"max_memory":      c.MaxMemory,
