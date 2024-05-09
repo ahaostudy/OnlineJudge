@@ -96,13 +96,14 @@ func (c *Command) CommandArgs() ([]string, error) {
 	}
 	// 添加其它参数
 	c.exe.SetKwargs(map[string]interface{}{
-		"exe_path":    c.exe.Path(),
-		"input_path":  c.InputPath,
-		"output_path": c.OutputPath,
-		"error_path":  c.ErrorPath,
-		"log_path":    config.Config.Sandbox.LogPath,
-		"uid":         0,
-		"gid":         0,
+		"exe_path":          c.exe.Path(),
+		"input_path":        c.InputPath,
+		"output_path":       c.OutputPath,
+		"error_path":        c.ErrorPath,
+		"log_path":          config.Config.Sandbox.LogPath,
+		"uid":               0,
+		"gid":               0,
+		"seccomp_rule_name": "c_cpp",
 	})
 	c.exe.AddKwargs(map[string]interface{}{
 		"max_memory":      c.MaxMemory,

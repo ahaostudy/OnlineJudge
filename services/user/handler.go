@@ -7,9 +7,9 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"time"
-	"unicode"
 
 	"main/common/code"
 	"main/common/jwt"
@@ -336,19 +336,14 @@ func (s *UserServiceImpl) GetUser(ctx context.Context, req *user.GetUserRequest)
 
 // CheckPassword 校验密码安全性
 func CheckPassword(password string) bool {
-	if len(password) < 8 || len(password) >= 128 {
-		return false
-	}
-	hasLetter := false
-	hasNumber := false
-	for _, c := range password {
-		if unicode.IsLetter(c) {
-			hasLetter = true
-		} else if unicode.IsDigit(c) {
-			hasNumber = true
-		}
-	}
-	return hasLetter && hasNumber
+	var (
+        hasMinLength   = len(password) >= 6
+        hasUpperCase   = regexp.MustCompile(`[A-Z]`).MatchString(password)
+        hasLowerCase   = regexp.MustCompile(`[a-z]`).MatchString(password)
+        hasNumber      = regexp.MustCompile(`[0-9]`).MatchString(password)
+        hasSpecialChar = regexp.MustCompile(`[\~\!\?\@\#\$\%\^\&\*\_\-\+\=\(\)\[\]\{\}\>\<\/\\\|\"\'\.\,\:\;]`).MatchString(password)
+    )
+    return hasMinLength && hasUpperCase && hasLowerCase && (hasNumber || hasSpecialChar)
 }
 
 // CheckCaptcha 校验验证码
